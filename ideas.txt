@@ -1,0 +1,4 @@
+Auswertung:
+- Heatmaps
+- Abhängig von der Screen size
+- Quantitative auswertung überlegen
