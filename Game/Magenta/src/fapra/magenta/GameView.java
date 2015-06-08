@@ -17,7 +17,7 @@ public class GameView extends SurfaceView implements Callback {
         surfaceHolder=getHolder();
         surfaceHolder.addCallback(this);
         this.gameListener = gameListener;
-        this.gameListener.setup(activity, surfaceHolder);
+        this.gameListener.setup(activity, this, surfaceHolder);
 	}
 
 	private boolean isActive = true;

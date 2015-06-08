@@ -2,6 +2,7 @@ package fapra.magenta;
 
 import android.app.Activity;
 import android.view.SurfaceHolder;
+import android.view.View;
 
 public interface GameListenerInterface {
 	/**
@@ -12,7 +13,7 @@ public interface GameListenerInterface {
 	 * @param gl
 	 *            The GL
 	 */
-	public void setup(Activity activity, SurfaceHolder surfaceHolder);
+	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder);
 
 	/**
 	 * Called when a new frame has to be rendered. Here all game related
