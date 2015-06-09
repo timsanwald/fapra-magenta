@@ -39,7 +39,6 @@ public class Renderer {
 	}
 
 	private Paint linePaint;
-
 	private void drawFrame(Canvas c, Simulation simulation) {
 		c.drawRGB(255, 0, 0);
 		//TODO search all lines to draw
@@ -49,7 +48,7 @@ public class Renderer {
 	}
 
 	private void drawLine(LinkedList<Point> line, Canvas c) {
-		// TODO define paint style
+		// TODO define paint style not on every draw
 		Paint paint = new Paint();
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(3);

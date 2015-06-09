@@ -44,6 +44,7 @@ public class InputHandler implements OnTouchListener {
 	 * @param y
 	 */
 	private void addPoint(float x, float y) {
+	    //TODO Convert to World Coordinates
 		current.add(Point.generate(x, y));
 	}
 

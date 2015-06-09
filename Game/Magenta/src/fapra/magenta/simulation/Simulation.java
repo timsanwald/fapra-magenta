@@ -47,6 +47,9 @@ public class Simulation {
 	}
 
 	Point pFaddFromInputToCurrent;
+	/**
+	 * Transfer points from InputHandler to the simulation.
+	 */
 	private void addFromInputToCurrent() {
 	    pFaddFromInputToCurrent = last.poll();
 	    while(pFaddFromInputToCurrent != null) {
