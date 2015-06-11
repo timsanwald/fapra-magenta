@@ -1,6 +1,9 @@
 package fapra.magenta;
 
 import android.app.Activity;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
 import fapra.magenta.input.InputHandler;
@@ -27,7 +30,11 @@ public class GameListener implements GameListenerInterface {
 		renderer = new Renderer();
 		simulation = new Simulation();
 		soundManager = new SoundManager();
+		//TODO delete due to grid generation of start and target point
+		simulation.width = activity.getWindowManager().getDefaultDisplay().getWidth();
+		simulation.height = activity.getWindowManager().getDefaultDisplay().getHeight();
 		view.setOnTouchListener(inputHandler);
+		print(activity);
 	}
 
 	@Override
@@ -44,5 +51,16 @@ public class GameListener implements GameListenerInterface {
 		simulation.update(deltaTime);
 		// Render World
 		renderer.draw(surfaceHolder, simulation, deltaTime);
+	}
+	
+	public void print(Activity activity) {
+	    Point out = new Point(1080, 1920);
+	    //activity.getWindowManager().getDefaultDisplay().getRealSize(out);
+	    DisplayMetrics outMetrics = new DisplayMetrics();
+	    activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+	    Log.e("x", ""+ ((out.x / outMetrics.xdpi)) * 2.54f);
+	    Log.e("y", ""+ ((out.y / outMetrics.ydpi)) * 2.54f);
+	    Log.e("d", outMetrics.toString());
+	    Log.e("", out.toString());
 	}
 }

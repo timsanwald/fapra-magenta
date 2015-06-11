@@ -16,9 +16,19 @@ public class Renderer {
 
 	public Renderer() {
 		linePaint = new Paint();
-		linePaint.setColor(Color.WHITE);
-		linePaint.setStrokeWidth(3);
+		linePaint.setColor(Color.BLUE);
+		linePaint.setStrokeWidth(10);
 		linePaint.setStyle(Paint.Style.STROKE);
+		
+        startPaint = new Paint();
+        startPaint.setColor(Color.BLUE);
+        startPaint.setStrokeWidth(4);
+        startPaint.setStyle(Paint.Style.FILL);
+        
+        targetPaint = new Paint();
+        targetPaint.setColor(Color.RED);
+        targetPaint.setStrokeWidth(4);
+        targetPaint.setStyle(Paint.Style.FILL);
 	}
 
 	public void draw(SurfaceHolder surfaceHolder, Simulation simulation, long delta) {
@@ -40,20 +50,16 @@ public class Renderer {
 
 	private Paint linePaint;
 	private void drawFrame(Canvas c, Simulation simulation) {
-		c.drawRGB(255, 0, 0);
-		//TODO search all lines to draw
+	    c.drawColor(Color.BLACK);
+		// search all lines to draw
 		for(Line l : simulation.lines) {
 		    drawLine(l, c);
 		}
+		drawCircle(simulation.startPoint, c, startPaint);
+		drawCircle(simulation.targetPoint, c, targetPaint);
 	}
 
 	private void drawLine(LinkedList<Point> line, Canvas c) {
-		// TODO define paint style not on every draw
-		Paint paint = new Paint();
-		paint.setColor(Color.WHITE);
-		paint.setStrokeWidth(3);
-		paint.setStyle(Paint.Style.STROKE);
-
 		Path path = new Path();
 		try {
 		path.moveTo(line.getFirst().x, line.getFirst().y);
@@ -64,6 +70,14 @@ public class Renderer {
 			path.lineTo(p.x, p.y);
 			path.moveTo(p.x, p.y);
 		}
-		c.drawPath(path, paint);
+		c.drawPath(path, linePaint);
+	}
+	
+	private Paint startPaint;
+	private Paint targetPaint;
+	
+	private void drawCircle(Point p, Canvas c, Paint paint) {
+	    
+	    c.drawCircle(p.x, p.y, Simulation.epsilon, paint);
 	}
 }
