@@ -20,6 +20,12 @@ public class Renderer {
 		linePaint.setStrokeWidth(10);
 		linePaint.setStyle(Paint.Style.STROKE);
 		
+		followerPaint = new Paint();
+		followerPaint.setColor(Color.GRAY);
+		followerPaint.setStrokeWidth(15);
+		followerPaint.setStyle(Paint.Style.STROKE);
+		//followerPaint.setPathEffect(new DashPathEffect(new float[] {10,20}, 0));
+		
         startPaint = new Paint();
         startPaint.setColor(Color.BLUE);
         startPaint.setStrokeWidth(4);
@@ -51,14 +57,69 @@ public class Renderer {
 	private Paint linePaint;
 	private void drawFrame(Canvas c, Simulation simulation) {
 	    c.drawColor(Color.BLACK);
-		// search all lines to draw
+	    
+		// Render path and follower
 		for(Line l : simulation.lines) {
 		    drawLine(l, c);
 		}
-		drawCircle(simulation.startPoint, c, startPaint);
-		drawCircle(simulation.targetPoint, c, targetPaint);
+		
+		// Draw current line drawing
+		if (simulation.currentLine != null) {
+		    drawLine(simulation.currentLine, c);
+		}
+		
+		for (int i = 1; i < simulation.lines.size(); i++) {
+		    connectLines(simulation.lines.get(i-1), simulation.lines.get(i), c);
+		}
+		if (simulation.currentLine != null) {
+		    connectLines(simulation.lines.getLast(), simulation.currentLine, c);
+		}
+		
+		// Draw follower
+		drawLineDistance(c, simulation);
+		
+	    // Render start and target point
+        drawCircle(simulation.startPoint, c, startPaint);
+        drawCircle(simulation.targetPoint, c, targetPaint);
 	}
 
+	
+	private Point followerPoint = new Point(200, 200);
+	private Paint followerPaint = new Paint();
+	private void drawLineDistance(Canvas c, Simulation sim) {
+	    float pathDistance = 0;
+	    float currDistance = 0;
+	    Point last;
+	    try {
+	        last = sim.lines.getFirst().getFirst();
+	    } catch (NoSuchElementException e) {
+	        return;
+	    }
+	    
+	    Path path = new Path();
+	    path.moveTo(last.x, last.y);
+	    for (int i = 0; i < sim.lines.size(); i++) {
+            for(Point p : sim.lines.get(i)) {
+                currDistance = (float) p.distanceTo(last);
+                if (pathDistance + currDistance > sim.follower) {
+                    // between current point and last is the follower
+                   float part = (sim.follower - pathDistance);
+                   followerPoint.x = last.x + ((p.x - last.x) / currDistance) * part;
+                   followerPoint.y = last.y + ((p.y - last.y) / currDistance) * part;
+                   path.lineTo(followerPoint.x, followerPoint.y);
+                   c.drawPath(path, followerPaint);
+                   return;
+                } else {
+                    path.lineTo(p.x, p.y);
+                    path.moveTo(p.x, p.y);
+                    pathDistance += currDistance;
+                }
+                
+                last = p;
+            }
+        }
+    }
+	
 	private void drawLine(LinkedList<Point> line, Canvas c) {
 		Path path = new Path();
 		try {
@@ -73,11 +134,17 @@ public class Renderer {
 		c.drawPath(path, linePaint);
 	}
 	
+	private void connectLines(LinkedList<Point> start, LinkedList<Point> target, Canvas c) {
+	    if (start.isEmpty() || target.isEmpty()) {
+	        return;
+	    }
+	    c.drawLine(start.getLast().x, start.getLast().y, target.getFirst().x, target.getFirst().y, linePaint);
+	}
+	
 	private Paint startPaint;
 	private Paint targetPaint;
 	
 	private void drawCircle(Point p, Canvas c, Paint paint) {
-	    
 	    c.drawCircle(p.x, p.y, Simulation.epsilon, paint);
 	}
 }

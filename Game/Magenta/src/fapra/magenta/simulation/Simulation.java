@@ -3,7 +3,6 @@ package fapra.magenta.simulation;
 import java.util.LinkedList;
 import java.util.Random;
 
-import android.util.Log;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.input.InputHandler;
@@ -15,7 +14,8 @@ public class Simulation {
 	 * The last line in the list is the current one.
 	 */
 	public LinkedList<Line> lines;
-
+	public Line currentLine;
+	
 	public Point startPoint;
 	public Point targetPoint;
 	
@@ -25,17 +25,27 @@ public class Simulation {
 	
 	public Simulation() {
 		lines = new LinkedList<Line> ();
-		lines.add(new Line());
 		
 		//TODO remove the next 2 lines
 		startPoint = new Point(300, 300);
 		targetPoint = new Point(450, 800);
 	}
+	
+    public void setup() {
+        Line startLine = new Line();
+        startLine.add(startPoint);
+        startLine.add(targetPoint);
+        lines.add(startLine);
+        setNewTarget();
+    }
 
 	// Update the environment
 	public void update(float delta) {
 		//TODO implement updating simulation
 	    // move the mail xD
+	    
+	    followerSpeed = followerSpeed + followerSpeedIncrement;
+	    follower = follower + (followerSpeed/1000) * (delta);
 	}
 
 	boolean isTouchedLast = false;
@@ -49,21 +59,22 @@ public class Simulation {
 	        return;
 	    } else if (inputHandler.isTouched && !isTouchedLast && inputHandler.p != null) {
 	        // First down touch
-            lines.add(new Line());
-            lines.getLast().add(toWorldCoordinates(inputHandler.p));
+            currentLine = new Line();
+            currentLine.add(toWorldCoordinates(inputHandler.p));
             if (isInStartRange(inputHandler.p)) {
                 isValidLine = true;
             }
         } else if (inputHandler.isTouched && isTouchedLast && inputHandler.p != null) {
             // Move
-            lines.getLast().add(toWorldCoordinates(inputHandler.p));
+            currentLine.add(toWorldCoordinates(inputHandler.p));
         } else if (!inputHandler.isTouched && isTouchedLast && inputHandler.p != null) {
             //Action Up
             if (!isInTargetRange(inputHandler.p) || !isValidLine) {
-                lines.removeLast();
+                currentLine.clear();
             } else {
-                Log.e("Simulation", "Successful drawing");
-                lines.getLast().add(toWorldCoordinates(inputHandler.p));
+                currentLine.add(toWorldCoordinates(inputHandler.p));
+                lines.add(currentLine);
+                currentLine = null;
                 setNewTarget();
                 isValidLine = false;
             }
@@ -125,4 +136,9 @@ public class Simulation {
 	    }
 	    return false;
 	}
+	
+	public float currentDistance = 0;
+	public float follower = 0;
+	public float followerSpeed = 60;
+	public float followerSpeedIncrement = 0.2f;
 }

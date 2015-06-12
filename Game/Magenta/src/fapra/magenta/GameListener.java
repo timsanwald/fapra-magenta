@@ -33,15 +33,18 @@ public class GameListener implements GameListenerInterface {
 		//TODO delete due to grid generation of start and target point
 		simulation.width = activity.getWindowManager().getDefaultDisplay().getWidth();
 		simulation.height = activity.getWindowManager().getDefaultDisplay().getHeight();
+		simulation.setup();
 		view.setOnTouchListener(inputHandler);
 		print(activity);
+		lastTime = System.currentTimeMillis();
 	}
 
 	@Override
 	public void mainLoopIteration(Activity activity, SurfaceHolder surfaceHolder) {
 		// Calculate deltatime
-		thisTime = System.nanoTime();
+		thisTime = System.currentTimeMillis();
 		deltaTime = thisTime - lastTime;
+		lastTime = thisTime;
 
 		//TODO What to do with SoundManager? Adding to Simulation?
 
