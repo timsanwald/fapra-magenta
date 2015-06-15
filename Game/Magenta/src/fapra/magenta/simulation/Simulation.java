@@ -5,7 +5,9 @@ import java.util.Random;
 
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
+import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
+import fapra.magenta.sound.SoundManager;
 
 public class Simulation {
 
@@ -19,9 +21,16 @@ public class Simulation {
 	public Point startPoint;
 	public Point targetPoint;
 	
+	/**
+	 * Defines when this simulation is finished and can be closed.
+	 */
+    public boolean isDone;
+	
 	// TODO remove those parameter
 	public int width;
 	public int height;
+	
+	private SoundManager soundManager;
 	
 	public Simulation() {
 		lines = new LinkedList<Line> ();
@@ -31,12 +40,17 @@ public class Simulation {
 		targetPoint = new Point(450, 800);
 	}
 	
-    public void setup() {
+    public void setup(Upgrades upgrades, SoundManager soundManager) {
         Line startLine = new Line();
         startLine.add(startPoint);
         startLine.add(targetPoint);
         lines.add(startLine);
         setNewTarget();
+        
+        followerSpeed = upgrades.followerStartSpeed;
+        followerSpeedIncrement = upgrades.followerIncrement;
+        
+        this.soundManager = soundManager;
     }
 
 	// Update the environment
@@ -71,12 +85,14 @@ public class Simulation {
             //Action Up
             if (!isInTargetRange(inputHandler.p) || !isValidLine) {
                 currentLine.clear();
+                this.soundManager.playMissedTargetSound();
             } else {
                 currentLine.add(toWorldCoordinates(inputHandler.p));
                 lines.add(currentLine);
                 currentLine = null;
                 setNewTarget();
                 isValidLine = false;
+                this.soundManager.playTouchedTargetSound();
             }
         }
 	    isTouchedLast = inputHandler.isTouched;

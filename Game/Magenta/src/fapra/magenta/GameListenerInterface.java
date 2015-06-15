@@ -24,4 +24,8 @@ public interface GameListenerInterface {
 	 * @param surfaceHolder
 	 */
 	public void mainLoopIteration(Activity activity, SurfaceHolder surfaceHolder);
+	
+	public boolean isDone();
+
+    void dispose();
 }

@@ -71,9 +71,6 @@ public class Renderer {
 		for (int i = 1; i < simulation.lines.size(); i++) {
 		    connectLines(simulation.lines.get(i-1), simulation.lines.get(i), c);
 		}
-		if (simulation.currentLine != null) {
-		    connectLines(simulation.lines.getLast(), simulation.currentLine, c);
-		}
 		
 		// Draw follower
 		drawLineDistance(c, simulation);
@@ -146,5 +143,9 @@ public class Renderer {
 	
 	private void drawCircle(Point p, Canvas c, Paint paint) {
 	    c.drawCircle(p.x, p.y, Simulation.epsilon, paint);
+	}
+	
+	public void dispose() {
+	    // clear eventual used resources
 	}
 }

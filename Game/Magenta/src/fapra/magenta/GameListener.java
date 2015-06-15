@@ -6,6 +6,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
+import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
@@ -18,7 +19,8 @@ public class GameListener implements GameListenerInterface {
 	private Simulation simulation;
 	private SoundManager soundManager;
 	private InputHandler inputHandler;
-
+	private Upgrades upgrades;
+	
 	// Time variables
 	private long lastTime;
 	private long thisTime;
@@ -26,19 +28,24 @@ public class GameListener implements GameListenerInterface {
 
 	@Override
 	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder) {
+	    upgrades = new Upgrades();
+	    upgrades.load(activity);
 		inputHandler = new InputHandler();
 		renderer = new Renderer();
 		simulation = new Simulation();
-		soundManager = new SoundManager();
+		soundManager = new SoundManager(activity);
 		//TODO delete due to grid generation of start and target point
 		simulation.width = activity.getWindowManager().getDefaultDisplay().getWidth();
 		simulation.height = activity.getWindowManager().getDefaultDisplay().getHeight();
-		simulation.setup();
+		simulation.setup(upgrades, soundManager);
+		
 		view.setOnTouchListener(inputHandler);
 		print(activity);
 		lastTime = System.currentTimeMillis();
 	}
 
+	private boolean isDone = false;
+	
 	@Override
 	public void mainLoopIteration(Activity activity, SurfaceHolder surfaceHolder) {
 		// Calculate deltatime
@@ -47,13 +54,17 @@ public class GameListener implements GameListenerInterface {
 		lastTime = thisTime;
 
 		//TODO What to do with SoundManager? Adding to Simulation?
-
-		// Process Input
-		simulation.processInput(inputHandler);
-		// Simulate World
-		simulation.update(deltaTime);
-		// Render World
-		renderer.draw(surfaceHolder, simulation, deltaTime);
+		if (!simulation.isDone) {
+		      // Process Input
+	        simulation.processInput(inputHandler);
+	        // Simulate World
+	        simulation.update(deltaTime);
+	        // Render World
+	        renderer.draw(surfaceHolder, simulation, deltaTime);
+		} else {
+		    this.isDone = true;
+		    this.dispose();
+		}
 	}
 	
 	public void print(Activity activity) {
@@ -66,4 +77,15 @@ public class GameListener implements GameListenerInterface {
 	    Log.e("d", outMetrics.toString());
 	    Log.e("", out.toString());
 	}
+
+    @Override
+    public void dispose() {
+        soundManager.dispose();
+        renderer.dispose();
+    }
+
+    @Override
+    public boolean isDone() {
+        return isDone;
+    }
 }
