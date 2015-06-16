@@ -76,8 +76,8 @@ public class Renderer {
 		drawLineDistance(c, simulation);
 		
 	    // Render start and target point
-        drawCircle(simulation.startPoint, c, startPaint);
-        drawCircle(simulation.targetPoint, c, targetPaint);
+        drawCircle(simulation.startPoint, c, startPaint, simulation.targetGenerator.gridManager.pointSize);
+        drawCircle(simulation.targetPoint, c, targetPaint, simulation.targetGenerator.gridManager.pointSize);
 	}
 
 	
@@ -141,8 +141,8 @@ public class Renderer {
 	private Paint startPaint;
 	private Paint targetPaint;
 	
-	private void drawCircle(Point p, Canvas c, Paint paint) {
-	    c.drawCircle(p.x, p.y, Simulation.epsilon, paint);
+	private void drawCircle(Point p, Canvas c, Paint paint, int size) {
+	    c.drawCircle(p.x, p.y, size, paint);
 	}
 	
 	public void dispose() {
