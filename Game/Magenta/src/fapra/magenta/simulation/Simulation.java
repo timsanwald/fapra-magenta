@@ -7,7 +7,7 @@ import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
-import fapra.magenta.sound.SoundManager;
+import fapra.magenta.sound.ISoundManager;
 
 public class Simulation {
 
@@ -30,7 +30,7 @@ public class Simulation {
 	public int width;
 	public int height;
 	
-	private SoundManager soundManager;
+	private ISoundManager soundManager;
 	
 	public Simulation() {
 		lines = new LinkedList<Line> ();
@@ -40,7 +40,7 @@ public class Simulation {
 		targetPoint = new Point(450, 800);
 	}
 	
-    public void setup(Upgrades upgrades, SoundManager soundManager) {
+    public void setup(Upgrades upgrades, ISoundManager soundManager) {
         Line startLine = new Line();
         startLine.add(startPoint);
         startLine.add(targetPoint);

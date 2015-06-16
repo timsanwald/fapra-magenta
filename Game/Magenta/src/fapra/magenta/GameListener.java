@@ -10,6 +10,7 @@ import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
+import fapra.magenta.sound.ISoundManager;
 import fapra.magenta.sound.SoundManager;
 
 public class GameListener implements GameListenerInterface {
@@ -17,7 +18,7 @@ public class GameListener implements GameListenerInterface {
 	// Main-Loop variables
 	private Renderer renderer;
 	private Simulation simulation;
-	private SoundManager soundManager;
+	private ISoundManager soundManager;
 	private InputHandler inputHandler;
 	private Upgrades upgrades;
 	
