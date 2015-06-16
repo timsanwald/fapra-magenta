@@ -8,32 +8,32 @@ import fapra.magenta.data.Point;
 public class InputHandler implements OnTouchListener {
 
 	public Point p = null;
-	public boolean isTouched = false;
+	public int eventID = 0;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		float x = event.getX();
 		float y = event.getY();
-		isTouched = false;
+		eventID = 0;
 		p = null;
 		// Start event
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 		    p = new Point(x, y);
-		    isTouched = true;
+		    eventID = 1;
 			return true;
 		}
 		
 		// Mid event
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 		    p = new Point(x, y);
-		    isTouched = true;
+		    eventID = 2;
 			return true;
 		}
 
 		//End event
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 		    p = new Point(x, y);
-		    isTouched = false;
+		    eventID = 3;
 			return true;
 		}
 		return v.performClick();

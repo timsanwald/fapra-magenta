@@ -1,6 +1,9 @@
 package fapra.magenta.simulation;
 
 import java.util.LinkedList;
+
+import android.util.Log;
+import fapra.magenta.Projection;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.Upgrades;
@@ -21,6 +24,8 @@ public class Simulation {
 	public Point targetPoint;
 
 	public TargetGenerator targetGenerator;
+	
+	public Projection projection;
 
 	/**
 	 * Defines when this simulation is finished and can be closed.
@@ -30,6 +35,7 @@ public class Simulation {
 	private ISoundManager soundManager;
 
 	public Simulation(TargetGenerator targetGenerator) {
+	    projection = new Projection();
 		lines = new LinkedList<Line>();
 
 		this.targetGenerator = targetGenerator;
@@ -82,30 +88,31 @@ public class Simulation {
 		// Process the given input from last iteration
 		// Create new Lines and so stuff, touch gestures are included in the
 		// inputHandler
-
+	    
 		if (inputHandler.p == null) {
 			return;
-		} else if (inputHandler.isTouched && !isTouchedLast
-				&& inputHandler.p != null) {
+		} else {
+		    projection.convertFromPixels(inputHandler.p);
+		}
+		
+		if (inputHandler.eventID == 1) {
 			// First down touch
 			currentLine = new Line();
-			currentLine.add(toWorldCoordinates(inputHandler.p));
+			currentLine.add(inputHandler.p);
 			if (isInStartRange(inputHandler.p)) {
 				isValidLine = true;
 				soundManager.playStartLineSound();
 			}
-		} else if (inputHandler.isTouched && isTouchedLast
-				&& inputHandler.p != null) {
+		} else if (inputHandler.eventID == 2 && currentLine != null) {
 			// Move
-			currentLine.add(toWorldCoordinates(inputHandler.p));
-		} else if (!inputHandler.isTouched && isTouchedLast
-				&& inputHandler.p != null) {
+			currentLine.add(inputHandler.p);
+		} else if (inputHandler.eventID == 3 && currentLine != null) {
 			// Action Up
 			if (!isInTargetRange(inputHandler.p) || !isValidLine) {
 				currentLine.clear();
 				this.soundManager.playMissedTargetSound();
 			} else {
-				currentLine.add(toWorldCoordinates(inputHandler.p));
+				currentLine.add(inputHandler.p);
 				currentLine.origin = startPoint;
 				currentLine.target = targetPoint;
 				lines.add(currentLine);
@@ -115,7 +122,8 @@ public class Simulation {
 				this.soundManager.playFinishedLineSound();
 			}
 		}
-		isTouchedLast = inputHandler.isTouched;
+		inputHandler.p = null;
+		inputHandler.eventID = 0;
 	}
 
 	/**
@@ -124,19 +132,14 @@ public class Simulation {
 	 */
 	private void setNewTarget() {
 		// TODO Auto-generated method stub
-	    
 		startPoint = new Point(targetPoint);
-		if(this.targetGenerator.shift(startPoint)) {
-			// TODO move the camera;
-		    
-		}
-		
+        projection.addShift(this.targetGenerator.shiftX(startPoint), 
+                this.targetGenerator.shiftY(startPoint),
+                this.targetGenerator.gridManager);
 		this.targetPoint = this.targetGenerator.generateTarget(startPoint);
-	}
-
-	private Point toWorldCoordinates(Point p) {
-		// TODO convert coordinates
-		return p;
+		projection.convertFromPixels(this.targetPoint);
+		Log.d("Simulation", "new start: " + startPoint);
+        Log.d("Simulation", "new Target: " + targetPoint);
 	}
 
 	/**

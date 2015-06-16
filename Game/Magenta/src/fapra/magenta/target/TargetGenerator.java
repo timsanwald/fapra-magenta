@@ -32,11 +32,6 @@ public class TargetGenerator {
 	public int getDirection() {
 		return this.direction;
 	}
-
-	public boolean shift(Point startPoint) {
-		// TODO decide if we need to moove the camera based on the grid size and the current point
-		return false;
-	}
 	
 	private Point generateRandomStartPoint() {
 		Random r = new Random();
@@ -116,4 +111,89 @@ public class TargetGenerator {
 		
 		return new Point(this.gridManager.targetToPxX(gridX), this.gridManager.targetToPxY(gridY), gridX, gridY);
 	}
+
+	/**
+     * 0: top-down; 1 left-right; 2 bottom up; 3 right-left
+     */
+	
+	private final float RATE_HIGH = 0.8f;
+	private final float RATE_MID = 0.65f;
+	private final float RATE_LOW = 0.4f;
+	private final float PROBABILITY_MID = 0.6f;
+	private final float PROBABILITY_LOW = 0.3f;
+    public int shiftX(Point startPoint) {
+        int shift = 0;
+        int occupied = 0;
+        switch(direction) {
+        case 1:
+            occupied = startPoint.coordX;
+            break;
+        case 3:
+            occupied = gridManager.getGridSizeX() - startPoint.coordX;
+            break;
+        default:
+            return 0;
+        }
+        float rate = ((float) occupied) / ((float) (gridManager.getGridSizeX()));
+        Random r = new Random();
+        float rand = r.nextFloat();
+        if (rate > RATE_HIGH) {
+            shift = r.nextInt(occupied);
+            if (shift < 1) {
+                shift = 1;
+            }
+        } else if (rate > RATE_MID && rand < PROBABILITY_MID) {
+            shift = r.nextInt(occupied);
+        } else if (rate > RATE_LOW && rand < PROBABILITY_LOW) {
+            shift = r.nextInt(occupied);
+        }
+        
+        switch(direction) {
+        case 1:
+            startPoint.coordX = startPoint.coordX - shift;
+            return shift;
+        case 3:
+            startPoint.coordX = startPoint.coordX + shift;
+            return -shift;
+        }
+        return shift;
+    }
+    
+    public int shiftY(Point startPoint) {
+        int shift = 0;
+        int occupied = 0;
+        switch(direction) {
+        case 0:
+            occupied = startPoint.coordY;
+            break;
+        case 2:
+            occupied = gridManager.getGridSizeY() - startPoint.coordY;
+            break;
+        default:
+            return 0;
+        }
+        float rate = ((float) occupied) / ((float) (gridManager.getGridSizeY()));
+        Random r = new Random();
+        float rand = r.nextFloat();
+        if (rate > RATE_HIGH) {
+            shift = r.nextInt(occupied);
+            if (shift < 1) {
+                shift = 1;
+            }
+        } else if (rate > RATE_MID && rand < PROBABILITY_MID) {
+            shift = r.nextInt(occupied);
+        } else if (rate > RATE_LOW && rand < PROBABILITY_LOW) {
+            shift = r.nextInt(occupied);
+        }
+        
+        switch(direction) {
+        case 0:
+            startPoint.coordY = startPoint.coordY - shift;
+            return shift;
+        case 2:
+            startPoint.coordY = startPoint.coordY + shift;
+            return -shift;
+        }
+        return shift;
+    }
 }

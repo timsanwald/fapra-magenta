@@ -38,6 +38,7 @@ public class SoundManager implements ISoundManager {
             mediaPlayer.setDataSource(descriptor.getFileDescriptor());
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.prepare();
+            startMusic();
             mediaPlayer.setLooping(true);
         } catch (Exception ex) {
             ex.printStackTrace();

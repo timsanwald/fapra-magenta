@@ -9,12 +9,15 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import fapra.magenta.Projection;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.simulation.Simulation;
 
 public class Renderer {
-
+    
+    Projection projection;
+    
 	public Renderer() {
 		linePaint = new Paint();
 		linePaint.setColor(Color.BLUE);
@@ -57,8 +60,9 @@ public class Renderer {
 
 	private Paint linePaint;
 	private void drawFrame(Canvas c, Simulation simulation) {
+	    this.projection = simulation.projection;
+	    c.translate(-simulation.projection.shiftX, -simulation.projection.shiftY);
 	    c.drawColor(Color.BLACK);
-	    
 		// Render path and follower
 		for(Line l : simulation.lines) {
 		    drawLine(l, c);
@@ -79,10 +83,12 @@ public class Renderer {
 	    // Render start and target point
         drawCircle(simulation.startPoint, c, startPaint, simulation.targetGenerator.gridManager.pointSize);
         drawCircle(simulation.targetPoint, c, targetPaint, simulation.targetGenerator.gridManager.pointSize);
+        
+        c.translate(simulation.projection.shiftX, simulation.projection.shiftY);
 	}
 
 	
-	private Point followerPoint = new Point(200, 200);
+	private Point followerPoint = new Point(0, 0);
 	private Paint followerPaint = new Paint();
 	private void drawLineDistance(Canvas c, Simulation sim) {
 	    float pathDistance = 0;
@@ -96,7 +102,6 @@ public class Renderer {
 	    
 	    Path path = new Path();
 	    path.moveTo(last.x, last.y);
-	    boolean finishedPath = false;
 	    
 	    for (int i = 0; i < sim.lines.size(); i++) {
             for(Point p : sim.lines.get(i)) {
@@ -131,7 +136,6 @@ public class Renderer {
 			path.lineTo(p.x, p.y);
 			path.moveTo(p.x, p.y);
 		}
-		Log.d("Renderer", "" + line.size());
 		c.drawPath(path, linePaint);
 	}
 	

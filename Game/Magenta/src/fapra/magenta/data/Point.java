@@ -21,7 +21,12 @@ public class Point {
 		this.coordY = coordY;
 	}
 	
-	public Point(Point p) {
+	@Override
+    public String toString() {
+        return "Point [x=" + x + ", y=" + y + ", time=" + time + ", coordX=" + coordX + ", coordY=" + coordY + "]";
+    }
+
+    public Point(Point p) {
 	    this(p.x, p.y, p.coordX, p.coordY);
 	}
 
