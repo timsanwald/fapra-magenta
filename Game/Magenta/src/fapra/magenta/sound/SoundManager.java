@@ -8,7 +8,7 @@ import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.util.Log;
 
-public class SoundManager {
+public class SoundManager implements ISoundManager {
     SoundPool soundPool;
     AudioManager audioManager;
     MediaPlayer mediaPlayer;
@@ -36,26 +36,53 @@ public class SoundManager {
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mediaPlayer.prepare();
             mediaPlayer.setLooping(true);
-            mediaPlayer.start();
         } catch (Exception ex) {
             ex.printStackTrace();
             Log.d("Sound Sample", "Couldn't loaf music");
         }
     }
     
+    /* (non-Javadoc)
+     * @see fapra.magenta.sound.ISoundManager#startMusic()
+     */
+    @Override
+    public void startMusic() {
+        mediaPlayer.start();
+    }
+    
+    /* (non-Javadoc)
+     * @see fapra.magenta.sound.ISoundManager#stopMusic()
+     */
+    @Override
+    public void stopMusic() {
+        mediaPlayer.stop();
+    }
+    
+    /* (non-Javadoc)
+     * @see fapra.magenta.sound.ISoundManager#playTouchedTargetSound()
+     */
+    @Override
     public void playTouchedTargetSound() {
         int volume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         soundPool.play(touchedTargetID, volume, volume, 1, 0, 1);
     }
     
+    /* (non-Javadoc)
+     * @see fapra.magenta.sound.ISoundManager#playMissedTargetSound()
+     */
+    @Override
     public void playMissedTargetSound() {
         int volume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         soundPool.play(missedTargetID, volume, volume, 1, 0, 1);
     }
     
+    /* (non-Javadoc)
+     * @see fapra.magenta.sound.ISoundManager#dispose()
+     */
+    @Override
     public void dispose() {
         soundPool.release();
-        mediaPlayer.stop();
+        stopMusic();
         mediaPlayer.release();
     }
 }

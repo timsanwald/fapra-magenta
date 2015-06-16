@@ -10,8 +10,8 @@ import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
-import fapra.magenta.sound.SoundManager;
-import fapra.magenta.target.GridManager;
+import fapra.magenta.sound.ISoundManager;
+import fapra.magenta.sound.NullSoundManager;
 import fapra.magenta.target.TargetGenerator;
 
 public class GameListener implements GameListenerInterface {
@@ -19,7 +19,7 @@ public class GameListener implements GameListenerInterface {
 	// Main-Loop variables
 	private Renderer renderer;
 	private Simulation simulation;
-	private SoundManager soundManager;
+	private ISoundManager soundManager;
 	private InputHandler inputHandler;
 	private Upgrades upgrades;
 	private TargetGenerator targetGenerator;
@@ -37,10 +37,7 @@ public class GameListener implements GameListenerInterface {
 		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
 		simulation = new Simulation(targetGenerator);
-		soundManager = new SoundManager(activity);
-		//TODO delete due to grid generation of start and target point
-		simulation.width = activity.getWindowManager().getDefaultDisplay().getWidth();
-		simulation.height = activity.getWindowManager().getDefaultDisplay().getHeight();
+		soundManager = new NullSoundManager(activity);
 		simulation.setup(upgrades, soundManager);
 		
 		view.setOnTouchListener(inputHandler);

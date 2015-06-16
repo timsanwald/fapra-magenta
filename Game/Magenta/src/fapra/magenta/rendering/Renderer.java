@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
@@ -95,6 +96,8 @@ public class Renderer {
 	    
 	    Path path = new Path();
 	    path.moveTo(last.x, last.y);
+	    boolean finishedPath = false;
+	    
 	    for (int i = 0; i < sim.lines.size(); i++) {
             for(Point p : sim.lines.get(i)) {
                 currDistance = (float) p.distanceTo(last);
@@ -109,9 +112,9 @@ public class Renderer {
                 } else {
                     path.lineTo(p.x, p.y);
                     path.moveTo(p.x, p.y);
-                    pathDistance += currDistance;
+                    
                 }
-                
+                pathDistance += currDistance;
                 last = p;
             }
         }
@@ -128,6 +131,7 @@ public class Renderer {
 			path.lineTo(p.x, p.y);
 			path.moveTo(p.x, p.y);
 		}
+		Log.d("Renderer", "" + line.size());
 		c.drawPath(path, linePaint);
 	}
 	

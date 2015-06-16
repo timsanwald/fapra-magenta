@@ -1,13 +1,11 @@
 package fapra.magenta.simulation;
 
 import java.util.LinkedList;
-import java.util.Random;
-
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
-import fapra.magenta.sound.SoundManager;
+import fapra.magenta.sound.ISoundManager;
 import fapra.magenta.target.TargetGenerator;
 
 public class Simulation {
@@ -28,12 +26,8 @@ public class Simulation {
 	 * Defines when this simulation is finished and can be closed.
 	 */
 	public boolean isDone;
-
-	// TODO remove those parameter
-	public int width;
-	public int height;
-
-	private SoundManager soundManager;
+	
+	private ISoundManager soundManager;
 
 	public Simulation(TargetGenerator targetGenerator) {
 		lines = new LinkedList<Line>();
@@ -58,19 +52,19 @@ public class Simulation {
 			startPoint = new Point(this.targetGenerator.gridManager.screenXPx, this.targetGenerator.gridManager.screenYPx / 2);
 		}
 	}
-
-	public void setup(Upgrades upgrades, SoundManager soundManager) {
-		Line startLine = new Line();
-		startLine.add(startPoint);
-		startLine.add(targetPoint);
-		lines.add(startLine);
-		setNewTarget();
-
-		followerSpeed = upgrades.followerStartSpeed;
-		followerSpeedIncrement = upgrades.followerIncrement;
-
-		this.soundManager = soundManager;
-	}
+	
+    public void setup(Upgrades upgrades, ISoundManager soundManager) {
+        Line startLine = new Line();
+        startLine.add(startPoint);
+        startLine.add(targetPoint);
+        lines.add(startLine);
+        setNewTarget();
+        
+        followerSpeed = upgrades.followerStartSpeed;
+        followerSpeedIncrement = upgrades.followerIncrement;
+        
+        this.soundManager = soundManager;
+    }
 
 	// Update the environment
 	public void update(float delta) {
@@ -111,6 +105,8 @@ public class Simulation {
 				this.soundManager.playMissedTargetSound();
 			} else {
 				currentLine.add(toWorldCoordinates(inputHandler.p));
+				currentLine.origin = startPoint;
+				currentLine.target = targetPoint;
 				lines.add(currentLine);
 				currentLine = null;
 				setNewTarget();
@@ -127,10 +123,11 @@ public class Simulation {
 	 */
 	private void setNewTarget() {
 		// TODO Auto-generated method stub
-
-		startPoint = targetPoint;
+	    
+		startPoint = new Point(targetPoint);
 		if(this.targetGenerator.shift(startPoint)) {
-			// TODO moove the camera;
+			// TODO move the camera;
+		    
 		}
 		
 		this.targetPoint = this.targetGenerator.generateTarget(startPoint);
@@ -142,11 +139,6 @@ public class Simulation {
 	}
 
 	/**
-	 * Defines the accuracy that is needed to hit start and target point.
-	 */
-	public final static int epsilon = 33; // TODO maybe dependent on density?
-
-	/**
 	 * Checks if the given Point is in the range of the current start node.
 	 * 
 	 * @param point
@@ -155,7 +147,7 @@ public class Simulation {
 	 *         is less than epsilon, false otherwise.
 	 */
 	private boolean isInStartRange(Point p) {
-		if (p.distanceTo(startPoint) < epsilon) {
+		if (p.distanceTo(startPoint) < this.targetGenerator.gridManager.pointSize) {
 			return true;
 		}
 		return false;
@@ -170,7 +162,7 @@ public class Simulation {
 	 *         Point is less than epsilon, false otherwise.
 	 */
 	private boolean isInTargetRange(Point point) {
-		if (point.distanceTo(targetPoint) < epsilon) {
+		if (point.distanceTo(targetPoint) < this.targetGenerator.gridManager.pointSize) {
 			return true;
 		}
 		return false;
