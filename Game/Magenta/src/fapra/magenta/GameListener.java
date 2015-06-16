@@ -11,7 +11,10 @@ import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
 import fapra.magenta.sound.ISoundManager;
+import fapra.magenta.sound.NullSoundManager;
 import fapra.magenta.sound.SoundManager;
+import fapra.magenta.target.GridManager;
+import fapra.magenta.target.TargetGenerator;
 
 public class GameListener implements GameListenerInterface {
 
@@ -21,7 +24,8 @@ public class GameListener implements GameListenerInterface {
 	private ISoundManager soundManager;
 	private InputHandler inputHandler;
 	private Upgrades upgrades;
-	
+	private TargetGenerator targetGenerator;
+
 	// Time variables
 	private long lastTime;
 	private long thisTime;
@@ -33,8 +37,9 @@ public class GameListener implements GameListenerInterface {
 	    upgrades.load(activity);
 		inputHandler = new InputHandler();
 		renderer = new Renderer();
-		simulation = new Simulation();
-		soundManager = new SoundManager(activity);
+		targetGenerator = new TargetGenerator(activity);
+		simulation = new Simulation(targetGenerator);
+		soundManager = new NullSoundManager(activity);
 		//TODO delete due to grid generation of start and target point
 		simulation.width = activity.getWindowManager().getDefaultDisplay().getWidth();
 		simulation.height = activity.getWindowManager().getDefaultDisplay().getHeight();
