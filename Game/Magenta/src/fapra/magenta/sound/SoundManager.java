@@ -12,8 +12,9 @@ public class SoundManager implements ISoundManager {
     SoundPool soundPool;
     AudioManager audioManager;
     MediaPlayer mediaPlayer;
-    int touchedTargetID;
+    int finishedLineID;
     int missedTargetID;
+    int startLineID;
     
     public SoundManager(Activity activity) {
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
@@ -21,9 +22,11 @@ public class SoundManager implements ISoundManager {
         activity.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         try {
             AssetFileDescriptor descriptor = activity.getAssets().openFd("touchedTarget.wav");
-            touchedTargetID = soundPool.load(descriptor, 1);
+            finishedLineID = soundPool.load(descriptor, 1);
             descriptor = activity.getAssets().openFd("missedTarget.wav");
             missedTargetID = soundPool.load(descriptor, 1);
+            descriptor = activity.getAssets().openFd("startLine.wav");
+            startLineID = soundPool.load(descriptor, 1);
         } catch (Exception ex) {
             Log.d( "Sound Sample", "couldn't load sounds" );
             throw new RuntimeException( ex );
@@ -62,9 +65,9 @@ public class SoundManager implements ISoundManager {
      * @see fapra.magenta.sound.ISoundManager#playTouchedTargetSound()
      */
     @Override
-    public void playTouchedTargetSound() {
+    public void playFinishedLineSound() {
         int volume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        soundPool.play(touchedTargetID, volume, volume, 1, 0, 1);
+        soundPool.play(finishedLineID, volume, volume, 1, 0, 1);
     }
     
     /* (non-Javadoc)
@@ -84,5 +87,11 @@ public class SoundManager implements ISoundManager {
         soundPool.release();
         stopMusic();
         mediaPlayer.release();
+    }
+
+    @Override
+    public void playStartLineSound() {
+        int volume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        soundPool.play(startLineID, volume, volume, 1, 0, 1);
     }
 }

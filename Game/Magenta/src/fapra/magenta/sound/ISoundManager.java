@@ -6,9 +6,11 @@ public interface ISoundManager {
 
     public abstract void stopMusic();
 
-    public abstract void playTouchedTargetSound();
+    public abstract void playFinishedLineSound();
 
     public abstract void playMissedTargetSound();
+    
+    public abstract void playStartLineSound();
 
     public abstract void dispose();
 

@@ -19,7 +19,7 @@ public class NullSoundManager implements ISoundManager {
     }
 
     @Override
-    public void playTouchedTargetSound() {
+    public void playFinishedLineSound() {
 
     }
 
@@ -31,6 +31,11 @@ public class NullSoundManager implements ISoundManager {
     @Override
     public void dispose() {
 
+    }
+
+    @Override
+    public void playStartLineSound() {
+        
     }
 
 }

@@ -92,6 +92,7 @@ public class Simulation {
 			currentLine.add(toWorldCoordinates(inputHandler.p));
 			if (isInStartRange(inputHandler.p)) {
 				isValidLine = true;
+				soundManager.playStartLineSound();
 			}
 		} else if (inputHandler.isTouched && isTouchedLast
 				&& inputHandler.p != null) {
@@ -111,7 +112,7 @@ public class Simulation {
 				currentLine = null;
 				setNewTarget();
 				isValidLine = false;
-				this.soundManager.playTouchedTargetSound();
+				this.soundManager.playFinishedLineSound();
 			}
 		}
 		isTouchedLast = inputHandler.isTouched;
