@@ -26,10 +26,6 @@ public class Simulation {
 	 * Defines when this simulation is finished and can be closed.
 	 */
 	public boolean isDone;
-
-	// TODO remove those parameter
-	public int width;
-	public int height;
 	
 	private ISoundManager soundManager;
 
@@ -109,6 +105,8 @@ public class Simulation {
 				this.soundManager.playMissedTargetSound();
 			} else {
 				currentLine.add(toWorldCoordinates(inputHandler.p));
+				currentLine.origin = startPoint;
+				currentLine.target = targetPoint;
 				lines.add(currentLine);
 				currentLine = null;
 				setNewTarget();
@@ -125,10 +123,11 @@ public class Simulation {
 	 */
 	private void setNewTarget() {
 		// TODO Auto-generated method stub
-
-		startPoint = targetPoint;
+	    
+		startPoint = new Point(targetPoint);
 		if(this.targetGenerator.shift(startPoint)) {
-			// TODO moove the camera;
+			// TODO move the camera;
+		    
 		}
 		
 		this.targetPoint = this.targetGenerator.generateTarget(startPoint);
@@ -140,11 +139,6 @@ public class Simulation {
 	}
 
 	/**
-	 * Defines the accuracy that is needed to hit start and target point.
-	 */
-	public final static int epsilon = 33; // TODO maybe dependent on density?
-
-	/**
 	 * Checks if the given Point is in the range of the current start node.
 	 * 
 	 * @param point
@@ -153,7 +147,7 @@ public class Simulation {
 	 *         is less than epsilon, false otherwise.
 	 */
 	private boolean isInStartRange(Point p) {
-		if (p.distanceTo(startPoint) < epsilon) {
+		if (p.distanceTo(startPoint) < this.targetGenerator.gridManager.pointSize) {
 			return true;
 		}
 		return false;
@@ -168,7 +162,7 @@ public class Simulation {
 	 *         Point is less than epsilon, false otherwise.
 	 */
 	private boolean isInTargetRange(Point point) {
-		if (point.distanceTo(targetPoint) < epsilon) {
+		if (point.distanceTo(targetPoint) < this.targetGenerator.gridManager.pointSize) {
 			return true;
 		}
 		return false;

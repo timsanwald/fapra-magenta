@@ -12,8 +12,6 @@ import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
 import fapra.magenta.sound.ISoundManager;
 import fapra.magenta.sound.NullSoundManager;
-import fapra.magenta.sound.SoundManager;
-import fapra.magenta.target.GridManager;
 import fapra.magenta.target.TargetGenerator;
 
 public class GameListener implements GameListenerInterface {
@@ -40,9 +38,6 @@ public class GameListener implements GameListenerInterface {
 		targetGenerator = new TargetGenerator(activity);
 		simulation = new Simulation(targetGenerator);
 		soundManager = new NullSoundManager(activity);
-		//TODO delete due to grid generation of start and target point
-		simulation.width = activity.getWindowManager().getDefaultDisplay().getWidth();
-		simulation.height = activity.getWindowManager().getDefaultDisplay().getHeight();
 		simulation.setup(upgrades, soundManager);
 		
 		view.setOnTouchListener(inputHandler);
