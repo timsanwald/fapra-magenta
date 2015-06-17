@@ -23,10 +23,13 @@ public class MenuFragment extends Fragment {
     private Button btnShop;
     
     private SharedPreferences preferences;
+    private OptionsFragment optionsFragment;
     
     public MenuFragment(GameActivity activity) {
         this.activity = activity;
         preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        optionsFragment = new OptionsFragment();
+        preferences.registerOnSharedPreferenceChangeListener(optionsFragment);
     }
     
     @Override
@@ -55,9 +58,7 @@ public class MenuFragment extends Fragment {
         btnOptions.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                OptionsFragment fragment = new OptionsFragment();
-                preferences.registerOnSharedPreferenceChangeListener(fragment);
-                activity.replaceMainFragment(fragment);
+                activity.replaceMainFragment(optionsFragment);
             }
         });
         
