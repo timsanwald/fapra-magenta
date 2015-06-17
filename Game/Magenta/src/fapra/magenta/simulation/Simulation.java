@@ -30,7 +30,7 @@ public class Simulation {
 	/**
 	 * Defines when this simulation is finished and can be closed.
 	 */
-	public boolean isDone;
+	public boolean isGameOver = false;
 	
 	private ISoundManager soundManager;
 
@@ -39,32 +39,21 @@ public class Simulation {
 		lines = new LinkedList<Line>();
 
 		this.targetGenerator = targetGenerator;
-
-		targetPoint = this.targetGenerator.generateStartPoint();
-
-		if (this.targetGenerator.getDirection() == 0) {
-			startPoint = new Point(this.targetGenerator.gridManager.screenXPx / 2, 0);
-		}
-
-		if (this.targetGenerator.getDirection() == 1) {
-			startPoint = new Point(0, this.targetGenerator.gridManager.screenYPx / 2);
-		}
-		
-		if(this.targetGenerator.getDirection() == 2) {
-			startPoint = new Point(this.targetGenerator.gridManager.screenXPx / 2, this.targetGenerator.gridManager.screenYPx);
-		}
-		
-		if (this.targetGenerator.getDirection() == 3) {
-			startPoint = new Point(this.targetGenerator.gridManager.screenXPx, this.targetGenerator.gridManager.screenYPx / 2);
-		}
 	}
 	
     public void setup(Upgrades upgrades, ISoundManager soundManager) {
-        Line startLine = new Line();
-        startLine.add(startPoint);
-        startLine.add(targetPoint);
-        lines.add(startLine);
+        targetPoint = this.targetGenerator.generateStartPoint();
         setNewTarget();
+        while (currentDistance < upgrades.followerStartDistance) {
+            currentLine = new Line();
+            currentLine.add(startPoint);
+            currentLine.add(targetPoint);
+            Log.e("Setup", "1");
+            addCurrentLine();
+            Log.e("Setup", "2");
+            setNewTarget();
+            Log.e("Setup", "3");
+        }
         
         followerSpeed = upgrades.followerStartSpeed;
         followerSpeedIncrement = upgrades.followerIncrement;
@@ -72,18 +61,38 @@ public class Simulation {
         this.soundManager = soundManager;
     }
 
+    public void addCurrentLine() {
+        currentLine.origin = startPoint;
+        currentLine.target = targetPoint;
+        if (!lines.isEmpty()) {
+            currentDistance += lines.getLast().getLast().distanceTo(currentLine.getFirst());
+        }
+        currentDistance += currentLine.calculateDistance();
+        Log.e("Setup", "5");
+        lines.add(currentLine);
+        Log.e("AddCurrentLine", "currentDistance=" + currentDistance);
+        currentLine = null;
+    }
+    
 	// Update the environment
 	public void update(float delta) {
-		// TODO implement updating simulation
 		// move the mail xD
 
 		followerSpeed = followerSpeed + followerSpeedIncrement;
 		follower = follower + (followerSpeed / 1000) * (delta);
+		
+		if (checkGameOver()) {
+		    isGameOver = true;
+		}
 	}
 
 	boolean isTouchedLast = false;
 	boolean isValidLine = false;
 
+	public boolean checkGameOver() {
+	    return follower >= currentDistance;
+	}
+	
 	public void processInput(InputHandler inputHandler) {
 		// Process the given input from last iteration
 		// Create new Lines and so stuff, touch gestures are included in the
@@ -113,17 +122,13 @@ public class Simulation {
 				this.soundManager.playMissedTargetSound();
 			} else {
 				currentLine.add(inputHandler.p);
-				currentLine.origin = startPoint;
-				currentLine.target = targetPoint;
-				lines.add(currentLine);
-				currentLine = null;
+				addCurrentLine();
 				setNewTarget();
 				isValidLine = false;
 				this.soundManager.playFinishedLineSound();
 			}
 		}
-		inputHandler.p = null;
-		inputHandler.eventID = 0;
+		inputHandler.reset();
 	}
 
 	/**
@@ -131,7 +136,6 @@ public class Simulation {
 	 * new target and probably shift the camera.
 	 */
 	private void setNewTarget() {
-		// TODO Auto-generated method stub
 		startPoint = new Point(targetPoint);
         projection.addShift(this.targetGenerator.shiftX(startPoint), 
                 this.targetGenerator.shiftY(startPoint),

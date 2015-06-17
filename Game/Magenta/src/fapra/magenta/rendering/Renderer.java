@@ -19,15 +19,20 @@ public class Renderer {
     Projection projection;
     
 	public Renderer() {
-		linePaint = new Paint();
+		linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		linePaint.setColor(Color.BLUE);
 		linePaint.setStrokeWidth(10);
 		linePaint.setStyle(Paint.Style.STROKE);
-		
+	    linePaint.setStrokeJoin(Paint.Join.ROUND);
+	    linePaint.setStrokeCap(Paint.Cap.ROUND);
+	        
 		followerPaint = new Paint();
 		followerPaint.setColor(Color.GRAY);
 		followerPaint.setStrokeWidth(15);
 		followerPaint.setStyle(Paint.Style.STROKE);
+		followerPaint.setStrokeJoin(Paint.Join.ROUND);
+		followerPaint.setStrokeCap(Paint.Cap.ROUND);
+		followerPaint.setAntiAlias(true);
 		//followerPaint.setPathEffect(new DashPathEffect(new float[] {10,20}, 0));
 		
         startPaint = new Paint();
@@ -123,6 +128,7 @@ public class Renderer {
                 last = p;
             }
         }
+	    Log.d("Renderer", "current= " + pathDistance);
     }
 	
 	private void drawLine(LinkedList<Point> line, Canvas c) {

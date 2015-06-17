@@ -16,6 +16,8 @@ public class Upgrades {
      * Follower increment value. Less is better.
      */
     public float followerIncrement;
+
+    public float followerStartDistance = 500;
     
     /**
      * Save the current state.

@@ -55,8 +55,7 @@ public class GameListener implements GameListenerInterface {
 		deltaTime = thisTime - lastTime;
 		lastTime = thisTime;
 
-		//TODO What to do with SoundManager? Adding to Simulation?
-		if (!simulation.isDone) {
+		if (!simulation.isGameOver) {
 		      // Process Input
 	        simulation.processInput(inputHandler);
 	        // Simulate World
@@ -64,6 +63,7 @@ public class GameListener implements GameListenerInterface {
 	        // Render World
 	        renderer.draw(surfaceHolder, simulation, deltaTime);
 		} else {
+		    //TODO Switch to gameOverScreen
 		    this.isDone = true;
 		    this.dispose();
 		}

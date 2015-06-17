@@ -38,4 +38,9 @@ public class InputHandler implements OnTouchListener {
 		}
 		return v.performClick();
 	}
+
+    public void reset() {
+        p = null;
+        eventID = 0;
+    }
 }
