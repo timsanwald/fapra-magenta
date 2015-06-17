@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 public class GameFragment extends Fragment {
 
     GameListener listener;
-    
-	@Override
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
 		listener = new GameListener();

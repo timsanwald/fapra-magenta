@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">Magenta</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="preference_sound_key">fapra.magenta.sound.muted</string>
+    <string name="preference_music_key">fapra.magenta.music.muted</string>
+    <string name="preference_file_key">fapra.magenta.PREFERENCE_FILE_KEY</string>
 
 </resources>

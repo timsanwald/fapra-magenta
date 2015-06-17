@@ -4,11 +4,11 @@ import java.util.LinkedList;
 
 import android.util.Log;
 import fapra.magenta.Projection;
+import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
-import fapra.magenta.sound.ISoundManager;
 import fapra.magenta.target.TargetGenerator;
 
 public class Simulation {

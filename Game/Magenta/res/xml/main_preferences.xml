@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="Sound">
+    	    <CheckBoxPreference
+                android:key="@string/preference_sound_key"
+                android:title="Play Sound?"
+                android:summary="Should sound effects be played?"
+                android:defaultValue="true" />
+    	    <CheckBoxPreference
+                android:key="@string/preference_music_key"
+                android:title="Play Music?"
+                android:summary="Should music be played during the game?"
+                android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Data">
+        <Preference
+            android:summary="Deletes the progress of the store and the coins collected."
+            android:title="Delete savegame" >
+        </Preference>
+
+    </PreferenceCategory>
+</PreferenceScreen>

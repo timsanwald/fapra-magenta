@@ -1,20 +1,10 @@
-package fapra.magenta.sound;
+package fapra.magenta.audio.sound;
 
 import android.app.Activity;
 
 public class NullSoundManager implements ISoundManager {
 
     public NullSoundManager(Activity activity) {
-    }
-
-    @Override
-    public void startMusic() {
-
-    }
-
-    @Override
-    public void stopMusic() {
-
     }
 
     @Override

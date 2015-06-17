@@ -1,18 +1,22 @@
 package fapra.magenta;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
+import fapra.magenta.audio.music.IMusicManager;
+import fapra.magenta.audio.music.MusicManager;
+import fapra.magenta.audio.music.NullMusicManager;
+import fapra.magenta.audio.sound.ISoundManager;
+import fapra.magenta.audio.sound.NullSoundManager;
+import fapra.magenta.audio.sound.SoundManager;
 import fapra.magenta.data.Upgrades;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
-import fapra.magenta.sound.ISoundManager;
-import fapra.magenta.sound.NullSoundManager;
-import fapra.magenta.sound.SoundManager;
 import fapra.magenta.target.TargetGenerator;
 
 public class GameListener implements GameListenerInterface {
@@ -21,6 +25,7 @@ public class GameListener implements GameListenerInterface {
 	private Renderer renderer;
 	private Simulation simulation;
 	private ISoundManager soundManager;
+	private IMusicManager musicManager;
 	private InputHandler inputHandler;
 	private Upgrades upgrades;
 	private TargetGenerator targetGenerator;
@@ -30,15 +35,24 @@ public class GameListener implements GameListenerInterface {
 	private long thisTime;
 	private long deltaTime;
 
-	@Override
-	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder) {
+    @Override
+	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder, SharedPreferences preferences) {
 	    upgrades = new Upgrades();
 	    upgrades.load(activity);
 		inputHandler = new InputHandler();
 		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
 		simulation = new Simulation(targetGenerator);
-		soundManager = new SoundManager(activity);
+		if (preferences.getBoolean(activity.getString(R.string.preference_sound_key), true)) {
+	       soundManager = new SoundManager(activity);
+		} else {
+		    soundManager = new NullSoundManager(activity);
+		}
+        if (preferences.getBoolean(activity.getString(R.string.preference_music_key), true)) {
+            musicManager = new MusicManager(activity);
+        } else {
+            musicManager = new NullMusicManager(activity);
+        }
 		simulation.setup(upgrades, soundManager);
 		
 		view.setOnTouchListener(inputHandler);
@@ -83,6 +97,7 @@ public class GameListener implements GameListenerInterface {
     @Override
     public void dispose() {
         soundManager.dispose();
+        musicManager.dispose();
         renderer.dispose();
     }
 

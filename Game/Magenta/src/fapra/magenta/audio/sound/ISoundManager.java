@@ -1,10 +1,6 @@
-package fapra.magenta.sound;
+package fapra.magenta.audio.sound;
 
 public interface ISoundManager {
-    
-    public abstract void startMusic();
-
-    public abstract void stopMusic();
 
     public abstract void playFinishedLineSound();
 
@@ -13,5 +9,4 @@ public interface ISoundManager {
     public abstract void playStartLineSound();
 
     public abstract void dispose();
-
 }

@@ -1,6 +1,8 @@
 package fapra.magenta;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,7 +19,7 @@ public class GameView extends SurfaceView implements Callback {
         surfaceHolder=getHolder();
         surfaceHolder.addCallback(this);
         this.gameListener = gameListener;
-        this.gameListener.setup(activity, this, surfaceHolder);
+        this.gameListener.setup(activity, this, surfaceHolder, PreferenceManager.getDefaultSharedPreferences(activity));
 	}
 
 	private boolean isActive = true;
