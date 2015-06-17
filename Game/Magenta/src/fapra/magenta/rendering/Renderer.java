@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import fapra.magenta.Projection;
 import fapra.magenta.data.Line;
@@ -128,7 +127,6 @@ public class Renderer {
                 last = p;
             }
         }
-	    Log.d("Renderer", "current= " + pathDistance);
     }
 	
 	private void drawLine(LinkedList<Point> line, Canvas c) {

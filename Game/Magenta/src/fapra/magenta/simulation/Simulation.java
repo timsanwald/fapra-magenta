@@ -2,7 +2,6 @@ package fapra.magenta.simulation;
 
 import java.util.LinkedList;
 
-import android.util.Log;
 import fapra.magenta.Projection;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.data.Line;
@@ -48,11 +47,8 @@ public class Simulation {
             currentLine = new Line();
             currentLine.add(startPoint);
             currentLine.add(targetPoint);
-            Log.e("Setup", "1");
             addCurrentLine();
-            Log.e("Setup", "2");
             setNewTarget();
-            Log.e("Setup", "3");
         }
         
         followerSpeed = upgrades.followerStartSpeed;
@@ -68,9 +64,7 @@ public class Simulation {
             currentDistance += lines.getLast().getLast().distanceTo(currentLine.getFirst());
         }
         currentDistance += currentLine.calculateDistance();
-        Log.e("Setup", "5");
         lines.add(currentLine);
-        Log.e("AddCurrentLine", "currentDistance=" + currentDistance);
         currentLine = null;
     }
     
@@ -142,8 +136,6 @@ public class Simulation {
                 this.targetGenerator.gridManager);
 		this.targetPoint = this.targetGenerator.generateTarget(startPoint);
 		projection.convertFromPixels(this.targetPoint);
-		Log.d("Simulation", "new start: " + startPoint);
-        Log.d("Simulation", "new Target: " + targetPoint);
 	}
 
 	/**
