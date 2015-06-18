@@ -1,7 +1,6 @@
 package fapra.magenta;
 
 import fapra.magenta.menu.MenuFragment;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;

@@ -1,11 +1,10 @@
 package fapra.magenta.data;
 
+import fapra.magenta.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
 public class Upgrades {
-    
-    private static final String PreferenceTag = "";
 
     /**
      * Follower speed at the start of a game. Less is better.
@@ -24,7 +23,7 @@ public class Upgrades {
      * @param activity activity to save with
      */
     public void save(Activity activity) {
-        SharedPreferences settings = activity.getSharedPreferences(PreferenceTag, 0);
+        SharedPreferences settings = activity.getSharedPreferences(activity.getString(R.string.upgrades_storage_key), 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putFloat("followerStartSpeed", followerStartSpeed);
         editor.putFloat("followerIncrement", followerIncrement);
@@ -36,7 +35,7 @@ public class Upgrades {
      * @param activity
      */
     public void load(Activity activity) {
-        SharedPreferences settings = activity.getSharedPreferences(PreferenceTag, 0);
+        SharedPreferences settings = activity.getSharedPreferences(activity.getString(R.string.upgrades_storage_key), 0);
         
         followerStartSpeed = settings.getFloat("followerStartSpeed", 60);
         followerIncrement = settings.getFloat("followerIncrement", 0.5f);

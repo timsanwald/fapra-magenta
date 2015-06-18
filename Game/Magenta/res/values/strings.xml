@@ -2,8 +2,15 @@
 <resources>
 
     <string name="app_name">Magenta</string>
+    
+    <!-- Preference stuff -->
     <string name="preference_sound_key">fapra.magenta.sound.muted</string>
     <string name="preference_music_key">fapra.magenta.music.muted</string>
     <string name="preference_file_key">fapra.magenta.PREFERENCE_FILE_KEY</string>
+    <string name="preference_restore_key">fapra.magenta.PREFERENCE_RESTORE_KEY</string>
+	<string name="preference_delete_save_key">fapra.magenta.PREFERENCE_DELETE_SAVE_KEY</string>
+	
+	<!-- Game stuff -->
+	<string name="upgrades_storage_key">fapra.magenta.UPGRADES_STORE_KEY</string>
 
 </resources>

@@ -15,9 +15,14 @@
 
     <PreferenceCategory android:title="Data">
         <Preference
+            android:key="@string/preference_delete_save_key"
             android:summary="Deletes the progress of the store and the coins collected."
             android:title="Delete savegame" >
         </Preference>
-
-    </PreferenceCategory>
+        <Preference
+            android:key="@string/preference_restore_key"
+            android:summary="Restores the default preferences."
+            android:title="Restore preferences" >
+        </Preference>
+</PreferenceCategory>
 </PreferenceScreen>
