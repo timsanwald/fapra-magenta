@@ -11,6 +11,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 public class GameActivity extends FragmentActivity {
+    
+    Fragment currentFragment;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,6 +36,7 @@ public class GameActivity extends FragmentActivity {
 
             // Create a new Fragment to be placed in the activity layout
             Fragment firstFragment = new MenuFragment(this);
+            currentFragment = firstFragment;
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
@@ -45,9 +49,11 @@ public class GameActivity extends FragmentActivity {
 	}
 	
 	public void replaceMainFragment(Fragment fragment) {
-	    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+	    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 	    transaction.replace(R.id.game_fragment, fragment);
 	    transaction.addToBackStack(fragment.toString());
 	    transaction.commit();
+	    
+	    currentFragment = fragment;
 	}
 }
