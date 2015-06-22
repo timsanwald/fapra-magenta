@@ -13,7 +13,7 @@ public class GameView extends SurfaceView implements Callback {
 	private final Activity activity;
 	private SurfaceHolder surfaceHolder;
 	
-	public GameView(Activity activity, AttributeSet attrs, GameListenerInterface gameListener) {
+	public GameView(Activity activity, AttributeSet attrs, GameInterface gameListener) {
 		super(activity, attrs);
 		this.activity = activity;
         surfaceHolder=getHolder();
@@ -23,7 +23,7 @@ public class GameView extends SurfaceView implements Callback {
 	}
 
 	private boolean isActive = true;
-	private GameListenerInterface gameListener;
+	private GameInterface gameListener;
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		Thread gameLoop=new Thread() {

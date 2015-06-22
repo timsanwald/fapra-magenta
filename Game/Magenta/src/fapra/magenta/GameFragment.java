@@ -8,12 +8,12 @@ import android.view.ViewGroup;
 
 public class GameFragment extends Fragment {
 
-    GameListener listener;
+    Game listener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
-		listener = new GameListener();
+		listener = new Game();
     	GameView view = new GameView(getActivity(), null, listener);
         return view;
     }

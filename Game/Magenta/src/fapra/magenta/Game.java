@@ -19,7 +19,7 @@ import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
 import fapra.magenta.target.TargetGenerator;
 
-public class GameListener implements GameListenerInterface {
+public class Game implements GameInterface {
 
 	// Main-Loop variables
 	private Renderer renderer;

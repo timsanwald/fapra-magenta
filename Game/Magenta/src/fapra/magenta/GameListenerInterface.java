@@ -1,27 +1,17 @@
 package fapra.magenta;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
-import android.view.SurfaceHolder;
-import android.view.View;
+import fapra.magenta.data.Line;
+import fapra.magenta.data.Point;
+import fapra.magenta.data.obstacles.ObstacleGameObject;
+import fapra.magenta.data.pickups.PickUpGameObject;
 
 public interface GameListenerInterface {
-	/**
-	 * Called when the game has to be initialized
-	 * 
-	 */
-    void setup(Activity activity, View view, SurfaceHolder surfaceHolder, SharedPreferences preferences);
 
-	/**
-	 * Called when a new frame has to be rendered. Here all game related
-	 * operations are performed, e.g. simulate the game world, process the input
-	 * and so on.
-	 */
-	public void mainLoopIteration(Activity activity, SurfaceHolder surfaceHolder);
-	
-	public boolean isDone();
-
-    void dispose();
-
-
+    public void addedNewLine(Point start, Point target);
+    
+    public void touchedPickup(PickUpGameObject pickup);
+    
+    public void finishedLine(Line line);
+    
+    public void touchedObstacle(ObstacleGameObject obstacle);
 }

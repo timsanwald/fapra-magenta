@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.util.Log;
+import fapra.magenta.MultiGameListener;
 import fapra.magenta.Projection;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.data.Circle;
@@ -32,6 +33,8 @@ public class Simulation {
 
     public Projection projection;
 
+    public MultiGameListener gameListeners = new MultiGameListener();
+    
     /**
      * Defines when this simulation is finished and can be closed.
      */
@@ -77,6 +80,7 @@ public class Simulation {
         }
         currentDistance += currentLine.calculateDistance();
         lines.add(currentLine);
+        this.gameListeners.finishedLine(currentLine);
         currentLine = null;
     }
 
@@ -140,6 +144,7 @@ public class Simulation {
                     if (pickup.hitCheck(inputHandler.p)) {
                         currentPickup = pickup;
                         Log.d("Simulation", pickup.getClass().getSimpleName() + " bound as current pickup");
+                        gameListeners.touchedPickup(pickup);
                     }
                 }
                 pickups.remove(currentPickup);
@@ -148,6 +153,7 @@ public class Simulation {
                 for (ObstacleGameObject obstacle : obstacles) {
                     if (obstacle.hitCheck(inputHandler.p)) {
                         isValidLine = false;
+                        gameListeners.touchedObstacle(obstacle);
                     }
                 }
             }
@@ -181,6 +187,9 @@ public class Simulation {
                 this.targetGenerator.gridManager);
         this.targetPoint = new Circle(this.targetGenerator.generateTarget(startPoint), this.targetGenerator.gridManager.pointSize);
         projection.convertFromPixels(this.targetPoint);
+        
+        gameListeners.addedNewLine(startPoint, targetPoint);
+        
         // TODO upgradeable probability to spawn a new pickup
         generateNewPickup();
     }
