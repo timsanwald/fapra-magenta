@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::controller('api/device', '\App\Http\Controllers\Api\DeviceController');
+Route::controller('api/line', '\App\Http\Controllers\Api\LineController');
