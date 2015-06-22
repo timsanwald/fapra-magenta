@@ -142,6 +142,7 @@ public class Simulation {
                         Log.d("Simulation", pickup.getClass().getSimpleName() + " bound as current pickup");
                     }
                 }
+                pickups.remove(currentPickup);
 
                 // Check for hitting obstacles
                 for (ObstacleGameObject obstacle : obstacles) {

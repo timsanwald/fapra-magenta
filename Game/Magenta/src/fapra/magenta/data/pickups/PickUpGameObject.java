@@ -16,7 +16,7 @@ public abstract class PickUpGameObject extends GameObject implements ICollisionO
     
     @Override
     public boolean hitCheck(Point p) {
-        return this.position.distanceTo(position) < radius;
+        return this.position.distanceTo(p) < radius;
     }
 
     public abstract void update(float delta);

@@ -47,7 +47,6 @@ public class Renderer {
         pickupPaint.setColor(Color.GREEN);
         pickupPaint.setStrokeWidth(4);
         pickupPaint.setTextSize(30);
-        pickupPaint.setStyle(Paint.Style.FILL);
 
         targetPaint = new Paint();
         targetPaint.setColor(Color.RED);
@@ -76,6 +75,9 @@ public class Renderer {
 
     private void drawFrame(Canvas c, Simulation simulation) {
         this.projection = simulation.projection;
+        if (c == null) {
+            return;
+        }
         c.translate(-simulation.projection.shiftX, -simulation.projection.shiftY);
         c.drawColor(Color.BLACK);
         // Render path and follower
