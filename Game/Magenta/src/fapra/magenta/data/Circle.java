@@ -4,7 +4,7 @@ import fapra.magenta.data.collision.ICollisionObject;
 
 public class Circle extends Point implements ICollisionObject {
     
-    private float radius;
+    public float radius;
     
     public Circle(float x, float y, float radius) {
         super(x, y);
