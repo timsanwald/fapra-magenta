@@ -19,6 +19,7 @@ public class Renderer {
 
     Projection projection;
     private Paint pickupPaint;
+    private Paint oldPaint;
 
     public Renderer() {
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -29,29 +30,47 @@ public class Renderer {
         linePaint.setStrokeCap(Paint.Cap.ROUND);
 
         followerPaint = new Paint();
-        followerPaint.setColor(Color.GRAY);
-        followerPaint.setStrokeWidth(15);
-        followerPaint.setStyle(Paint.Style.STROKE);
+        followerPaint.setColor(Color.RED);
+        followerPaint.setStrokeWidth(50);
+        followerPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         followerPaint.setStrokeJoin(Paint.Join.ROUND);
         followerPaint.setStrokeCap(Paint.Cap.ROUND);
         followerPaint.setAntiAlias(true);
-        // followerPaint.setPathEffect(new DashPathEffect(new float[] {10,20},
-        // 0));
+        
+        oldPaint = new Paint();
+        oldPaint.setColor(Color.LTGRAY);
+        oldPaint.setStrokeWidth(50);
+        oldPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+        oldPaint.setStrokeJoin(Paint.Join.ROUND);
+        oldPaint.setStrokeCap(Paint.Cap.ROUND);
+        oldPaint.setAntiAlias(true);
+        
+        corridorPaint = new Paint();
+        corridorPaint.setColor(Color.WHITE);
+        //TODO make use of gridmanager size here
+        corridorPaint.setStrokeWidth(100);
+        corridorPaint.setStrokeJoin(Paint.Join.ROUND);
+        corridorPaint.setStrokeCap(Paint.Cap.ROUND);
+        corridorPaint.setAntiAlias(true);
+        corridorPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
         startPaint = new Paint();
         startPaint.setColor(Color.BLUE);
         startPaint.setStrokeWidth(4);
         startPaint.setStyle(Paint.Style.FILL);
+        startPaint.setAntiAlias(true);
 
         pickupPaint = new Paint();
         pickupPaint.setColor(Color.GREEN);
         pickupPaint.setStrokeWidth(4);
         pickupPaint.setTextSize(30);
-
+        pickupPaint.setAntiAlias(true);
+        
         targetPaint = new Paint();
-        targetPaint.setColor(Color.RED);
+        targetPaint.setColor(Color.BLUE);
         targetPaint.setStrokeWidth(4);
         targetPaint.setStyle(Paint.Style.FILL);
+        targetPaint.setAntiAlias(true);
     }
 
     public void draw(SurfaceHolder surfaceHolder, Simulation simulation, long delta) {
@@ -79,19 +98,28 @@ public class Renderer {
             return;
         }
         c.translate(-simulation.projection.shiftX, -simulation.projection.shiftY);
-        c.drawColor(Color.BLACK);
+        c.drawColor(Color.LTGRAY);
+        
+        // Draw corridor
+        for (Line line : simulation.lines) {
+            c.drawLine(line.origin.x, line.origin.y, line.target.x, line.target.y, corridorPaint);
+            drawCircle(line.origin, c, corridorPaint, simulation.targetGenerator.gridManager.pointSize + 5);
+            drawCircle(line.target, c, corridorPaint, simulation.targetGenerator.gridManager.pointSize + 5);
+        }
+        
         // Render path and follower
-        for (Line l : simulation.lines) {
-            drawLine(l, c);
+        for (Line line : simulation.lines) {
+            //drawLine(l, c);
+            c.drawLine(line.origin.x, line.origin.y, line.target.x, line.target.y, oldPaint);
+            drawCircle(line.origin, c, oldPaint, simulation.targetGenerator.gridManager.pointSize);
+            if (line.target.distanceTo(simulation.startPoint) >= simulation.targetGenerator.gridManager.pointSize) {
+                drawCircle(line.target, c, oldPaint, simulation.targetGenerator.gridManager.pointSize);
+            }
         }
 
         // Draw current line drawing
         if (simulation.currentLine != null) {
             drawLine(simulation.currentLine, c);
-        }
-
-        for (int i = 1; i < simulation.lines.size(); i++) {
-            connectLines(simulation.lines.get(i - 1), simulation.lines.get(i), c);
         }
 
         // Draw follower
@@ -114,10 +142,45 @@ public class Renderer {
         c.translate(simulation.projection.shiftX, simulation.projection.shiftY);
     }
 
+    private Paint corridorPaint;
+
     private Point followerPoint = new Point(0, 0);
     private Paint followerPaint = new Paint();
 
     private void drawLineDistance(Canvas c, Simulation sim) {
+        float pathDistance = 0;
+        float currDistance = 0;
+        Path path = new Path();
+
+        try {
+            path.moveTo(sim.lines.getFirst().getFirst().x, sim.lines.getFirst().getFirst().y);
+        } catch (NoSuchElementException e) {
+            return;
+        }
+
+        for (Line line : sim.lines) {
+            currDistance = (float) line.origin.distanceTo(line.target);
+            if (pathDistance + currDistance < sim.follower) {
+                path.lineTo(line.target.x, line.target.y);
+                path.moveTo(line.target.x, line.target.y);
+                drawCircle(line.origin, c, followerPaint, sim.targetGenerator.gridManager.pointSize);
+                drawCircle(line.target, c, followerPaint, sim.targetGenerator.gridManager.pointSize);
+            } else {
+                // between current point and last is the follower
+                float part = (sim.follower - pathDistance);
+                followerPoint.x = line.origin.x + ((line.target.x - line.origin.x) / currDistance) * part;
+                followerPoint.y = line.origin.y + ((line.target.y - line.origin.y) / currDistance) * part;
+                path.lineTo(followerPoint.x, followerPoint.y);
+                drawCircle(line.origin, c, followerPaint, sim.targetGenerator.gridManager.pointSize);
+                break;
+            }
+            pathDistance += currDistance;
+        }
+        
+        c.drawPath(path, followerPaint);
+        
+        
+        /*
         float pathDistance = 0;
         float currDistance = 0;
         Point last;
@@ -149,7 +212,7 @@ public class Renderer {
                 pathDistance += currDistance;
                 last = p;
             }
-        }
+        } */
     }
 
     private void drawLine(LinkedList<Point> line, Canvas c) {
@@ -164,13 +227,6 @@ public class Renderer {
             path.moveTo(p.x, p.y);
         }
         c.drawPath(path, linePaint);
-    }
-
-    private void connectLines(LinkedList<Point> start, LinkedList<Point> target, Canvas c) {
-        if (start.isEmpty() || target.isEmpty()) {
-            return;
-        }
-        c.drawLine(start.getLast().x, start.getLast().y, target.getFirst().x, target.getFirst().y, linePaint);
     }
 
     private Paint startPaint;
