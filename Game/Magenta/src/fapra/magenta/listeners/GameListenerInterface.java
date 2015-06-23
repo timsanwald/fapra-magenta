@@ -1,4 +1,4 @@
-package fapra.magenta;
+package fapra.magenta.listeners;
 
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;

@@ -1,4 +1,4 @@
-package fapra.magenta;
+package fapra.magenta.listeners;
 
 import java.util.LinkedList;
 import java.util.List;

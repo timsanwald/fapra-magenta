@@ -10,7 +10,7 @@ public class PickUpFactory {
     
     private static final Random rand = new Random();
     
-    private static final int possibilities = 2;
+    private static final int possibilities = 3;
     
     public static PickUpGameObject generatePickUpRandomly(Simulation sim, GridManager manager) {
         // To add a new PickUp increase the amount of pickups and add a new case below
@@ -19,6 +19,8 @@ public class PickUpFactory {
                 return new StopTimePickUp(generateRandomPosition(sim), manager.pointSize - 10);
             case 1:
                 return new MoveForwardPickUp(generateRandomPosition(sim), manager.pointSize - 10);
+            case 2:
+                return new CoinPickUp(generateRandomPosition(sim), manager.pointSize - 10);
         }
         // shouldn't happen
         return null;

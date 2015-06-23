@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.util.Log;
-import fapra.magenta.MultiGameListener;
 import fapra.magenta.Projection;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.data.Circle;
@@ -15,6 +14,9 @@ import fapra.magenta.data.pickups.PickUpFactory;
 import fapra.magenta.data.pickups.PickUpGameObject;
 import fapra.magenta.data.pickups.StopTimePickUp;
 import fapra.magenta.input.InputHandler;
+import fapra.magenta.listeners.CoinCalculationListener;
+import fapra.magenta.listeners.MultiGameListener;
+import fapra.magenta.listeners.ScoringListener;
 import fapra.magenta.target.TargetGenerator;
 
 public class Simulation {
@@ -32,8 +34,6 @@ public class Simulation {
     public TargetGenerator targetGenerator;
 
     public Projection projection;
-
-    public MultiGameListener gameListeners = new MultiGameListener();
     
     /**
      * Defines when this simulation is finished and can be closed.
@@ -46,6 +46,10 @@ public class Simulation {
     public List<ObstacleGameObject> obstacles;
 
     private ISoundManager soundManager;
+    
+    public MultiGameListener gameListeners = new MultiGameListener();
+    private ScoringListener scoringListener;
+    private CoinCalculationListener coinCalculationListener;
 
     public Simulation(TargetGenerator targetGenerator) {
         projection = new Projection();
@@ -70,6 +74,12 @@ public class Simulation {
         followerSpeedIncrement = upgrades.followerIncrement;
 
         this.soundManager = soundManager;
+        
+        // Gamelisteners initialization
+        scoringListener = new ScoringListener();
+        gameListeners.addGameListener(scoringListener);
+        coinCalculationListener = new CoinCalculationListener();
+        gameListeners.addGameListener(coinCalculationListener);
     }
 
     public void addCurrentLine() {
@@ -177,6 +187,8 @@ public class Simulation {
         inputHandler.reset();
     }
 
+    private final static float pickupSpawnProbability = 0.1f;
+    
     /**
      * Called, when a line is drawn from start to target node. Should generate a
      * new target and probably shift the camera.
@@ -190,8 +202,10 @@ public class Simulation {
         
         gameListeners.addedNewLine(startPoint, targetPoint);
         
-        // TODO upgradeable probability to spawn a new pickup
-        generateNewPickup();
+        // TODO make probability upgradeable to spawn a new pickup
+        if (Math.random() < pickupSpawnProbability) {
+            generateNewPickup();   
+        }
     }
 
     private void generateNewPickup() {
