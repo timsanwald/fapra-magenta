@@ -8,7 +8,7 @@ import fapra.magenta.Projection;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.data.Circle;
 import fapra.magenta.data.Line;
-import fapra.magenta.data.Upgrades;
+import fapra.magenta.data.SaveGame;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
 import fapra.magenta.data.pickups.PickUpFactory;
 import fapra.magenta.data.pickups.PickUpGameObject;
@@ -59,10 +59,10 @@ public class Simulation {
         this.targetGenerator = targetGenerator;
     }
 
-    public void setup(Upgrades upgrades, ISoundManager soundManager) {
+    public void setup(SaveGame saveGame, ISoundManager soundManager) {
         targetPoint = new Circle(this.targetGenerator.generateStartPoint(), this.targetGenerator.gridManager.pointSize);
         setNewTarget();
-        while (currentDistance < upgrades.followerStartDistance) {
+        while (currentDistance < saveGame.followerStartDistance) {
             currentLine = new Line();
             currentLine.add(startPoint);
             currentLine.add(targetPoint);
@@ -70,8 +70,8 @@ public class Simulation {
             setNewTarget();
         }
 
-        followerSpeed = upgrades.followerStartSpeed;
-        followerSpeedIncrement = upgrades.followerIncrement;
+        followerSpeed = saveGame.followerStartSpeed;
+        followerSpeedIncrement = saveGame.followerIncrement;
 
         this.soundManager = soundManager;
         

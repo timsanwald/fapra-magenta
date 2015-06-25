@@ -13,7 +13,7 @@ import fapra.magenta.audio.music.NullMusicManager;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.audio.sound.NullSoundManager;
 import fapra.magenta.audio.sound.SoundManager;
-import fapra.magenta.data.Upgrades;
+import fapra.magenta.data.SaveGame;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
@@ -27,7 +27,7 @@ public class Game implements GameInterface {
 	private ISoundManager soundManager;
 	private IMusicManager musicManager;
 	private InputHandler inputHandler;
-	private Upgrades upgrades;
+	private SaveGame saveGame;
 	private TargetGenerator targetGenerator;
 
 	// Time variables
@@ -37,8 +37,8 @@ public class Game implements GameInterface {
 
     @Override
 	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder, SharedPreferences preferences) {
-	    upgrades = new Upgrades();
-	    upgrades.load(activity);
+	    saveGame = new SaveGame();
+	    saveGame.load(activity);
 		inputHandler = new InputHandler();
 		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
@@ -53,7 +53,7 @@ public class Game implements GameInterface {
         } else {
             musicManager = new NullMusicManager(activity);
         }
-		simulation.setup(upgrades, soundManager);
+		simulation.setup(saveGame, soundManager);
 		
 		view.setOnTouchListener(inputHandler);
 		print(activity);

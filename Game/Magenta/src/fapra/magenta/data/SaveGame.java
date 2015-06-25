@@ -4,7 +4,7 @@ import fapra.magenta.R;
 import android.app.Activity;
 import android.content.SharedPreferences;
 
-public class Upgrades {
+public class SaveGame {
 
     /**
      * Follower speed at the start of a game. Less is better.
