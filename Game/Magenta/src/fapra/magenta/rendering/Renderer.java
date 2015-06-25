@@ -6,7 +6,10 @@ import java.util.NoSuchElementException;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Path;
+import android.graphics.Rect;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import fapra.magenta.Projection;
 import fapra.magenta.data.Line;
@@ -20,6 +23,8 @@ public class Renderer {
     Projection projection;
     private Paint pickupPaint;
     private Paint oldPaint;
+    private Paint scorePaint;
+    private Paint coinPaint;
 
     public Renderer() {
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -54,6 +59,16 @@ public class Renderer {
         corridorPaint.setAntiAlias(true);
         corridorPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
+        scorePaint = new Paint();
+        scorePaint.setColor(Color.BLACK);
+        scorePaint.setTextSize(50);
+        scorePaint.setTextAlign(Align.LEFT);
+        
+        coinPaint = new Paint();
+        coinPaint.setColor(Color.BLACK);
+        coinPaint.setTextSize(50);
+        coinPaint.setTextAlign(Align.RIGHT);
+        
         startPaint = new Paint();
         startPaint.setColor(Color.BLUE);
         startPaint.setStrokeWidth(4);
@@ -78,6 +93,7 @@ public class Renderer {
         try {
             c = surfaceHolder.lockCanvas();
             drawFrame(c, simulation);
+            drawHUD(c, simulation);
         } catch (Exception e) {
             e.printStackTrace();
             // throw(new Error(e));
@@ -90,10 +106,22 @@ public class Renderer {
         }
     }
 
+    private void drawHUD(Canvas c, Simulation simulation) {
+        String textScore = "score: " + simulation.scoringListener.score;
+        Rect rect = new Rect();
+        scorePaint.getTextBounds(textScore, 0, textScore.length(), rect);
+        c.drawText(textScore, 10, (-rect.top) + 10, scorePaint);
+        
+        textScore = "coins: " + simulation.coinCalculationListener.coins;
+        coinPaint.getTextBounds(textScore, 0, textScore.length(), rect);
+        c.drawText(textScore, c.getWidth() - 10, (-rect.top) + 10, coinPaint);
+    }
+
     private Paint linePaint;
 
     private void drawFrame(Canvas c, Simulation simulation) {
         this.projection = simulation.projection;
+        
         if (c == null) {
             return;
         }

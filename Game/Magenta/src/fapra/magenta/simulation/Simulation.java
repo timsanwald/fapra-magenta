@@ -48,8 +48,8 @@ public class Simulation {
     private ISoundManager soundManager;
     
     public MultiGameListener gameListeners = new MultiGameListener();
-    private ScoringListener scoringListener;
-    private CoinCalculationListener coinCalculationListener;
+    public ScoringListener scoringListener;
+    public CoinCalculationListener coinCalculationListener;
 
     public Simulation(TargetGenerator targetGenerator) {
         projection = new Projection();
@@ -85,10 +85,7 @@ public class Simulation {
     public void addCurrentLine() {
         currentLine.origin = startPoint;
         currentLine.target = targetPoint;
-        if (!lines.isEmpty()) {
-            currentDistance += lines.getLast().getLast().distanceTo(currentLine.getFirst());
-        }
-        currentDistance += currentLine.calculateDistance();
+        currentDistance += currentLine.origin.distanceTo(currentLine.target);
         lines.add(currentLine);
         this.gameListeners.finishedLine(currentLine);
         currentLine = null;

@@ -1,7 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:background="#0099cc"
-    android:layout_height="fill_parent">
+    android:background="@color/ltgrey"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
     
     <FrameLayout android:name="fapra.magenta.GameFragment"
               android:id="@+id/game_fragment"

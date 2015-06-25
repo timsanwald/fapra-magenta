@@ -3,5 +3,6 @@
     <color name="black_overlay">#66000000</color>
     <color name="A700">#0091EA</color>
     <color name="A700_Red">#dd2c00</color>
+    <color name="ltgrey">#cecece</color>
 
 </resources>

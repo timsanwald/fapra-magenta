@@ -7,7 +7,7 @@ import fapra.magenta.data.pickups.PickUpGameObject;
 
 public class ScoringListener implements GameListenerInterface {
 
-    public float score = 0;
+    public int score = 0;
     
     @Override
     public void addedNewLine(Point start, Point target) {

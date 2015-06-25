@@ -10,5 +10,12 @@
         <attr name="metaButtonBarStyle" format="reference" />
         <attr name="metaButtonBarButtonStyle" format="reference" />
     </declare-styleable>
-
+	<declare-styleable name="MenuButton">
+	    	<attr name="text" format="string" />
+	    	<attr name="position" format="enum">
+	    	    <enum name="Top" value="0" />
+	    	    <enum name="Middle" value="1" />
+	    	    <enum name="Bottom" value="2" />
+			</attr>
+	</declare-styleable>
 </resources>
