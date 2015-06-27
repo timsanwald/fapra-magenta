@@ -12,5 +12,6 @@
 	
 	<!-- Game stuff -->
 	<string name="upgrades_storage_key">fapra.magenta.UPGRADES_STORE_KEY</string>
+	<dimen name="small_margin">8dp</dimen>
 
 </resources>

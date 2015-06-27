@@ -9,7 +9,7 @@ import fapra.magenta.data.Point;
  */
 public class MoveForwardPickUp extends PickUpGameObject {
 
-    public static int n = 10;
+    public static int n = 5;
     
     private int remainingSteps;
     public MoveForwardPickUp(Point position, float radius) {
@@ -27,9 +27,41 @@ public class MoveForwardPickUp extends PickUpGameObject {
     public boolean isAlive() {
         return remainingSteps > 0;
     }
+
+    public static void setStage(int moveForwardStage) {
+        // TODO Better numbers
+        switch (moveForwardStage) {
+        case 1:
+            n = 5;
+            break;
+        case 2:
+            n = 10;
+            break;
+        case 3:
+            n = 15;
+            break;
+        case 4:
+            n = 20;
+            break;
+        default:
+            n = 25;
+            break;
+        }
+    }
     
-    public static void setSteps(int steps) {
-        n = steps;
+    public static int getUpgradeCost(int stage) {
+        switch (stage) {
+        case 1:
+            return 25;
+        case 2:
+            return 75;
+        case 3:
+            return 200;
+        case 4:
+            return 500;
+        default:
+            return 10;
+        }
     }
 
 }

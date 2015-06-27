@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="@dimen/small_margin"
+    android:layout_marginBottom="@dimen/small_margin"
+    android:gravity="center_vertical" >
+
+        <ImageView
+            android:id="@+id/upgrade_item_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/small_margin"
+            android:src="@drawable/ic_time" />
+
+        <TextView
+            android:id="@+id/upgrade_item_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/preference_fragment_padding_side"
+            android:layout_marginRight="@dimen/preference_fragment_padding_side"
+            android:layout_weight="1"
+            android:gravity="fill_vertical"
+            android:text="Stops Time"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/upgrade_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/small_margin"
+            android:src="@drawable/ic_up_arrow" />
+
+</LinearLayout>

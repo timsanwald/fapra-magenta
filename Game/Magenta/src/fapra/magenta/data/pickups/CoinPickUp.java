@@ -23,7 +23,42 @@ public class CoinPickUp extends PickUpGameObject {
         return false;
     }
 
-    public static void setValue(int value) {
-        CoinPickUp.value = value;
+    public static void setStage(int stage) {
+        // TODO better values
+        switch(stage) {
+        case 0:
+            value = 5;
+            break;
+        case 1:
+            value = 10;
+            break;
+        case 2:
+            value = 20;
+            break;
+        case 3:
+            value = 50;
+            break;
+        case 4:
+            value = 100;
+            break;
+        default:
+            value = 5;
+            break;
+        }
+    }
+
+    public static int getUpgradeCost(int stage) {
+        switch (stage) {
+        case 1:
+            return 25;
+        case 2:
+            return 75;
+        case 3:
+            return 200;
+        case 4:
+            return 500;
+        default:
+            return 10;
+        }
     }
 }

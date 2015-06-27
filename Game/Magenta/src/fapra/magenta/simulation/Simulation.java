@@ -8,7 +8,7 @@ import fapra.magenta.Projection;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.data.Circle;
 import fapra.magenta.data.Line;
-import fapra.magenta.data.SaveGame;
+import fapra.magenta.data.save.SaveGame;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
 import fapra.magenta.data.pickups.PickUpFactory;
 import fapra.magenta.data.pickups.PickUpGameObject;

@@ -13,7 +13,7 @@ import fapra.magenta.audio.music.NullMusicManager;
 import fapra.magenta.audio.sound.ISoundManager;
 import fapra.magenta.audio.sound.NullSoundManager;
 import fapra.magenta.audio.sound.SoundManager;
-import fapra.magenta.data.SaveGame;
+import fapra.magenta.data.save.SaveGame;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.rendering.Renderer;
 import fapra.magenta.simulation.Simulation;
