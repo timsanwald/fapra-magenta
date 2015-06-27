@@ -128,7 +128,7 @@ public class MenuFragment extends Fragment {
         btnHighscore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.replaceMainFragment(new HighscoreFragment());
+                activity.replaceMainFragment(new HighscoreFragment(getActivity()));
             }
         });
         changeText(btnHighscore, "Highscore");
