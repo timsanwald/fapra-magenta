@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,9 +79,12 @@ public class HighscoreFragment extends Fragment {
             } else {
                 twoLineListItem = (TwoLineListItem) convertView;
             }
-
+            //TextView text1 = (TextView) twoLineListItem.findViewById(android.R.id.text2);
             TextView text1 = twoLineListItem.getText1();
+            text1.setGravity(Gravity.CENTER);
             TextView text2 = twoLineListItem.getText2();
+            text2.setTextColor(getResources().getColor(R.color.white));
+            text2.setGravity(Gravity.CENTER);
 
             text1.setText(highscore.names[position]);
             text2.setText("" + highscore.score[position]);
