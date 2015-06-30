@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
-import fapra.magenta.apiClient.Client;
 import fapra.magenta.audio.music.IMusicManager;
 import fapra.magenta.audio.music.MusicManager;
 import fapra.magenta.audio.music.NullMusicManager;
@@ -30,8 +29,6 @@ public class Game implements GameInterface {
 	private InputHandler inputHandler;
 	private SaveGame saveGame;
 	private TargetGenerator targetGenerator;
-	private Client apiClient;
-	private Thread apiClientThread;
 	
 	// Time variables
 	private long lastTime;
@@ -39,24 +36,23 @@ public class Game implements GameInterface {
 	private long deltaTime;
 
     @Override
-	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder, SharedPreferences preferences) {
+	public void setup(Activity activity, View view,
+			SurfaceHolder surfaceHolder, SharedPreferences preferences) {
 	    saveGame = new SaveGame();
 	    saveGame.load(activity);
 		inputHandler = new InputHandler();
 		targetGenerator = new TargetGenerator(activity);
 	    renderer = new Renderer(targetGenerator.gridManager.pointSize, activity);
 		simulation = new Simulation(targetGenerator, activity);
-		apiClient = new Client(activity);
 		
-		apiClientThread = new Thread(apiClient);
-		apiClientThread.start();
-		
-		if (preferences.getBoolean(activity.getString(R.string.preference_sound_key), true)) {
+		if (preferences.getBoolean(
+				activity.getString(R.string.preference_sound_key), true)) {
 	       soundManager = new SoundManager(activity);
 		} else {
 		    soundManager = new NullSoundManager(activity);
 		}
-        if (preferences.getBoolean(activity.getString(R.string.preference_music_key), true)) {
+		if (preferences.getBoolean(
+				activity.getString(R.string.preference_music_key), true)) {
             musicManager = new MusicManager(activity);
         } else {
             musicManager = new NullMusicManager(activity);
