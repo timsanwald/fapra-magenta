@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Magenta</string>
+    <string name="app_name">Cyber Hunt</string>
     
     <!-- Preference stuff -->
     <string name="preference_sound_key">fapra.magenta.sound.muted</string>
