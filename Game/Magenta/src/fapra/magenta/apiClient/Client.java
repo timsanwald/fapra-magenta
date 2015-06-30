@@ -19,7 +19,7 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class Client implements Runnable {
-	public static final String serverUrl = "http://magenta-staging.nik101010.de/";
+	public static final String serverUrl = "http://fachpraktikum.hci.simtech.uni-stuttgart.de/ss2015/grp3/server/public/index.php/";
 
 	private Activity activity;
 
