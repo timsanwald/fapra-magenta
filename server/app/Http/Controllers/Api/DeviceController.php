@@ -49,18 +49,19 @@ class DeviceController extends Controller
 			);
 			$device = new Device($deviceData);
 		}
+		else
+		{
+			$device = $devices[0];
 
-		$device = $devices[0];
-
-		// update the device
-		$device->screenXPx = (int) $request->input('screenXPx', 0);
-		$device->screenYPx = (int) $request->input('screenYPx', 0);
-		$device->gridSizeX = (int) $request->input('gridSizeX', 0);
-		$device->gridSizeY = (int) $request->input('gridSizeY', 0);
-		$device->xDpi = (float) $request->input('xDpi', 0);
-		$device->yDpi = (float) $request->input('yDpi', 0);
-		$device->density = (float) $request->input('density', 0);
-
+			// update the device
+			$device->screenXPx = (int) $request->input('screenXPx', 0);
+			$device->screenYPx = (int) $request->input('screenYPx', 0);
+			$device->gridSizeX = (int) $request->input('gridSizeX', 0);
+			$device->gridSizeY = (int) $request->input('gridSizeY', 0);
+			$device->xDpi = (float) $request->input('xDpi', 0);
+			$device->yDpi = (float) $request->input('yDpi', 0);
+			$device->density = (float) $request->input('density', 0);
+		}
 
 		// save the device / the changes
 		$device->save();

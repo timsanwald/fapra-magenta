@@ -7,6 +7,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
+import fapra.magenta.apiClient.Client;
 import fapra.magenta.audio.music.IMusicManager;
 import fapra.magenta.audio.music.MusicManager;
 import fapra.magenta.audio.music.NullMusicManager;
@@ -29,6 +30,8 @@ public class Game implements GameInterface {
 	private InputHandler inputHandler;
 	private SaveGame saveGame;
 	private TargetGenerator targetGenerator;
+	private Client apiClient;
+	private Thread apiClientThread;
 
 	// Time variables
 	private long lastTime;
@@ -43,6 +46,11 @@ public class Game implements GameInterface {
 		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
 		simulation = new Simulation(targetGenerator);
+		apiClient = new Client(activity);
+		
+		apiClientThread = new Thread(apiClient);
+		apiClientThread.start();
+		
 		if (preferences.getBoolean(activity.getString(R.string.preference_sound_key), true)) {
 	       soundManager = new SoundManager(activity);
 		} else {
@@ -53,6 +61,7 @@ public class Game implements GameInterface {
         } else {
             musicManager = new NullMusicManager(activity);
         }
+        
 		simulation.setup(saveGame, soundManager);
 		
 		view.setOnTouchListener(inputHandler);
@@ -99,6 +108,7 @@ public class Game implements GameInterface {
         soundManager.dispose();
         musicManager.dispose();
         renderer.dispose();
+        apiClientThread.interrupt();
     }
 
     @Override
