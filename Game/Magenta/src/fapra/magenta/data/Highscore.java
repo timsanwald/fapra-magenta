@@ -1,7 +1,5 @@
 package fapra.magenta.data;
 
-import java.util.Arrays;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -16,10 +14,10 @@ public class Highscore {
         score = new long[10];
 
         for (int x = 0; x < 10; x++) {
-            names[x] = preferences.getString("name" + x, "-");
-            score[x] = preferences.getLong("score" + x, 0);
+            names[x] = preferences.getString("name" + x, "name " + x);
+            score[x] = preferences.getLong("score" + x, x * 10000 + 10000);
         }
-
+        
     }
 
     public String getName(int x) {

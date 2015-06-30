@@ -32,7 +32,7 @@ public class Game implements GameInterface {
 	private TargetGenerator targetGenerator;
 	private Client apiClient;
 	private Thread apiClientThread;
-
+	
 	// Time variables
 	private long lastTime;
 	private long thisTime;
@@ -45,7 +45,7 @@ public class Game implements GameInterface {
 		inputHandler = new InputHandler();
 		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
-		simulation = new Simulation(targetGenerator);
+		simulation = new Simulation(targetGenerator, activity);
 		apiClient = new Client(activity);
 		
 		apiClientThread = new Thread(apiClient);
@@ -70,9 +70,9 @@ public class Game implements GameInterface {
 	}
 
 	private boolean isDone = false;
-	
+	private boolean isGameOverShown = false;
 	@Override
-	public void mainLoopIteration(Activity activity, SurfaceHolder surfaceHolder) {
+	public void mainLoopIteration(final Activity activity, SurfaceHolder surfaceHolder) {
 		// Calculate deltatime
 		thisTime = System.currentTimeMillis();
 		deltaTime = thisTime - lastTime;
@@ -85,8 +85,19 @@ public class Game implements GameInterface {
 	        simulation.update(deltaTime);
 	        // Render World
 	        renderer.draw(surfaceHolder, simulation, deltaTime);
-		} else {
+		} else if (!isGameOverShown){
 		    //TODO Switch to gameOverScreen
+		    isGameOverShown = true;
+		    if (activity instanceof GameActivity) {
+		        Log.d("Game", "Open GameOver screen");
+		        activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.onBackPressed();
+                        ((GameActivity) activity).replaceMainFragment(new GameOverScreen(simulation));
+                    }
+                });
+		    }
 		    this.isDone = true;
 		    this.dispose();
 		}
@@ -109,10 +120,12 @@ public class Game implements GameInterface {
         musicManager.dispose();
         renderer.dispose();
         apiClientThread.interrupt();
+        isDone = true;
     }
 
     @Override
     public boolean isDone() {
         return isDone;
     }
+    
 }

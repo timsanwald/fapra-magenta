@@ -3,27 +3,18 @@ package fapra.magenta.menu;
 import fapra.magenta.GameActivity;
 import fapra.magenta.GameFragment;
 import fapra.magenta.R;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,7 +58,12 @@ public class MenuFragment extends Fragment {
         super.onStart();
     }
     
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onViewCreated(view, savedInstanceState);
+    }
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View current = inflater.inflate(R.layout.activity_menu_view, container, false);
@@ -83,12 +79,8 @@ public class MenuFragment extends Fragment {
             txtTitle.setGravity(Gravity.CENTER);
             LinearLayout.LayoutParams Params1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1f);
             txtTitle.setLayoutParams(Params1);
-            txtTitle.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-                @Override
-                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    txtTitle.setText(getString(R.string.app_name));
-                }
-            });
+            txtTitle.setText(getString(R.string.app_name));
+            
             
             //correctWidth(txtTitle, container.getWidth());
             ((LinearLayout) current).addView(txtTitle);

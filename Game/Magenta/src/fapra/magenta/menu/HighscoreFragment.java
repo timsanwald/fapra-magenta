@@ -86,8 +86,8 @@ public class HighscoreFragment extends Fragment {
             text2.setTextColor(getResources().getColor(R.color.white));
             text2.setGravity(Gravity.CENTER);
 
-            text1.setText(highscore.names[position]);
-            text2.setText("" + highscore.score[position]);
+            text1.setText(highscore.names[9 - position]);
+            text2.setText("" + highscore.score[9 - position]);
 
             return twoLineListItem;
         }
