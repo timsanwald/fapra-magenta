@@ -5,6 +5,8 @@ import fapra.magenta.data.Point;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
 import fapra.magenta.data.pickups.CoinPickUp;
 import fapra.magenta.data.pickups.PickUpGameObject;
+import fapra.magenta.data.save.SaveGame;
+import fapra.magenta.simulation.Simulation;
 
 public class CoinCalculationListener implements GameListenerInterface {
 
@@ -34,4 +36,11 @@ public class CoinCalculationListener implements GameListenerInterface {
         }
     }
 
+    @Override
+    public void finishedGame(Simulation simulation) {
+        SaveGame sg = new SaveGame();
+        sg.load(simulation.activity);
+        sg.coins += this.coins;
+        sg.save(simulation.activity);
+    }
 }

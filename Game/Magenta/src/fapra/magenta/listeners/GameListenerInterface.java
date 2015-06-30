@@ -4,6 +4,7 @@ import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
 import fapra.magenta.data.pickups.PickUpGameObject;
+import fapra.magenta.simulation.Simulation;
 
 public interface GameListenerInterface {
 
@@ -14,4 +15,6 @@ public interface GameListenerInterface {
     public void finishedLine(Line line);
     
     public void touchedObstacle(ObstacleGameObject obstacle);
+    
+    public void finishedGame(Simulation simulation);
 }

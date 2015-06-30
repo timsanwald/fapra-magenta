@@ -7,6 +7,7 @@ import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
 import fapra.magenta.data.pickups.PickUpGameObject;
+import fapra.magenta.simulation.Simulation;
 
 public class MultiGameListener implements GameListenerInterface {
 
@@ -46,6 +47,13 @@ public class MultiGameListener implements GameListenerInterface {
     
     public void removeGameListener(GameListenerInterface gameListener) {
         listeners.remove(gameListener);
+    }
+    
+    @Override
+    public void finishedGame(Simulation simulation) {
+        for (GameListenerInterface listen : listeners) {
+            listen.finishedGame(simulation);
+        }
     }
 
 }

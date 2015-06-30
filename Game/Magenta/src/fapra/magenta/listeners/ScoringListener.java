@@ -4,6 +4,7 @@ import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
 import fapra.magenta.data.pickups.PickUpGameObject;
+import fapra.magenta.simulation.Simulation;
 
 public class ScoringListener implements GameListenerInterface {
 
@@ -29,6 +30,11 @@ public class ScoringListener implements GameListenerInterface {
     public void touchedObstacle(ObstacleGameObject obstacle) {
         // Some negative points
         score -= 1000;
+    }
+
+    @Override
+    public void finishedGame(Simulation simulation) {
+        
     }
 
 }

@@ -3,6 +3,7 @@ package fapra.magenta.simulation;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.app.Activity;
 import android.util.Log;
 import fapra.magenta.Projection;
 import fapra.magenta.audio.sound.ISoundManager;
@@ -51,12 +52,13 @@ public class Simulation {
     public ScoringListener scoringListener;
     public CoinCalculationListener coinCalculationListener;
 
-    public Simulation(TargetGenerator targetGenerator) {
+    public Simulation(TargetGenerator targetGenerator, Activity activity) {
         projection = new Projection();
         lines = new LinkedList<Line>();
         pickups = new LinkedList<PickUpGameObject>();
         obstacles = new LinkedList<ObstacleGameObject>();
         this.targetGenerator = targetGenerator;
+        this.activity = activity;
     }
 
     public void setup(SaveGame saveGame, ISoundManager soundManager) {
@@ -216,4 +218,5 @@ public class Simulation {
     public float follower = 0;
     public float followerSpeed = 60;
     public float followerSpeedIncrement = 0.2f;
+    public Activity activity;
 }
