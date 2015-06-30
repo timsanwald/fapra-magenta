@@ -115,6 +115,7 @@ public class Simulation {
 
         if (checkGameOver()) {
             isGameOver = true;
+            gameListeners.finishedGame(this);
         }
     }
 
