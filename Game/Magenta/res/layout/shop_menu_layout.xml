@@ -24,7 +24,7 @@
         android:layout_marginBottom="@dimen/small_margin" >
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/coinView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/preference_fragment_padding_side"
