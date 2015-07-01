@@ -1,5 +1,10 @@
 package fapra.magenta.data.pickups;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import fapra.magenta.R;
 import fapra.magenta.data.Point;
 
 /**
@@ -64,4 +69,13 @@ public class MoveForwardPickUp extends PickUpGameObject {
         }
     }
 
+    private static Bitmap img = null;
+    
+    @Override
+    public Bitmap getDrawable(Context context) {
+        if (img == null) {
+            img = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_forward);
+        }
+        return img;
+    }
 }

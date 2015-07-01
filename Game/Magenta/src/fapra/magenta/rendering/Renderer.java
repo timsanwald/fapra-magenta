@@ -3,6 +3,8 @@ package fapra.magenta.rendering;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -28,10 +30,7 @@ public class Renderer {
     private Paint corridorPointPaint;
     private Paint oldPointPaint;
 
-    public Renderer() {
-        int lineWidth = 10;
-        int lineOldWidth = 50;
-        
+    public Renderer(int pointWidth) {
         // Line paints
 
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -43,7 +42,7 @@ public class Renderer {
 
         followerPaint = new Paint();
         followerPaint.setColor(Color.RED);
-        followerPaint.setStrokeWidth(lineOldWidth);
+        followerPaint.setStrokeWidth(pointWidth / 2);
         followerPaint.setStyle(Paint.Style.STROKE);
         followerPaint.setStrokeJoin(Paint.Join.ROUND);
         followerPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -51,7 +50,7 @@ public class Renderer {
         
         oldPaint = new Paint();
         oldPaint.setColor(Color.LTGRAY);
-        oldPaint.setStrokeWidth(50);
+        oldPaint.setStrokeWidth(pointWidth / 2);
         oldPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         oldPaint.setStrokeJoin(Paint.Join.ROUND);
         oldPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -59,7 +58,7 @@ public class Renderer {
         
         corridorPaint = new Paint();
         corridorPaint.setColor(Color.WHITE);
-        corridorPaint.setStrokeWidth(lineOldWidth * 2);
+        corridorPaint.setStrokeWidth(pointWidth);
         corridorPaint.setStrokeJoin(Paint.Join.ROUND);
         corridorPaint.setStrokeCap(Paint.Cap.ROUND);
         corridorPaint.setAntiAlias(true);
@@ -168,7 +167,7 @@ public class Renderer {
 
         // Draw Pickups
         for (PickUpGameObject pickup : simulation.pickups) {
-            renderPickup(c, pickup);
+            renderPickup(c, pickup, simulation.activity);
         }
 
         // Draw Obstacles
@@ -281,10 +280,9 @@ public class Renderer {
         // TODO clear eventual used resources
     }
 
-    public void renderPickup(Canvas c, PickUpGameObject pickup) {
-        // TODO
-        c.drawCircle(pickup.position.x, pickup.position.y, pickup.radius, pickupPaint);
-        c.drawText(pickup.getClass().getSimpleName().subSequence(0, 2).toString(), pickup.position.x, pickup.position.y, pickupPaint);
+    public void renderPickup(Canvas c, PickUpGameObject pickup, Context context) {
+        Bitmap b = pickup.getDrawable(context);
+        c.drawBitmap(b, pickup.position.x - (b.getWidth()/2), pickup.position.y - (b.getHeight()/2), pickupPaint);
     }
 
     public void renderObstacle(Canvas c, ObstacleGameObject obstacle) {

@@ -43,8 +43,8 @@ public class Game implements GameInterface {
 	    saveGame = new SaveGame();
 	    saveGame.load(activity);
 		inputHandler = new InputHandler();
-		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
+	    renderer = new Renderer(targetGenerator.gridManager.pointSize);
 		simulation = new Simulation(targetGenerator, activity);
 		apiClient = new Client(activity);
 		

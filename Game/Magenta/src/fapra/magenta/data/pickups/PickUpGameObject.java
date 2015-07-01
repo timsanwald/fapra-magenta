@@ -1,5 +1,8 @@
 package fapra.magenta.data.pickups;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import fapra.magenta.data.GameObject;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.collision.ICollisionObject;
@@ -22,4 +25,6 @@ public abstract class PickUpGameObject extends GameObject implements ICollisionO
     public abstract void update(float delta);
 
     public abstract boolean isAlive();
+
+    public abstract Bitmap getDrawable(Context context);
 }
