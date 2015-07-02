@@ -19,6 +19,15 @@ public class GameOverScreen extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        AutoFitTextView txtScore = (AutoFitTextView) view.findViewById(R.id.game_over_score);
+        if (txtScore != null) {
+            txtScore.setPadding((int) (view.getWidth() * 0.25f), 5, (int) (view.getWidth() * 0.25f), 5);
+        }
+    }
+    
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.game_over_layout, null);
         
@@ -33,13 +42,13 @@ public class GameOverScreen extends Fragment {
         txtScore.setText("Score: " + simulation.scoringListener.score);
         txtScore.setTextSize(400);
         txtScore.setMaxTextSize(200);
-        txtScore.setPadding((int) (txtTitle.getWidth() * 0.25f), 5, (int) (txtTitle.getWidth() * 0.25f), 5);
         txtScore.setMinTextSize(20);
         txtScore.setTextColor(Color.WHITE);
         
         Highscore highscore = new Highscore(getActivity());
         if (highscore.inHighscore(simulation.scoringListener.score)) {
             // TODO present add to highscore dialog
+            v.findViewById(R.id.game_over_new_score).setVisibility(View.VISIBLE);
         }
         return v;
     }

@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import fapra.magenta.R;
 import fapra.magenta.data.Point;
+import fapra.magenta.simulation.Simulation;
 
 public class StopTimePickUp extends PickUpGameObject {
 
@@ -22,7 +23,7 @@ public class StopTimePickUp extends PickUpGameObject {
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float delta, Simulation sim) {
         remainingTime -= delta;
     }
 

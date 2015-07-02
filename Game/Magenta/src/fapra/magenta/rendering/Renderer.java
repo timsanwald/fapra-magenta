@@ -13,6 +13,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import fapra.magenta.Projection;
+import fapra.magenta.R;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
@@ -30,7 +31,7 @@ public class Renderer {
     private Paint corridorPointPaint;
     private Paint oldPointPaint;
 
-    public Renderer(int pointWidth) {
+    public Renderer(int pointWidth, Context context) {
         // Line paints
 
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -91,12 +92,12 @@ public class Renderer {
         // HUD paints
         scorePaint = new Paint();
         scorePaint.setColor(Color.BLACK);
-        scorePaint.setTextSize(50);
+        scorePaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
         scorePaint.setTextAlign(Align.LEFT);
         
         coinPaint = new Paint();
         coinPaint.setColor(Color.BLACK);
-        coinPaint.setTextSize(50);
+        coinPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
         coinPaint.setTextAlign(Align.RIGHT);
     }
 
@@ -277,7 +278,6 @@ public class Renderer {
     }
 
     public void dispose() {
-        // TODO clear eventual used resources
     }
 
     public void renderPickup(Canvas c, PickUpGameObject pickup, Context context) {

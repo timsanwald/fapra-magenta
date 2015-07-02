@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import fapra.magenta.R;
 import fapra.magenta.data.Point;
+import fapra.magenta.simulation.Simulation;
 
 public class CoinPickUp extends PickUpGameObject {
 
@@ -19,7 +20,7 @@ public class CoinPickUp extends PickUpGameObject {
     public int coinValue;
     
     @Override
-    public void update(float delta) {
+    public void update(float delta, Simulation sim) {
     }
 
     @Override

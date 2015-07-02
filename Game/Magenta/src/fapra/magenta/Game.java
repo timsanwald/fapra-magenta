@@ -44,7 +44,7 @@ public class Game implements GameInterface {
 	    saveGame.load(activity);
 		inputHandler = new InputHandler();
 		targetGenerator = new TargetGenerator(activity);
-	    renderer = new Renderer(targetGenerator.gridManager.pointSize);
+	    renderer = new Renderer(targetGenerator.gridManager.pointSize, activity);
 		simulation = new Simulation(targetGenerator, activity);
 		apiClient = new Client(activity);
 		
@@ -71,6 +71,7 @@ public class Game implements GameInterface {
 
 	private boolean isDone = false;
 	private boolean isGameOverShown = false;
+	
 	@Override
 	public void mainLoopIteration(final Activity activity, SurfaceHolder surfaceHolder) {
 		// Calculate deltatime
@@ -86,7 +87,7 @@ public class Game implements GameInterface {
 	        // Render World
 	        renderer.draw(surfaceHolder, simulation, deltaTime);
 		} else if (!isGameOverShown){
-		    //TODO Switch to gameOverScreen
+		    // Switch to gameOverScreen
 		    isGameOverShown = true;
 		    if (activity instanceof GameActivity) {
 		        Log.d("Game", "Open GameOver screen");
@@ -126,6 +127,10 @@ public class Game implements GameInterface {
     @Override
     public boolean isDone() {
         return isDone;
+    }
+
+    public void setLandscape(boolean b) {
+        simulation.isLandscape = b;
     }
     
 }

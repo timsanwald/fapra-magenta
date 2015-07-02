@@ -65,7 +65,7 @@ public class Simulation {
         targetPoint = new Circle(this.targetGenerator.generateStartPoint(), this.targetGenerator.gridManager.pointSize);
         setNewTarget();
         while (currentDistance < saveGame.followerStartDistance) {
-            currentLine = new Line();
+            currentLine = new Line(targetGenerator.getDirection(), isLandscape);
             currentLine.add(startPoint);
             currentLine.add(targetPoint);
             addCurrentLine();
@@ -99,7 +99,7 @@ public class Simulation {
     public void update(float delta) {
         // update pickup
         if (currentPickup != null) {
-            currentPickup.update(delta);
+            currentPickup.update(delta, this);
         }
 
         // update follower
@@ -139,7 +139,7 @@ public class Simulation {
 
         if (inputHandler.eventID == 1) {
             // First down touch
-            currentLine = new Line();
+            currentLine = new Line(this.targetGenerator.getDirection(), isLandscape);
             currentLine.add(inputHandler.p);
             if (this.startPoint.hitCheck(inputHandler.p)) {
                 isValidLine = true;
@@ -175,6 +175,7 @@ public class Simulation {
 
             if (isValidLine) {
                 currentLine.add(inputHandler.p);
+                currentLine.isResearchable = true;
                 addCurrentLine();
                 setNewTarget();
                 isValidLine = false;
@@ -220,4 +221,13 @@ public class Simulation {
     public float followerSpeed = 60;
     public float followerSpeedIncrement = 0.2f;
     public Activity activity;
+    public volatile boolean isLandscape = false;
+
+    public void connectDirect() {
+        currentLine = new Line(targetGenerator.getDirection(), isLandscape);
+        currentLine.add(startPoint);
+        currentLine.add(targetPoint);
+        addCurrentLine();
+        setNewTarget();
+    }
 }

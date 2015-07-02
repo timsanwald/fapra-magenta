@@ -5,12 +5,10 @@ import fapra.magenta.data.pickups.CoinPickUp;
 import fapra.magenta.data.pickups.MoveForwardPickUp;
 import fapra.magenta.data.pickups.StopTimePickUp;
 import fapra.magenta.data.save.SaveGame;
-import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,7 +121,8 @@ public class ShopFragment extends Fragment {
         sg.load(this.getActivity());
         
         // enable possible upgrades
-        // TODO Update costs
+        // Update costs
+        // TODO implement maximum upgrades
         if (sg.coins > MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1)) {
             forwardUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.VISIBLE);
             ((TextView) (forwardUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.WHITE);

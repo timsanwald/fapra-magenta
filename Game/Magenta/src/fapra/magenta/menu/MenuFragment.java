@@ -60,7 +60,6 @@ public class MenuFragment extends Fragment {
     
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onViewCreated(view, savedInstanceState);
     }
     
@@ -70,7 +69,6 @@ public class MenuFragment extends Fragment {
         
         if (current instanceof LinearLayout) {
             txtTitle = new AutoFitTextView(getActivity());
-            // TODO make better scaling
             txtTitle.setTextSize(400);
             txtTitle.setMaxTextSize(200);
             txtTitle.setPadding(5, 5, 5, 5);
