@@ -14,7 +14,7 @@ public class Highscore {
         score = new long[10];
 
         for (int x = 0; x < 10; x++) {
-            names[x] = preferences.getString("name" + x, "name " + x);
+            names[x] = preferences.getString("name" + x, x + ".");
             score[x] = preferences.getLong("score" + x, x * 10000 + 10000);
         }
         
@@ -58,8 +58,11 @@ public class Highscore {
             names[x] = names[x - 1];
             this.score[x] = this.score[x - 1];
         }
-
-        this.names[position] = new String(name);
+        if (name == null) {
+            this.names[position] = new String(position + ".");
+        } else {
+            this.names[position] = new String(name);   
+        }
         this.score[position] = score;
 
         SharedPreferences.Editor editor = preferences.edit();

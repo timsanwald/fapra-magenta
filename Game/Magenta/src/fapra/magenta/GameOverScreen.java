@@ -49,6 +49,7 @@ public class GameOverScreen extends Fragment {
         if (highscore.inHighscore(simulation.scoringListener.score)) {
             // TODO present add to highscore dialog
             v.findViewById(R.id.game_over_new_score).setVisibility(View.VISIBLE);
+            highscore.addScore(null, simulation.scoringListener.score);
         }
         return v;
     }

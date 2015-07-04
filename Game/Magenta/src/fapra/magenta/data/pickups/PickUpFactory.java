@@ -27,7 +27,27 @@ public class PickUpFactory {
     }
     
     private static Point generateRandomPosition(Simulation sim) {
-        //TODO implement real random xD
-        return new Point(sim.startPoint.x, sim.targetPoint.y);
+        //TODO implement more real random
+        float randomX;
+        float randomY;
+       
+        
+        if (sim.startPoint.x > sim.targetPoint.x) {
+            randomX = randInt(sim.targetPoint.x, sim.startPoint.x);
+        } else {
+            randomX = randInt(sim.targetPoint.x, sim.startPoint.x);
+        }
+        
+        if (sim.startPoint.y > sim.targetPoint.y) {
+            randomY = randInt(sim.targetPoint.y, sim.startPoint.y);
+        } else {
+            randomY = randInt(sim.targetPoint.y, sim.startPoint.y);
+        }
+        
+        return new Point(randomX, randomY);
+    }
+    
+    private static float randInt(float Min, float Max) {
+        return Min + (int)(Math.random() * ((Max - Min) + 1));
     }
 }
