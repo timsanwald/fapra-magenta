@@ -43,7 +43,7 @@ public class Game implements GameInterface {
 		inputHandler = new InputHandler();
 		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
-		simulation = new Simulation(targetGenerator);
+		simulation = new Simulation(targetGenerator, activity);
 
 		if (preferences.getBoolean(
 				activity.getString(R.string.preference_sound_key), true)) {
