@@ -1,6 +1,7 @@
 package fapra.magenta.menu;
 
 import fapra.magenta.R;
+import fapra.magenta.data.Highscore;
 import fapra.magenta.data.save.SaveGame;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -57,6 +58,9 @@ public class OptionsFragment extends PreferenceFragment implements SharedPrefere
                 sg.load(this.getActivity());
                 sg.reset();
                 sg.save(getActivity());
+                Highscore hs = new Highscore(getActivity());
+                hs.reset();
+                hs.save();
             } else {
                 enableSaveRestore = true;
                 Toast.makeText(getActivity(), "Press again to restore save game", Toast.LENGTH_LONG).show();
