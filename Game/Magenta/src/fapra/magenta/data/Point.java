@@ -46,7 +46,7 @@ public class Point {
 
     public Object toJSON() throws JSONException {
         JSONObject json = new JSONObject();
-        json.put("xPX", x);
+        json.put("xPx", x);
         json.put("yPx", y);
         json.put("timestamp", time);
         return json;

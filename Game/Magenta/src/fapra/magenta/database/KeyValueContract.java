@@ -7,7 +7,7 @@ public final class KeyValueContract {
 	}
 
 	public static abstract class KeyValue implements BaseColumns {
-		public static final String TABLE_NAME = "store";
+		public static final String TABLE_NAME = "keyValueStore";
 		public static final String COLUMN_NAME_KEY = "key";
 		public static final String COLUMN_NAME_VALUE = "value";
 	}
@@ -16,7 +16,7 @@ public final class KeyValueContract {
 	private static final String COMMA_SEP = ",";
 	public static final String SQL_CREATE_KEY_VALUE =
 	    "CREATE TABLE " + KeyValue.TABLE_NAME + " (" +
-	    KeyValue._ID + " INTEGER PRIMARY KEY," +
+	    KeyValue._ID + " INTEGER PRIMARY KEY," + COMMA_SEP + 
 	    KeyValue.COLUMN_NAME_KEY + TEXT_TYPE + COMMA_SEP + 
 	    KeyValue.COLUMN_NAME_VALUE + TEXT_TYPE +
 	    " )";
