@@ -151,14 +151,25 @@ public class Client implements Runnable {
 	public void run() {
 		while (!Thread.interrupted()) {
 			if (this.connectionAvailable()) {
+				// check for available lines that need to be uploaded
+				
+				
 				this.sendDeviceInfo();
 				this.sendLineData();
-			}
-
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				break;
+				
+				// connection has been available --> long timeout
+				try {
+					Thread.sleep(120000); // 2min
+				} catch (InterruptedException e) {
+					break;
+				}
+			} else {
+				// no connection - short timeout
+				try {
+					Thread.sleep(10000); // 10s
+				} catch (InterruptedException e) {
+					break;
+				}
 			}
 		}
 	}
