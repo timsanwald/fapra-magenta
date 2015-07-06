@@ -47,7 +47,7 @@ public class ShopFragment extends Fragment {
             }
         }
         
-        timeUpgrade = createUpgradeItem(this.getResources().getDrawable(R.drawable.ic_time), "Stops the time", inflater);
+        timeUpgrade = createUpgradeItem(this.getResources().getDrawable(R.drawable.ic_time), "Increase the time the follower stops on pick up", inflater);
         timeUpgrade.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +64,7 @@ public class ShopFragment extends Fragment {
         });
         main.addView(timeUpgrade);
         
-        coinUpgrade = createUpgradeItem(this.getResources().getDrawable(R.drawable.ic_coin), "More coins at pick-up", inflater);
+        coinUpgrade = createUpgradeItem(this.getResources().getDrawable(R.drawable.ic_coin), "Get more coins for the coin pick up", inflater);
         coinUpgrade.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +81,7 @@ public class ShopFragment extends Fragment {
         });
         main.addView(coinUpgrade);
         
-        forwardUpgrade = createUpgradeItem(this.getResources().getDrawable(R.drawable.ic_forward), "More automatic connections", inflater);
+        forwardUpgrade = createUpgradeItem(this.getResources().getDrawable(R.drawable.ic_forward), "Increase the number of automatic connections on pick up", inflater);
         forwardUpgrade.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
