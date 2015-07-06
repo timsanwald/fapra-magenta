@@ -18,13 +18,16 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.provider.Settings.Secure;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+import fapra.magenta.R;
 import fapra.magenta.database.KeyValueRepository;
 import fapra.magenta.database.LinesRepository;
 
@@ -45,9 +48,15 @@ public class Client implements Runnable {
 		ConnectivityManager connMgr = (ConnectivityManager) activity
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+		NetworkInfo mWifi = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+		
 		if (networkInfo != null && networkInfo.isConnected()) {
 			Log.d("connection check", "" + true);
-
+			if (prefs.getBoolean(activity.getString(R.string.preference_just_wifi), false) && !mWifi.isConnected()) {
+			    // should upload just with wifi but not available
+			    return false;
+			}
 			return true;
 		}
 		Log.d("connection check", "" + false);

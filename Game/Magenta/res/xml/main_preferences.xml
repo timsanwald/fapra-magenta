@@ -24,5 +24,13 @@
             android:summary="Restores the default preferences."
             android:title="Restore preferences" >
         </Preference>
-</PreferenceCategory>
+	</PreferenceCategory>
+	
+	<PreferenceCategory android:title="Connection">
+        <CheckBoxPreference
+                android:key="@string/preference_just_wifi"
+                android:title="Sending data"
+                android:summary="Sends research data just with wifi connection"
+                android:defaultValue="false"/>
+	</PreferenceCategory>
 </PreferenceScreen>
