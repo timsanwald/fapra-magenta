@@ -189,7 +189,7 @@ public class Client implements Runnable {
 				}
 				// connection has been available --> long timeout
 				try {
-					Thread.sleep(120000); // 2min
+					Thread.sleep(60000); // 60sec
 				} catch (InterruptedException e) {
 					break;
 				}
