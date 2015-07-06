@@ -159,6 +159,7 @@ public class Simulation {
                         currentPickup = pickup;
                         Log.d("Simulation", pickup.getClass().getSimpleName() + " bound as current pickup");
                         gameListeners.touchedPickup(pickup);
+                        currentLine.isResearchable = false;
                     }
                 }
                 pickups.remove(currentPickup);
@@ -168,6 +169,7 @@ public class Simulation {
                     if (obstacle.hitCheck(inputHandler.p)) {
                         isValidLine = false;
                         gameListeners.touchedObstacle(obstacle);
+                        currentLine.isResearchable = false;
                     }
                 }
             }
