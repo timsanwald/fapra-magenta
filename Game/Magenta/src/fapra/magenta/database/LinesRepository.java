@@ -1,5 +1,6 @@
 package fapra.magenta.database;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.content.ContentValues;
@@ -25,20 +26,21 @@ public class LinesRepository {
 		writeDb.insert(LinesEntry.TABLE_NAME, null, values);
 	}
 
-	public HashMap<String, String> getLines(String id) {
+	public ArrayList<HashMap<String, String>> getLines(String id) {
 		String[] projection = { LinesEntry.COLUMN_NAME_JSON, LinesEntry._ID };
 		String selection = LinesEntry._ID + " > ?";
 		String[] selectionArgs = { id };
 
 		Cursor c = readDb.query(LinesEntry.TABLE_NAME, projection, selection,
 				selectionArgs, null, null, LinesEntry._ID + " ASC");
-
-		HashMap<String, String> lines = new HashMap<String, String>();
 		
+		ArrayList<HashMap<String, String>> lines = new ArrayList<HashMap<String,String>>();
 		if (c.moveToFirst()) {
 			do {
-				lines.put("id", c.getString(c.getColumnIndex(LinesEntry._ID)));
-				lines.put("json", c.getString(c.getColumnIndex(LinesEntry.COLUMN_NAME_JSON)));
+				HashMap<String, String> line = new HashMap<String, String>();
+				line.put("id", c.getString(c.getColumnIndex(LinesEntry._ID)));
+				line.put("json", c.getString(c.getColumnIndex(LinesEntry.COLUMN_NAME_JSON)));
+				lines.add(line);
 			} while (c.moveToNext());
 		}
 

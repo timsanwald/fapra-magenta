@@ -9,7 +9,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,14 +22,20 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings.Secure;
 import android.util.Log;
+import fapra.magenta.database.KeyValueRepository;
+import fapra.magenta.database.LinesRepository;
 
 public class Client implements Runnable {
 	public static final String serverUrl = "http://fachpraktikum.hci.simtech.uni-stuttgart.de/ss2015/grp3/server/public/index.php/";
 
 	private Activity activity;
+	private LinesRepository linesRepo;
+	private KeyValueRepository keyValueRepo;
 
 	public Client(Activity activity) {
 		this.activity = activity;
+		this.linesRepo = new LinesRepository((Context) activity);
+		this.keyValueRepo = new KeyValueRepository((Context) activity);
 	}
 
 	private boolean connectionAvailable() {
@@ -87,9 +98,9 @@ public class Client implements Runnable {
 		}
 	}
 	
-	private void sendLineData() {
+	private void sendLineData(JSONArray jsonLines) {
 		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("data", "{ 	\"device\": \""+ getDeviceHash() +"\", 	\"lines\": [ 		{ 			\"startGridX\": 1, 			\"startGridY\": 2, 			\"endGridX\": 3, 			\"endGridY\": 4, 			\"startPxX\": 120, 			\"startPxY\": 240, 			\"endPxX\": 180, 			\"endPxY\": 360, 			\"startTime\": 123456789, 			\"endTime\": 987456321, 			\"isLandscape\": false, 			\"scrollDirection\": 2, 			\"points\": [ 				{ 					\"xPx\": 17, 					\"yPx\": 99, 					\"timestamp\": 321654987 				}, 				{ 					\"xPx\": 37, 					\"yPx\": 40, 					\"timestamp\": 789456123 				}, 				{ 					\"xPx\": 46, 					\"yPx\": 39, 					\"timestamp\": 321456987 				}, 				{ 					\"xPx\": 60, 					\"yPx\": 45, 					\"timestamp\": 987456321 				} 			] 		}, 		{ 			\"startGridX\": 3, 			\"startGridY\": 5, 			\"endGridX\": 2, 			\"endGridY\": 6, 			\"startPxX\": 120, 			\"startPxY\": 240, 			\"endPxX\": 180, 			\"endPxY\": 360, 			\"startTime\": 123456789, 			\"endTime\": 987456321, 			\"isLandscape\": false, 			\"scrollDirection\": 4, 			\"points\": [ 				{ 					\"xPx\": 17, 					\"yPx\": 99, 					\"timestamp\": 321654987 				}, 				{ 					\"xPx\": 37, 					\"yPx\": 40, 					\"timestamp\": 789456123 				}, 				{ 					\"xPx\": 46, 					\"yPx\": 39, 					\"timestamp\": 321456987 				}, 				{ 					\"xPx\": 60, 					\"yPx\": 45, 					\"timestamp\": 987456321 				} 			] 		}, 		{ 			\"startGridX\": 2, 			\"startGridY\": 8, 			\"endGridX\": 1, 			\"endGridY\": 3, 			\"startPxX\": 120, 			\"startPxY\": 240, 			\"endPxX\": 180, 			\"endPxY\": 360, 			\"startTime\": 123456789, 			\"endTime\": 987456321, 			\"isLandscape\": true, 			\"scrollDirection\": 3, 			\"points\": [ 				{ 					\"xPx\": 17, 					\"yPx\": 99, 					\"timestamp\": 321654987 				}, 				{ 					\"xPx\": 37, 					\"yPx\": 40, 					\"timestamp\": 789456123 				}, 				{ 					\"xPx\": 46, 					\"yPx\": 39, 					\"timestamp\": 321456987 				}, 				{ 					\"xPx\": 60, 					\"yPx\": 45, 					\"timestamp\": 987456321 				} 			] 		} 	] }");
+		params.put("data", "{ 	\"device\": \""+ getDeviceHash() +"\", 	\"lines\": " + jsonLines.toString() +" }");
 		
 		try {
 			
@@ -152,11 +163,30 @@ public class Client implements Runnable {
 		while (!Thread.interrupted()) {
 			if (this.connectionAvailable()) {
 				// check for available lines that need to be uploaded
+				String lastUploadedId;
+				try {
+					lastUploadedId = this.keyValueRepo.getValue("lastUploadedId");
+				} catch (Exception e1) {
+					lastUploadedId = "0";
+				}
 				
+				ArrayList<HashMap<String, String>> lines = linesRepo.getLines(lastUploadedId);
 				
-				this.sendDeviceInfo();
-				this.sendLineData();
-				
+				if(lines.size() > 0) {
+					this.sendDeviceInfo();
+					
+					// build the lines json
+					JSONArray jsonLines = new JSONArray();
+					for(HashMap<String, String> line : lines) {
+						try {
+							jsonLines.put(new JSONObject(line.get("json")));
+						} catch (JSONException e) {
+							Log.e("lineparsing", "invalid line, skipped");
+						}
+					}
+					this.keyValueRepo.setValue("lastUploadedId", lines.get(lines.size() - 1).get("id"));
+					this.sendLineData(jsonLines);
+				}
 				// connection has been available --> long timeout
 				try {
 					Thread.sleep(120000); // 2min
