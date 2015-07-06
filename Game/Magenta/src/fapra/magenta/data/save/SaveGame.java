@@ -61,4 +61,13 @@ public class SaveGame {
         
         coins = settings.getInt("coins", 0);
     }
+    
+    public void reset() {
+        followerStartSpeed = 60;
+        followerIncrement = 0.5f;
+        coinPickupStage = 0;
+        stopTimeStage = 0;
+        moveForwardStage = 0;
+        coins = 0;
+    }
 }

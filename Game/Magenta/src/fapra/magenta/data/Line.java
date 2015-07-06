@@ -14,7 +14,15 @@ public class Line extends LinkedList<Point> {
 
     public Point origin = null;
     public Point target = null;
-
+    public boolean isResearchable = false;
+    public boolean isLandscape = false;
+    private int scrollDirection;
+    
+    public Line(int scrollDirection, boolean isLandscape) {
+        this.scrollDirection = scrollDirection;
+    }
+    
+    
     public float calculateDistance() {
         float distance = 0f;
         Point last = this.getFirst();
@@ -27,11 +35,6 @@ public class Line extends LinkedList<Point> {
     }
 
     public JSONObject toJSON() throws JSONException {
-        
-        // TODO use real values
-        boolean dummyBool = true;
-        // TODO use real values
-        int dummyInt = -10;
         
         JSONObject json = new JSONObject();
 
@@ -50,8 +53,8 @@ public class Line extends LinkedList<Point> {
         json.put("startTime", this.getFirst().time);
         json.put("endTime", this.getLast().time);
 
-        json.put("isLandscape", dummyBool);
-        json.put("scrollDirection", dummyInt);
+        json.put("isLandscape", isLandscape);
+        json.put("scrollDirection", scrollDirection);
         
         // Add points
         JSONArray points = new JSONArray();

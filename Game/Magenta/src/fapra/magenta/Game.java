@@ -29,7 +29,7 @@ public class Game implements GameInterface {
 	private InputHandler inputHandler;
 	private SaveGame saveGame;
 	private TargetGenerator targetGenerator;
-
+	
 	// Time variables
 	private long lastTime;
 	private long thisTime;
@@ -41,19 +41,13 @@ public class Game implements GameInterface {
 		saveGame = new SaveGame();
 		saveGame.load(activity);
 		inputHandler = new InputHandler();
-		renderer = new Renderer();
 		targetGenerator = new TargetGenerator(activity);
-		simulation = new Simulation(targetGenerator, activity);
 
-		if (preferences.getBoolean(
-				activity.getString(R.string.preference_sound_key), true)) {
-			soundManager = new SoundManager(activity);
-		} else {
-			soundManager = new NullSoundManager(activity);
-		}
-		if (preferences.getBoolean(
-				activity.getString(R.string.preference_music_key), true)) {
-			musicManager = new MusicManager(activity);
+	    renderer = new Renderer(targetGenerator.gridManager.pointSize, activity);
+		simulation = new Simulation(targetGenerator, activity);
+		
+		if (preferences.getBoolean(activity.getString(R.string.preference_sound_key), true)) {
+	       soundManager = new SoundManager(activity);
 		} else {
 			musicManager = new NullMusicManager(activity);
 		}
@@ -67,24 +61,37 @@ public class Game implements GameInterface {
 
 	private boolean isDone = false;
 
+	private boolean isGameOverShown = false;
+	
 	@Override
-	public void mainLoopIteration(Activity activity, SurfaceHolder surfaceHolder) {
+	public void mainLoopIteration(final Activity activity, SurfaceHolder surfaceHolder) {
 		// Calculate deltatime
 		thisTime = System.currentTimeMillis();
 		deltaTime = thisTime - lastTime;
 		lastTime = thisTime;
 
 		if (!simulation.isGameOver) {
-			// Process Input
-			simulation.processInput(inputHandler);
-			// Simulate World
-			simulation.update(deltaTime);
-			// Render World
-			renderer.draw(surfaceHolder, simulation, deltaTime);
-		} else {
-			// TODO Switch to gameOverScreen
-			this.isDone = true;
-			this.dispose();
+		      // Process Input
+	        simulation.processInput(inputHandler);
+	        // Simulate World
+	        simulation.update(deltaTime);
+	        // Render World
+	        renderer.draw(surfaceHolder, simulation, deltaTime);
+		} else if (!isGameOverShown){
+		    // Switch to gameOverScreen
+		    isGameOverShown = true;
+		    if (activity instanceof GameActivity) {
+		        Log.d("Game", "Open GameOver screen");
+		        activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        activity.onBackPressed();
+                        ((GameActivity) activity).replaceMainFragment(new GameOverScreen(simulation));
+                    }
+                });
+		    }
+		    this.isDone = true;
+		    this.dispose();
 		}
 	}
 
@@ -99,16 +106,20 @@ public class Game implements GameInterface {
 		Log.e("", out.toString());
 	}
 
-	@Override
-	public void dispose() {
-		soundManager.dispose();
-		musicManager.dispose();
-		renderer.dispose();
+    @Override
+    public void dispose() {
+        soundManager.dispose();
+        musicManager.dispose();
+        renderer.dispose();
+        isDone = true;
+    }
 
-	}
+    @Override
+    public boolean isDone() {
+        return isDone;
+    }
 
-	@Override
-	public boolean isDone() {
-		return isDone;
-	}
+    public void setLandscape(boolean b) {
+        simulation.isLandscape = b;
+    }
 }

@@ -12,7 +12,6 @@ import fapra.magenta.apiClient.Client;
 import fapra.magenta.menu.MenuFragment;
 
 public class GameActivity extends FragmentActivity {
-
 	Fragment currentFragment;
 	private Client apiClient;
 	private Thread apiClientThread;
@@ -29,28 +28,26 @@ public class GameActivity extends FragmentActivity {
 		// Check that the activity is using the layout version with
 		// the fragment_container FrameLayout
 		View gameView = findViewById(R.id.game_fragment);
-		if (gameView != null) {
+        if (gameView != null) {
 
-			// However, if we're being restored from a previous state,
-			// then we don't need to do anything and should return or else
-			// we could end up with overlapping fragments.
-			if (savedInstanceState != null) {
-				return;
-			}
+            // However, if we're being restored from a previous state,
+            // then we don't need to do anything and should return or else
+            // we could end up with overlapping fragments.
+            if (savedInstanceState != null) {
+                return;
+            }
 
-			// Create a new Fragment to be placed in the activity layout
-			Fragment firstFragment = new MenuFragment(this);
-			currentFragment = firstFragment;
+            // Create a new Fragment to be placed in the activity layout
+            Fragment firstFragment = new MenuFragment(this);
+            
+            // In case this activity was started with special instructions from an
+            // Intent, pass the Intent's extras to the fragment as arguments
+            firstFragment.setArguments(getIntent().getExtras());
 
-			// In case this activity was started with special instructions from
-			// an
-			// Intent, pass the Intent's extras to the fragment as arguments
-			firstFragment.setArguments(getIntent().getExtras());
-
-			// Add the fragment to the 'fragment_container' FrameLayout
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.game_fragment, firstFragment).commit();
-		}
+            // Add the fragment to the 'fragment_container' FrameLayout
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.game_fragment, firstFragment).commit();
+        }
 	}
 
 	public void replaceMainFragment(Fragment fragment) {
@@ -63,7 +60,7 @@ public class GameActivity extends FragmentActivity {
 
 		currentFragment = fragment;
 	}
-
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -72,10 +69,20 @@ public class GameActivity extends FragmentActivity {
 		apiClientThread = new Thread(apiClient);
 		apiClientThread.start();
 	}
-
+	
 	@Override
 	protected void onPause() {
 		super.onPause();
 		apiClientThread.interrupt();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+	    transaction.replace(R.id.game_fragment, currentFragment);
+	    transaction.addToBackStack(currentFragment.toString());
+	    transaction.commit();
 	}
+	
+    public void replaceMainFragmentNoBack(Fragment fragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.replace(R.id.game_fragment, fragment);
+        transaction.commit();
+    }
 }

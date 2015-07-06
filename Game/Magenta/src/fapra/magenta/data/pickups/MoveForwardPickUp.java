@@ -1,6 +1,11 @@
 package fapra.magenta.data.pickups;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import fapra.magenta.R;
 import fapra.magenta.data.Point;
+import fapra.magenta.simulation.Simulation;
 
 /**
  * Moves the next n steps forward automatically.
@@ -18,9 +23,12 @@ public class MoveForwardPickUp extends PickUpGameObject {
     }
 
     @Override
-    public void update(float delta) {
-        //TODO do next step
-        remainingSteps--;
+    public void update(float delta, Simulation sim) {
+        // do next step
+        if (isAlive()) {
+            sim.connectDirect();
+            remainingSteps--;
+        }
     }
 
     @Override
@@ -64,4 +72,13 @@ public class MoveForwardPickUp extends PickUpGameObject {
         }
     }
 
+    private static Bitmap img = null;
+    
+    @Override
+    public Bitmap getDrawable(Context context) {
+        if (img == null) {
+            img = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_forward);
+        }
+        return img;
+    }
 }

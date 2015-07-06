@@ -23,7 +23,7 @@ public class ScoringListener implements GameListenerInterface {
     
     @Override
     public void finishedLine(Line line) {
-        score += (float) ((line.calculateDistance() / line.origin.distanceTo(line.target)) * line.calculateDistance());
+        score += (float) (line.origin.distanceTo(line.target) / (line.calculateDistance()) * line.calculateDistance());
     }
 
     @Override

@@ -3,6 +3,8 @@ package fapra.magenta.rendering;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +13,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.view.SurfaceHolder;
 import fapra.magenta.Projection;
+import fapra.magenta.R;
 import fapra.magenta.data.Line;
 import fapra.magenta.data.Point;
 import fapra.magenta.data.obstacles.ObstacleGameObject;
@@ -28,10 +31,7 @@ public class Renderer {
     private Paint corridorPointPaint;
     private Paint oldPointPaint;
 
-    public Renderer() {
-        int lineWidth = 10;
-        int lineOldWidth = 50;
-        
+    public Renderer(int pointWidth, Context context) {
         // Line paints
 
         linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -43,7 +43,7 @@ public class Renderer {
 
         followerPaint = new Paint();
         followerPaint.setColor(Color.RED);
-        followerPaint.setStrokeWidth(lineOldWidth);
+        followerPaint.setStrokeWidth(pointWidth / 2);
         followerPaint.setStyle(Paint.Style.STROKE);
         followerPaint.setStrokeJoin(Paint.Join.ROUND);
         followerPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -51,7 +51,7 @@ public class Renderer {
         
         oldPaint = new Paint();
         oldPaint.setColor(Color.LTGRAY);
-        oldPaint.setStrokeWidth(50);
+        oldPaint.setStrokeWidth(pointWidth / 2);
         oldPaint.setStyle(Paint.Style.FILL_AND_STROKE);
         oldPaint.setStrokeJoin(Paint.Join.ROUND);
         oldPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -59,7 +59,7 @@ public class Renderer {
         
         corridorPaint = new Paint();
         corridorPaint.setColor(Color.WHITE);
-        corridorPaint.setStrokeWidth(lineOldWidth * 2);
+        corridorPaint.setStrokeWidth(pointWidth);
         corridorPaint.setStrokeJoin(Paint.Join.ROUND);
         corridorPaint.setStrokeCap(Paint.Cap.ROUND);
         corridorPaint.setAntiAlias(true);
@@ -92,12 +92,12 @@ public class Renderer {
         // HUD paints
         scorePaint = new Paint();
         scorePaint.setColor(Color.BLACK);
-        scorePaint.setTextSize(50);
+        scorePaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
         scorePaint.setTextAlign(Align.LEFT);
         
         coinPaint = new Paint();
         coinPaint.setColor(Color.BLACK);
-        coinPaint.setTextSize(50);
+        coinPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
         coinPaint.setTextAlign(Align.RIGHT);
     }
 
@@ -168,7 +168,7 @@ public class Renderer {
 
         // Draw Pickups
         for (PickUpGameObject pickup : simulation.pickups) {
-            renderPickup(c, pickup);
+            renderPickup(c, pickup, simulation.activity);
         }
 
         // Draw Obstacles
@@ -278,13 +278,11 @@ public class Renderer {
     }
 
     public void dispose() {
-        // TODO clear eventual used resources
     }
 
-    public void renderPickup(Canvas c, PickUpGameObject pickup) {
-        // TODO
-        c.drawCircle(pickup.position.x, pickup.position.y, pickup.radius, pickupPaint);
-        c.drawText(pickup.getClass().getSimpleName().subSequence(0, 2).toString(), pickup.position.x, pickup.position.y, pickupPaint);
+    public void renderPickup(Canvas c, PickUpGameObject pickup, Context context) {
+        Bitmap b = pickup.getDrawable(context);
+        c.drawBitmap(b, pickup.position.x - (b.getWidth()/2), pickup.position.y - (b.getHeight()/2), pickupPaint);
     }
 
     public void renderObstacle(Canvas c, ObstacleGameObject obstacle) {

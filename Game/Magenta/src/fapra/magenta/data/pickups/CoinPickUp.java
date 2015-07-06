@@ -1,6 +1,12 @@
 package fapra.magenta.data.pickups;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import fapra.magenta.R;
 import fapra.magenta.data.Point;
+import fapra.magenta.simulation.Simulation;
 
 public class CoinPickUp extends PickUpGameObject {
 
@@ -14,7 +20,7 @@ public class CoinPickUp extends PickUpGameObject {
     public int coinValue;
     
     @Override
-    public void update(float delta) {
+    public void update(float delta, Simulation sim) {
     }
 
     @Override
@@ -60,5 +66,15 @@ public class CoinPickUp extends PickUpGameObject {
         default:
             return 10;
         }
+    }
+
+    private static Bitmap img = null;
+    
+    @Override
+    public Bitmap getDrawable(Context context) {
+        if (img == null) {
+            img = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_coin);
+        }
+        return img;
     }
 }

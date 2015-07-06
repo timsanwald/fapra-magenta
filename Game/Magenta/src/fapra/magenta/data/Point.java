@@ -3,6 +3,8 @@ package fapra.magenta.data;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 public class Point {
 	
 	public float x;
@@ -34,6 +36,10 @@ public class Point {
 	}
 
     public double distanceTo(Point targetPoint) {
+        if (targetPoint == null) {
+            Log.d("Point", "target null");
+            return Double.MAX_VALUE;
+        }
         return Math.sqrt((targetPoint.x - this.x) * (targetPoint.x - this.x) 
                 + (targetPoint.y - this.y) * (targetPoint.y - this.y));
     }

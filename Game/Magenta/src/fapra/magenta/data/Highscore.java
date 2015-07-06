@@ -1,9 +1,8 @@
 package fapra.magenta.data;
 
-import java.util.Arrays;
-
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 public class Highscore {
     private SharedPreferences preferences;
@@ -14,16 +13,19 @@ public class Highscore {
         preferences = context.getSharedPreferences("Highscore", 0);
         names = new String[10];
         score = new long[10];
-
+        reset();
         for (int x = 0; x < 10; x++) {
-            names[x] = preferences.getString("name" + x, "-");
-            score[x] = preferences.getLong("score" + x, 0);
+            names[x] = preferences.getString("name" + x, null);
+            score[x] = preferences.getLong("score" + x, x);
+            Log.d("Highscore", "x=" +x +" name=" +names[x] + " score=" + score[x]);
         }
-
     }
 
     public String getName(int x) {
         // get the name of the x-th position in the Highscore-List
+        if (names[x] == null) {
+            return (x +1) + ".";
+        }
         return names[x];
     }
 
@@ -60,16 +62,30 @@ public class Highscore {
             names[x] = names[x - 1];
             this.score[x] = this.score[x - 1];
         }
-
-        this.names[position] = new String(name);
+        if (name == null) {
+            this.names[position] = new String((position + 1) + ".");
+        } else {
+            this.names[position] = new String(name);   
+        }
         this.score[position] = score;
 
+        save();
+        return true;
+    }
+    
+    public void reset() {
+        for (int i = 0; i<10 ; i++) {
+            this.score[i] = (9-i) * 10000 + 10000;
+            this.names[i] = null;
+        }
+    }
+    
+    public void save() {
         SharedPreferences.Editor editor = preferences.edit();
         for (int x = 0; x < 10; x++) {
             editor.putString("name" + x, this.names[x]);
             editor.putLong("score" + x, this.score[x]);
         }
         editor.commit();
-        return true;
     }
 }
