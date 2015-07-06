@@ -7,7 +7,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
-import fapra.magenta.apiClient.Client;
 import fapra.magenta.audio.music.IMusicManager;
 import fapra.magenta.audio.music.MusicManager;
 import fapra.magenta.audio.music.NullMusicManager;
@@ -30,46 +29,38 @@ public class Game implements GameInterface {
 	private InputHandler inputHandler;
 	private SaveGame saveGame;
 	private TargetGenerator targetGenerator;
-	private Client apiClient;
-	private Thread apiClientThread;
 	
 	// Time variables
 	private long lastTime;
 	private long thisTime;
 	private long deltaTime;
 
-    @Override
-	public void setup(Activity activity, View view, SurfaceHolder surfaceHolder, SharedPreferences preferences) {
-	    saveGame = new SaveGame();
-	    saveGame.load(activity);
+	@Override
+	public void setup(Activity activity, View view,
+			SurfaceHolder surfaceHolder, SharedPreferences preferences) {
+		saveGame = new SaveGame();
+		saveGame.load(activity);
 		inputHandler = new InputHandler();
 		targetGenerator = new TargetGenerator(activity);
+
 	    renderer = new Renderer(targetGenerator.gridManager.pointSize, activity);
 		simulation = new Simulation(targetGenerator, activity);
-		apiClient = new Client(activity);
-		
-		apiClientThread = new Thread(apiClient);
-		apiClientThread.start();
 		
 		if (preferences.getBoolean(activity.getString(R.string.preference_sound_key), true)) {
 	       soundManager = new SoundManager(activity);
 		} else {
-		    soundManager = new NullSoundManager(activity);
+			musicManager = new NullMusicManager(activity);
 		}
-        if (preferences.getBoolean(activity.getString(R.string.preference_music_key), true)) {
-            musicManager = new MusicManager(activity);
-        } else {
-            musicManager = new NullMusicManager(activity);
-        }
-        
+
 		simulation.setup(saveGame, soundManager);
-		
+
 		view.setOnTouchListener(inputHandler);
 		print(activity);
 		lastTime = System.currentTimeMillis();
 	}
 
 	private boolean isDone = false;
+
 	private boolean isGameOverShown = false;
 	
 	@Override
@@ -103,16 +94,16 @@ public class Game implements GameInterface {
 		    this.dispose();
 		}
 	}
-	
+
 	public void print(Activity activity) {
-	    Point out = new Point(1080, 1920);
-	    //activity.getWindowManager().getDefaultDisplay().getRealSize(out);
-	    DisplayMetrics outMetrics = new DisplayMetrics();
-	    activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
-	    Log.e("x", ""+ ((out.x / outMetrics.xdpi)) * 2.54f);
-	    Log.e("y", ""+ ((out.y / outMetrics.ydpi)) * 2.54f);
-	    Log.e("d", outMetrics.toString());
-	    Log.e("", out.toString());
+		Point out = new Point(1080, 1920);
+		// activity.getWindowManager().getDefaultDisplay().getRealSize(out);
+		DisplayMetrics outMetrics = new DisplayMetrics();
+		activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
+		Log.e("x", "" + ((out.x / outMetrics.xdpi)) * 2.54f);
+		Log.e("y", "" + ((out.y / outMetrics.ydpi)) * 2.54f);
+		Log.e("d", outMetrics.toString());
+		Log.e("", out.toString());
 	}
 
     @Override
@@ -120,7 +111,6 @@ public class Game implements GameInterface {
         soundManager.dispose();
         musicManager.dispose();
         renderer.dispose();
-        apiClientThread.interrupt();
         isDone = true;
     }
 
@@ -132,5 +122,4 @@ public class Game implements GameInterface {
     public void setLandscape(boolean b) {
         simulation.isLandscape = b;
     }
-    
 }

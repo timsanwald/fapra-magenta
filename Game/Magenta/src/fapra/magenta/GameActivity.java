@@ -1,6 +1,5 @@
 package fapra.magenta;
 
-import fapra.magenta.menu.MenuFragment;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -9,19 +8,25 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import fapra.magenta.apiClient.Client;
+import fapra.magenta.menu.MenuFragment;
 
 public class GameActivity extends FragmentActivity {
-    
-    @Override
+	Fragment currentFragment;
+	private Client apiClient;
+	private Thread apiClientThread;
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-        PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); 
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		PreferenceManager.setDefaultValues(this, R.xml.main_preferences, false);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		setContentView(R.layout.activity_main_screen);
 
 		// Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
+		// the fragment_container FrameLayout
 		View gameView = findViewById(R.id.game_fragment);
         if (gameView != null) {
 
@@ -44,14 +49,37 @@ public class GameActivity extends FragmentActivity {
                     .add(R.id.game_fragment, firstFragment).commit();
         }
 	}
-	
+
 	public void replaceMainFragment(Fragment fragment) {
-	    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-	    transaction.replace(R.id.game_fragment, fragment);
-	    transaction.addToBackStack(fragment.toString());
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction().setTransition(
+						FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		transaction.replace(R.id.game_fragment, fragment);
+		transaction.addToBackStack(fragment.toString());
+		transaction.commit();
+
+		currentFragment = fragment;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		apiClient = new Client(this);
+
+		apiClientThread = new Thread(apiClient);
+		apiClientThread.start();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		apiClientThread.interrupt();
+		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+	    transaction.replace(R.id.game_fragment, currentFragment);
+	    transaction.addToBackStack(currentFragment.toString());
 	    transaction.commit();
 	}
-
+	
     public void replaceMainFragmentNoBack(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         transaction.replace(R.id.game_fragment, fragment);
