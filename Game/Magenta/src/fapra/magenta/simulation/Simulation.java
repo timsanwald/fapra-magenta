@@ -16,6 +16,7 @@ import fapra.magenta.data.pickups.PickUpGameObject;
 import fapra.magenta.data.pickups.StopTimePickUp;
 import fapra.magenta.input.InputHandler;
 import fapra.magenta.listeners.CoinCalculationListener;
+import fapra.magenta.listeners.DataCollectionListener;
 import fapra.magenta.listeners.MultiGameListener;
 import fapra.magenta.listeners.ScoringListener;
 import fapra.magenta.target.TargetGenerator;
@@ -51,6 +52,7 @@ public class Simulation {
     public MultiGameListener gameListeners = new MultiGameListener();
     public ScoringListener scoringListener;
     public CoinCalculationListener coinCalculationListener;
+    public DataCollectionListener dataCollectionListener;
 
     public Simulation(TargetGenerator targetGenerator, Activity activity) {
         projection = new Projection();
@@ -82,6 +84,8 @@ public class Simulation {
         gameListeners.addGameListener(scoringListener);
         coinCalculationListener = new CoinCalculationListener();
         gameListeners.addGameListener(coinCalculationListener);
+        dataCollectionListener = new DataCollectionListener();
+        gameListeners.addGameListener(dataCollectionListener);
     }
 
     public void addCurrentLine() {
