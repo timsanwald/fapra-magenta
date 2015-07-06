@@ -79,4 +79,8 @@ public class StopTimePickUp extends PickUpGameObject {
         }
         return img;
     }
+    
+    public static int getMaxStage() {
+        return 4;
+    }
 }

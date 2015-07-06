@@ -51,7 +51,7 @@ public class ShopFragment extends Fragment {
         timeUpgrade.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sg.coins > StopTimePickUp.getUpgradeCost(sg.stopTimeStage + 1)) {
+                if (sg.stopTimeStage + 1 <= StopTimePickUp.getMaxStage() && sg.coins > StopTimePickUp.getUpgradeCost(sg.stopTimeStage + 1)) {
                     sg.stopTimeStage++;
                     sg.coins -= StopTimePickUp.getUpgradeCost(sg.stopTimeStage);
                     StopTimePickUp.setStage(sg.stopTimeStage);
@@ -68,7 +68,7 @@ public class ShopFragment extends Fragment {
         coinUpgrade.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sg.coins > CoinPickUp.getUpgradeCost(sg.coinPickupStage + 1)) {
+                if (sg.coinPickupStage + 1 <= CoinPickUp.getMaxStage() && sg.coins > CoinPickUp.getUpgradeCost(sg.coinPickupStage + 1)) {
                     sg.coinPickupStage++;
                     sg.coins -= CoinPickUp.getUpgradeCost(sg.coinPickupStage);
                     CoinPickUp.setStage(sg.coinPickupStage);
@@ -85,7 +85,7 @@ public class ShopFragment extends Fragment {
         forwardUpgrade.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sg.coins > MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1)) {
+                if (sg.moveForwardStage + 1 <= MoveForwardPickUp.getMaxStage() && sg.coins > MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1)) {
                     sg.moveForwardStage++;
                     sg.coins -= MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage);
                     MoveForwardPickUp.setStage(sg.moveForwardStage);
@@ -122,22 +122,21 @@ public class ShopFragment extends Fragment {
         
         // enable possible upgrades
         // Update costs
-        // TODO implement maximum upgrades
-        if (sg.coins > MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1)) {
+        if (sg.moveForwardStage + 1 <= MoveForwardPickUp.getMaxStage() && sg.coins > MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1)) {
             forwardUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.VISIBLE);
             ((TextView) (forwardUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.WHITE);
         } else {
             forwardUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.INVISIBLE);
             ((TextView) (forwardUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.RED);
         }
-        if (sg.coins > CoinPickUp.getUpgradeCost(sg.coinPickupStage + 1)) {
+        if (sg.coinPickupStage + 1 <= CoinPickUp.getMaxStage() && sg.coins > CoinPickUp.getUpgradeCost(sg.coinPickupStage + 1)) {
             coinUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.VISIBLE);
             ((TextView) (coinUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.WHITE);
         } else {
             coinUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.INVISIBLE);
             ((TextView) (coinUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.RED);
         }
-        if (sg.coins > StopTimePickUp.getUpgradeCost(sg.stopTimeStage + 1)) {
+        if (sg.stopTimeStage + 1 <= StopTimePickUp.getMaxStage() && sg.coins > StopTimePickUp.getUpgradeCost(sg.stopTimeStage + 1)) {
             timeUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.VISIBLE);
             ((TextView) (timeUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.WHITE);
         } else {

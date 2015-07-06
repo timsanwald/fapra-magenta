@@ -81,4 +81,8 @@ public class MoveForwardPickUp extends PickUpGameObject {
         }
         return img;
     }
+
+    public static int getMaxStage() {
+        return 4;
+    }
 }

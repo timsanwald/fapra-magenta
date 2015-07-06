@@ -77,4 +77,8 @@ public class CoinPickUp extends PickUpGameObject {
         }
         return img;
     }
+
+    public static int getMaxStage() {
+        return 4;
+    }
 }
