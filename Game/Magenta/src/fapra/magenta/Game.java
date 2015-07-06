@@ -116,7 +116,6 @@ public class Game implements GameInterface {
         soundManager.dispose();
         musicManager.dispose();
         renderer.dispose();
-        apiClientThread.interrupt();
         isDone = true;
     }
 
