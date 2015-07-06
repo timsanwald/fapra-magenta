@@ -16,7 +16,7 @@ public final class KeyValueContract {
 	private static final String COMMA_SEP = ",";
 	public static final String SQL_CREATE_KEY_VALUE =
 	    "CREATE TABLE " + KeyValue.TABLE_NAME + " (" +
-	    KeyValue._ID + " INTEGER PRIMARY KEY," + COMMA_SEP + 
+	    KeyValue._ID + " INTEGER PRIMARY KEY," + 
 	    KeyValue.COLUMN_NAME_KEY + TEXT_TYPE + COMMA_SEP + 
 	    KeyValue.COLUMN_NAME_VALUE + TEXT_TYPE +
 	    " )";

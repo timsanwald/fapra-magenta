@@ -31,5 +31,7 @@ public class LineSaveThread extends Thread {
 				}
 			}
 		}
+		
+		linesRepo.close();
 	}
 }

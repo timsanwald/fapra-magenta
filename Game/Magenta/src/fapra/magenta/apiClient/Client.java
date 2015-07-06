@@ -202,6 +202,9 @@ public class Client implements Runnable {
 				}
 			}
 		}
+		
+		this.keyValueRepo.close();
+		this.linesRepo.close();
 	}
 	
 	private String getDeviceHash() {

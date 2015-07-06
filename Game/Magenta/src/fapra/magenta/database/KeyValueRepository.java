@@ -52,4 +52,9 @@ public class KeyValueRepository {
 			this.writeDb.insert(KeyValue.TABLE_NAME, null, values);
 		}
 	}
+	
+	public void close() {
+		this.readDb.close();
+		this.writeDb.close();
+	}
 }

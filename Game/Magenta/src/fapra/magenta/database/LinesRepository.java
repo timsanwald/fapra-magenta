@@ -46,4 +46,9 @@ public class LinesRepository {
 
 		return lines;
 	}
+	
+	public void close() {
+		this.readDb.close();
+		this.writeDb.close();
+	}
 }
