@@ -14,7 +14,7 @@ import fapra.magenta.simulation.Simulation;
  */
 public class MoveForwardPickUp extends PickUpGameObject {
 
-    public static int n = 5;
+    public static int n = 1;
     
     private int remainingSteps;
     public MoveForwardPickUp(Point position, float radius) {
@@ -39,20 +39,32 @@ public class MoveForwardPickUp extends PickUpGameObject {
     public static void setStage(int moveForwardStage) {
         // TODO Better numbers
         switch (moveForwardStage) {
+        case 0:
+            n = 1;
+            break;
         case 1:
-            n = 5;
+            n = 2;
             break;
         case 2:
-            n = 10;
+            n = 5;
             break;
         case 3:
-            n = 15;
+            n = 7;
             break;
         case 4:
-            n = 20;
+            n = 10;
+            break;
+        case 5:
+            n = 13;
+            break;
+        case 6:
+            n = 15;
+            break;
+        case 7:
+            n = 18;
             break;
         default:
-            n = 25;
+            n = 2;
             break;
         }
     }
@@ -60,13 +72,19 @@ public class MoveForwardPickUp extends PickUpGameObject {
     public static int getUpgradeCost(int stage) {
         switch (stage) {
         case 1:
-            return 25;
+            return 100;
         case 2:
-            return 75;
+            return 250;
         case 3:
-            return 200;
+            return 750;
         case 4:
-            return 500;
+            return 1250;
+        case 5:
+            return 2500;
+        case 6:
+            return 5000;
+        case 7:
+            return 10000;
         default:
             return 10;
         }
@@ -83,6 +101,11 @@ public class MoveForwardPickUp extends PickUpGameObject {
     }
 
     public static int getMaxStage() {
-        return 4;
+        return 7;
+    }
+
+    @Override
+    public String toString() {
+        return "MoveForwardPickUp [remainingSteps=" + remainingSteps + "]";
     }
 }

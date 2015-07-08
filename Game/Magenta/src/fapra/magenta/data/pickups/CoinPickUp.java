@@ -3,19 +3,23 @@ package fapra.magenta.data.pickups;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import fapra.magenta.R;
 import fapra.magenta.data.Point;
 import fapra.magenta.simulation.Simulation;
 
 public class CoinPickUp extends PickUpGameObject {
 
+    @Override
+    public String toString() {
+        return "CoinPickUp [coinValue=" + coinValue + "]";
+    }
+
     public CoinPickUp(Point position, float radius) {
         super(position, radius);
         coinValue = value;
     }
 
-    public static int value = 10;
+    public static int value = 5;
     
     public int coinValue;
     
@@ -45,7 +49,16 @@ public class CoinPickUp extends PickUpGameObject {
             value = 50;
             break;
         case 4:
-            value = 100;
+            value = 70;
+            break;
+        case 5:
+            value = 90;
+            break;
+        case 6:
+            value = 125;
+            break;
+        case 7:
+            value = 175;
             break;
         default:
             value = 5;
@@ -58,10 +71,14 @@ public class CoinPickUp extends PickUpGameObject {
         case 1:
             return 25;
         case 2:
-            return 75;
+            return 50;
         case 3:
-            return 200;
+            return 100;
         case 4:
+            return 250;
+        case 6:
+            return 350;
+        case 7:
             return 500;
         default:
             return 10;
@@ -79,6 +96,6 @@ public class CoinPickUp extends PickUpGameObject {
     }
 
     public static int getMaxStage() {
-        return 4;
+        return 7;
     }
 }

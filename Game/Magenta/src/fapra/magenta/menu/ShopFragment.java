@@ -143,12 +143,28 @@ public class ShopFragment extends Fragment {
             timeUpgrade.findViewById(R.id.upgrade_image).setVisibility(View.INVISIBLE);
             ((TextView) (timeUpgrade.findViewById(R.id.upgrade_item_cost))).setTextColor(Color.RED);
         }
-        ((TextView) (forwardUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Cost: "
-                + MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1));
-        ((TextView) (coinUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Cost: "
-                + CoinPickUp.getUpgradeCost(sg.coinPickupStage + 1));
-        ((TextView) (timeUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Cost: "
-                + StopTimePickUp.getUpgradeCost(sg.stopTimeStage + 1));
+        if (sg.stopTimeStage + 1 > StopTimePickUp.getMaxStage()) {
+            //Maximum upgrade
+            ((TextView) (timeUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Max");
+        } else {
+            ((TextView) (timeUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Cost: "
+                    + StopTimePickUp.getUpgradeCost(sg.stopTimeStage + 1));
+        }
+        if (sg.moveForwardStage + 1 > MoveForwardPickUp.getMaxStage()) {
+            ((TextView) (forwardUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Max");
+        } else {
+            ((TextView) (forwardUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Cost: "
+                    + MoveForwardPickUp.getUpgradeCost(sg.moveForwardStage + 1));
+        }
+        
+        if (sg.coinPickupStage + 1 > CoinPickUp.getMaxStage()) {
+            ((TextView) (coinUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Max");
+        } else {
+            ((TextView) (coinUpgrade.findViewById(R.id.upgrade_item_cost))).setText("Cost: "
+                    + CoinPickUp.getUpgradeCost(sg.coinPickupStage + 1));
+        }
+        
+        
 
         // Update Coins
         coinValueView.setText("" + sg.coins);

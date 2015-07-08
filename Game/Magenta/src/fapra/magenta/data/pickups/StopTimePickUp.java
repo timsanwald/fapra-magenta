@@ -3,7 +3,6 @@ package fapra.magenta.data.pickups;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import fapra.magenta.R;
 import fapra.magenta.data.Point;
 import fapra.magenta.simulation.Simulation;
@@ -15,7 +14,7 @@ public class StopTimePickUp extends PickUpGameObject {
      */
     public float remainingTime;
     
-    public static float time = 500f;
+    public static float time = 1000f;
     
     public StopTimePickUp(Point position, float radius) {
         super(position, radius);
@@ -35,22 +34,25 @@ public class StopTimePickUp extends PickUpGameObject {
     public static void setStage(int stage) {
         switch(stage) {
         case 0:
-            time = 500f;
-            break;
-        case 1:
-            time = 750f;
-            break;
-        case 2:
             time = 1000f;
             break;
-        case 3:
-            time = 1500f;
+        case 1:
+            time = 2000f;
             break;
-        case 4:
+        case 2:
             time = 2500f;
             break;
+        case 3:
+            time = 3500f;
+            break;
+        case 4:
+            time = 4000f;
+            break;
+        case 5:
+            time = 5000f;
+            break;
         default:
-            time = 500f;
+            time = 1000f;
             break;
         }
     }
@@ -65,6 +67,8 @@ public class StopTimePickUp extends PickUpGameObject {
             return 200;
         case 4:
             return 500;
+        case 5:
+            return 2000;
         default:
             return 10;
         }
@@ -82,5 +86,10 @@ public class StopTimePickUp extends PickUpGameObject {
     
     public static int getMaxStage() {
         return 4;
+    }
+
+    @Override
+    public String toString() {
+        return "StopTimePickUp [remainingTime=" + remainingTime + "]";
     }
 }

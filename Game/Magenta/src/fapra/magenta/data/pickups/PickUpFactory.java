@@ -2,6 +2,7 @@ package fapra.magenta.data.pickups;
 
 import java.util.Random;
 
+import android.util.Log;
 import fapra.magenta.data.Point;
 import fapra.magenta.simulation.Simulation;
 import fapra.magenta.target.GridManager;
@@ -14,16 +15,20 @@ public class PickUpFactory {
     
     public static PickUpGameObject generatePickUpRandomly(Simulation sim, GridManager manager) {
         // To add a new PickUp increase the amount of pickups and add a new case below
+        PickUpGameObject pickup = null;
         switch(rand.nextInt(possibilities)) {
             case 0:
-                return new StopTimePickUp(generateRandomPosition(sim), manager.pointSize - 10);
+                pickup = new StopTimePickUp(generateRandomPosition(sim), manager.pointSize - 10);
+                break;
             case 1:
-                return new MoveForwardPickUp(generateRandomPosition(sim), manager.pointSize - 10);
+                pickup = new MoveForwardPickUp(generateRandomPosition(sim), manager.pointSize - 10);
+                break;
             case 2:
-                return new CoinPickUp(generateRandomPosition(sim), manager.pointSize - 10);
+                pickup = new CoinPickUp(generateRandomPosition(sim), manager.pointSize - 10);
+                break;
         }
-        // shouldn't happen
-        return null;
+        Log.d("Factory", "Generated Pickup " + pickup.toString());
+        return pickup;
     }
     
     private static Point generateRandomPosition(Simulation sim) {
