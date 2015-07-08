@@ -30,6 +30,7 @@ public class Renderer {
     private Paint followerPointPaint;
     private Paint corridorPointPaint;
     private Paint oldPointPaint;
+    private Paint distancePaint;
 
     public Renderer(int pointWidth, Context context) {
         // Line paints
@@ -90,15 +91,18 @@ public class Renderer {
         oldPointPaint.setColor(Color.LTGRAY);
         
         // HUD paints
-        scorePaint = new Paint();
-        scorePaint.setColor(Color.BLACK);
-        scorePaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
+        Paint hudBasicPaint = new Paint();
+        hudBasicPaint.setColor(Color.BLACK);
+        hudBasicPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
+        
+        scorePaint = new Paint(hudBasicPaint);
         scorePaint.setTextAlign(Align.LEFT);
         
-        coinPaint = new Paint();
-        coinPaint.setColor(Color.BLACK);
-        coinPaint.setTextSize(context.getResources().getDimensionPixelSize(R.dimen.hudFontSize));
+        coinPaint = new Paint(hudBasicPaint);
         coinPaint.setTextAlign(Align.RIGHT);
+        
+        distancePaint = new Paint(hudBasicPaint);
+        distancePaint.setTextAlign(Align.CENTER);
     }
 
     public void draw(SurfaceHolder surfaceHolder, Simulation simulation, long delta) {
@@ -118,12 +122,17 @@ public class Renderer {
                 surfaceHolder.unlockCanvasAndPost(c);
         }
     }
-
+    
     private void drawHUD(Canvas c, Simulation simulation) {
-        String textScore = "score: " + simulation.scoringListener.score;
         Rect rect = new Rect();
+        
+        String textScore = "score: " + simulation.scoringListener.score;
         scorePaint.getTextBounds(textScore, 0, textScore.length(), rect);
         c.drawText(textScore, 10, (-rect.top) + 10, scorePaint);
+        
+        textScore = "distance: " + ((int) (simulation.timeLeft / 1000f)) + "sec";
+        coinPaint.getTextBounds(textScore, 0, textScore.length(), rect);
+        c.drawText(textScore, c.getWidth()/2, (-rect.top) + 10, distancePaint);
         
         textScore = "coins: " + simulation.coinCalculationListener.coins;
         coinPaint.getTextBounds(textScore, 0, textScore.length(), rect);

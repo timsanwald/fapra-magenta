@@ -98,6 +98,7 @@ public class Simulation {
     }
 
     private PickUpGameObject currentPickup = null;
+    public float timeLeft = 0;
 
     // Update the environment
     public void update(float delta) {
@@ -112,6 +113,10 @@ public class Simulation {
             follower = follower + (followerSpeed / 1000) * (delta);
         }
 
+        // calculate time left
+        timeLeft  = ((currentDistance - follower) * 1000f) / followerSpeed;
+        
+        
         // Check for expired pickup
         if (currentPickup != null && !currentPickup.isAlive()) {
             currentPickup = null;
