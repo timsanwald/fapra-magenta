@@ -58,7 +58,7 @@ public class CoinPickUp extends PickUpGameObject {
             value = 125;
             break;
         case 7:
-            value = 175;
+            value = 200;
             break;
         default:
             value = 5;
@@ -76,10 +76,12 @@ public class CoinPickUp extends PickUpGameObject {
             return 100;
         case 4:
             return 250;
-        case 6:
+        case 5:
             return 350;
-        case 7:
+        case 6:
             return 500;
+        case 7:
+            return 750;
         default:
             return 10;
         }
