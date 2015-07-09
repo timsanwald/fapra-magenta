@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use DB;
 
 use App\Http\Controllers\Controller;
 use App\Models\Device;
@@ -21,6 +22,8 @@ class LineController extends Controller
 	 */
 	public function postSaveLines(Request $request)
 	{
+		$storedLineIds = [];
+
 		// parse json
 		$data = json_decode($request->input('data', ''), true);
 
@@ -75,6 +78,9 @@ class LineController extends Controller
 
 			// insert points into db
 			$dbLine->points()->saveMany($linePoints);
+
+			// line is completely stored in db
+			$storedLineIds[] = $dbLine->id;
 		}
 
 		// catch old clients
@@ -82,6 +88,9 @@ class LineController extends Controller
 		{
 			$data['lineId'] = '';
 		}
+
+		// all lines are complete
+		DB::table('lines')->whereIn('id', $storedLineIds)->update(['complete' => 1]);
 
 		return $data['lineId'];
 	}

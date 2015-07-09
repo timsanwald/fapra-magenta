@@ -127,10 +127,10 @@ public class Client implements Runnable {
 		}
 	}
 
-	private void sendLineData(JSONArray jsonLines) {
+	private String sendLineData(JSONArray jsonLines, String highestLineId) {
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("data", "{ 	\"device\": \"" + getDeviceHash()
-				+ "\", 	\"lines\": " + jsonLines.toString() + " }");
+				+ "\", 	\"lines\": " + jsonLines.toString() + ", \"lineId\": " + highestLineId + " }");
 
 		try {
 
@@ -158,16 +158,24 @@ public class Client implements Runnable {
 					connection.getInputStream()));
 
 			// TODO remove this dummy output stuff
+			String result = "";
 			for (String line; (line = reader.readLine()) != null;) {
-				System.out.println(line);
+				result += line;
 			}
+			
+			Log.d("server response sendLineData", result);
 
 			writer.close();
 			reader.close();
 			connection.disconnect();
+			
+			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		// s.th. went wrong with the connection - leave error handling to the server
+		return highestLineId;
 	}
 
 	private String buildPostDataString(HashMap<String, String> params)
@@ -210,16 +218,25 @@ public class Client implements Runnable {
 
 					// build the lines json
 					JSONArray jsonLines = new JSONArray();
-					for (HashMap<String, String> line : lines) {
+					for (int i = 0; i < lines.size(); i++) {
 						try {
-							jsonLines.put(new JSONObject(line.get("json")));
+							jsonLines.put(new JSONObject(lines.get(i).get("json")));
 						} catch (JSONException e) {
 							Log.e("lineparsing", "invalid line, skipped");
 						}
+						
+						if(jsonLines.length() > 4) {
+							// we reached 5 lines - send them and clean the json array
+							String result = this.sendLineData(jsonLines, lines.get(i).get("id"));
+							this.keyValueRepo.setValue("lastUploadedId", result);
+							jsonLines = new JSONArray();
+						}
 					}
-					this.keyValueRepo.setValue("lastUploadedId",
-							lines.get(lines.size() - 1).get("id"));
-					this.sendLineData(jsonLines);
+					
+					if(jsonLines.length() > 0) {
+						String result = this.sendLineData(jsonLines, lines.get(lines.size() - 1).get("id"));
+						this.keyValueRepo.setValue("lastUploadedId", result);
+					}
 				}
 				// connection has been available --> long timeout
 				try {
