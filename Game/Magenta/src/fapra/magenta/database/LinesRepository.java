@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import fapra.magenta.database.LinesContract.LinesEntry;
 
 public class LinesRepository {
@@ -45,6 +46,17 @@ public class LinesRepository {
 		}
 
 		return lines;
+	}
+	
+	public void deleteLinesToId(String lastDelId) {
+		String[] args = { lastDelId };
+		writeDb.delete(LinesEntry.TABLE_NAME, LinesEntry._ID + " <= ?", args);
+		
+		Log.d("Lines repository", "deleted lines");
+	}
+	
+	public int rowCountGreaderId(String id) {
+		return this.getLines(id).size();
 	}
 	
 	public void close() {

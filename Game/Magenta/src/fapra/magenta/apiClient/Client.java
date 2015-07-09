@@ -157,7 +157,6 @@ public class Client implements Runnable {
 			BufferedReader reader = new BufferedReader(new InputStreamReader(
 					connection.getInputStream()));
 
-			// TODO remove this dummy output stuff
 			String result = "";
 			for (String line; (line = reader.readLine()) != null;) {
 				result += line;
@@ -174,8 +173,8 @@ public class Client implements Runnable {
 			e.printStackTrace();
 		}
 		
-		// s.th. went wrong with the connection - leave error handling to the server
-		return highestLineId;
+		// s.th. went wrong with the connection
+		return "";
 	}
 
 	private String buildPostDataString(HashMap<String, String> params)
@@ -228,6 +227,12 @@ public class Client implements Runnable {
 						if(jsonLines.length() > 4) {
 							// we reached 5 lines - send them and clean the json array
 							String result = this.sendLineData(jsonLines, lines.get(i).get("id"));
+							
+							if(result.equals("")) {
+								// s.th. went wrong with the connection leave for loop, try one more time outside of the for loop and submit the other data later
+								break;
+							}
+							
 							this.keyValueRepo.setValue("lastUploadedId", result);
 							jsonLines = new JSONArray();
 						}
@@ -235,7 +240,11 @@ public class Client implements Runnable {
 					
 					if(jsonLines.length() > 0) {
 						String result = this.sendLineData(jsonLines, lines.get(lines.size() - 1).get("id"));
-						this.keyValueRepo.setValue("lastUploadedId", result);
+						
+						if(!result.equals("")) {
+							// everything went smooth, update the last sent line locally
+							this.keyValueRepo.setValue("lastUploadedId", result);
+						}
 					}
 				}
 				// connection has been available --> long timeout

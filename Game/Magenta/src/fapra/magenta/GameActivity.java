@@ -1,5 +1,6 @@
 package fapra.magenta;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import fapra.magenta.apiClient.Client;
+import fapra.magenta.database.CleanUpThread;
 import fapra.magenta.menu.MenuFragment;
 
 public class GameActivity extends FragmentActivity {
@@ -80,5 +82,12 @@ public class GameActivity extends FragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		apiClientThread.interrupt();
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		// clean up the database
+		new CleanUpThread((Context) this).start();
 	}
 }

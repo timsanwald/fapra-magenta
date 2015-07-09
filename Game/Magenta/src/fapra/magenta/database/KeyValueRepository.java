@@ -57,4 +57,10 @@ public class KeyValueRepository {
 		this.readDb.close();
 		this.writeDb.close();
 	}
+
+	public void deleteKey(String key) {
+		String[] args = { key };
+		writeDb.delete(KeyValue.TABLE_NAME, KeyValue.COLUMN_NAME_KEY + " <= ?", args);
+		
+	}
 }
