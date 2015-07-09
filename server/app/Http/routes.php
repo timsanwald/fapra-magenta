@@ -18,5 +18,5 @@ Route::get('/', function () {
 Route::controller('api/device', '\App\Http\Controllers\Api\DeviceController');
 Route::controller('api/line', '\App\Http\Controllers\Api\LineController');
 Route::get('api/dbLines/start-{startX}-{startY}/end-{endX}-{endY}', function($startX, $startY, $endX, $endY) {
-	return \App\Models\Line::with('points')->where('startGridX', $startX)->where('startGridY')->where('endGridX', $endX)->where('endGridY', $endY)->get();
+	return \App\Models\Line::with('points')->where('startGridX', $startX)->where('startGridY', $startY)->where('endGridX', $endX)->where('endGridY', $endY)->get();
 });
