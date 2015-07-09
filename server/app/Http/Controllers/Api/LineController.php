@@ -77,6 +77,12 @@ class LineController extends Controller
 			$dbLine->points()->saveMany($linePoints);
 		}
 
-		return '';
+		// catch old clients
+		if(!isset($data['lineId']))
+		{
+			$data['lineId'] = '';
+		}
+
+		return $data['lineId'];
 	}
 }
