@@ -22,5 +22,5 @@ Route::get('api/dbLines/start-{startX}-{startY}/end-{endX}-{endY}', function($st
 });
 
 Route::get('api/dbLines', function() {
-	return \App\Models\Line::with('points')->get();
+	return \App\Models\Line::with('points')->paginate(250);
 });
