@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
         JButton btnRedraw = new JButton("Redraw");
         btnRedraw.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                float multiplier = 2.5f;
+                float multiplier = 1f;
                 List<Point> points = new ArrayList<Point>();
                 List<CombinedRow> filteredRows = Filter.filterRows(
                         MainFrame.this.rows, 

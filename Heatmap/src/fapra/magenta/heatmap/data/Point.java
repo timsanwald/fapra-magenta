@@ -7,6 +7,15 @@ public class Point {
     private int xPx;
     private int yPx;
     
+    
+    public Point(long id, int lineID, int xPx, int yPx) {
+        super();
+        this.id = id;
+        this.lineID = lineID;
+        this.xPx = xPx;
+        this.yPx = yPx;
+    }
+
     public Point(String[] line) throws NumberFormatException {
         id = Long.parseLong(line[0]);
         lineID = Integer.parseInt(line[1]);

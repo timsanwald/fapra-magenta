@@ -1,5 +1,9 @@
 package fapra.magenta.heatmap.target;
 
+import java.util.Random;
+
+import fapra.magenta.heatmap.Point;
+
 public class GridManager {
 	// screen in cm
 	private double screenXCm;
@@ -32,6 +36,7 @@ public class GridManager {
 
 		this.gridXPx = (int) (usedXPx / ((int) this.screenXCm));
 		this.gridYPx = (int) (usedYPx / ((int) this.screenYCm));
+		
 		// calculate the borders
 		this.borderXPx = (int) ((this.screenXPx - (gridXPx * (int) screenXCm)) / 2);
 		this.borderYPx = (int) ((this.screenYPx - (gridYPx * (int) screenYCm)) / 2);

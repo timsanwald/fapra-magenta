@@ -15,58 +15,60 @@ public class CombinedRow {
         this.line = line;
         this.points = points;
     }
-
-    public void normalize() {
-        // Calculate Pointsize
-        if (device == null || points == null || device.yDpi < 10) {
-            System.out.println(this.toString());
-            return;
-        }
-        GridManager manager = new GridManager(device.screenXPx, device.screenYPx, device.xDpi, device.yDpi);
-        int pointSize = manager.pointSize;
-        
-        // Remove shift of points
-        
-        int startGridXPx = manager.targetToPxX(line.startGridX);
-        int startGridYPx = manager.targetToPxY(line.startGridY);
-        int endGridX = manager.targetToPxX(line.endGridX);
-        int endGridY = manager.targetToPxY(line.endGridY);
-        
-        int shiftX = line.startPxX - startGridXPx;
-        int shiftY = line.startPxY - startGridYPx;
-        int shiftEndX = line.endPxX - endGridX;
-        int shiftEndY = line.endPxY - endGridY;
-        
-        int epsilonX = Math.abs(shiftX) - Math.abs(shiftEndX);
-        int epsilonY = Math.abs(shiftY) - Math.abs(shiftEndY);
-        if (epsilonX > 1 || epsilonY > 1) {
-            System.out.println("epsilonX=" + epsilonX + " epsilonY=" + epsilonY);
-        }
-        for (Point p : points) {
-            p.setxPx(p.getxPx() - shiftX);
-            p.setyPx(p.getyPx() - shiftY);
-        }
-        
-        // Normalize the screen coordinates
-        double normX = ((double) pixelX / (double) device.screenXPx);
-        double normY = ((double) pixelY / (double) device.screenYPx);
-        
-        for (Point p : points) {
-            if (p.getxPx() > pixelX) {
-                System.out.println("false x=" + p.getxPx());
-            } else if (p.getyPx() > pixelY) {
-                System.out.println("false y=" + p.getyPx());
-            }
-            //TODO maybe remove casts
-            p.setxPx((int) (((double) p.getxPx() / (double) device.screenXPx) * (double) pixelX));
-            p.setyPx((int) (p.getyPx()));
-
-        }
-    }
+    static float max = 0;
     
     public static int pixelX = 1080;
     public static int pixelY = 1920;
+    public static GridManager refManager = new GridManager(pixelX, pixelY, 440, 440);
+    
+    public void normalize() {
+        // Calculate Pointsize
+        if (device == null || points == null) {
+            return;
+        }
+        GridManager manager = new GridManager(device.screenXPx, device.screenYPx, device.xDpi, device.yDpi);
+        
+        // Remove shift of points
+        int startGridXPx = manager.targetToPxX(line.startGridX);
+        int startGridYPx = manager.targetToPxY(line.startGridY);
+        
+        int shiftX = startGridXPx - line.startPxX;
+        int shiftY = startGridYPx - line.startPxY;
+        
+        for (Point p : points) {
+            p.setxPx(p.getxPx() + shiftX);
+            p.setyPx(p.getyPx() + shiftY);
+        }
+        
+        
+        // Normalize the screen coordinates
+//        double normX = ((double) pixelX / (double) device.screenXPx);
+//        double normY = ((double) pixelY / (double) device.screenYPx);
+//        
+//        for (Point p : points) {
+//            //TODO maybe remove casts
+//            p.setxPx((int) (((double) p.getxPx() / (double) device.screenXPx) * (double) pixelX));
+//            p.setyPx((int) (((double) p.getyPx() / (double) device.screenYPx) * (double) pixelY));
+//        }
+        Point start = new Point(-1, -1, line.startPxX + shiftX - 200, line.startPxY + shiftY);
+        
+        Point normStart = new Point(-1, -1, refManager.targetToPxX(line.startGridX), refManager.targetToPxY(line.startGridY));
+        shiftPoints(start.getxPx() - normStart.getxPx(), start.getyPx() - normStart.getyPx());
+        
+    }
 
+    private void shiftPoints(float shiftX, float shiftY) {
+        shiftPoints((int) shiftX, (int) shiftY);
+    }
+
+    private void shiftPoints(int x, int y) {
+        System.out.println("Shift=" +x  + ", " + y);
+        for (Point p : this.points) {
+            p.setxPx(p.getxPx() - x);
+            p.setyPx(p.getyPx() - y);
+        }
+    }
+    
     @Override
     public String toString() {
         return "CombinedRow [device=" + device.toString() + ", line=" + line.toString() + ", points=" + points + ", pixelX=" + pixelX + ", pixelY=" + pixelY

@@ -36,9 +36,6 @@ public class Line {
     }
 
     public int getDeviceId() {
-        if (deviceId < 0 || deviceId > 30) {
-            System.out.println("deviceId = " + deviceId);
-        }
         return deviceId;
     }
 
