@@ -36,7 +36,8 @@ public class MainFrame extends JFrame {
         
         final JLabel lblNewLabel = new JLabel("");
         getContentPane().add(lblNewLabel, BorderLayout.CENTER);
-
+        lblNewLabel.setSize(CombinedRow.pixelX/2, CombinedRow.pixelY/2);
+        
         JPanel Configuration = new JPanel();
         getContentPane().add(Configuration, BorderLayout.NORTH);
 
@@ -97,10 +98,11 @@ public class MainFrame extends JFrame {
         Configuration.add(lblDirection);
         
         txtDir = new JTextField();
-        txtDir.setText("0");
+        txtDir.setText("3");
         Configuration.add(txtDir);
         txtDir.setColumns(10);
         Configuration.add(btnRedraw);
+        pack();
     }
 
     private static final long serialVersionUID = 2269971701250845501L;
