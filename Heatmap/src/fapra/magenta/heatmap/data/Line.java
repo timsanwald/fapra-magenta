@@ -11,6 +11,7 @@ public class Line {
     int startPxY;
     int endPxX;
     int endPxY;
+    int scrollDirection;
     
     public Line(String[] line) {
         id = Integer.parseInt(line[0]);
@@ -23,6 +24,7 @@ public class Line {
         startPxY = Integer.parseInt(line[7]);
         endPxX = Integer.parseInt(line[8]);
         endPxY = Integer.parseInt(line[9]);
+        scrollDirection = Integer.parseInt(line[13]);
     }
 
     public int getId() {
@@ -106,5 +108,13 @@ public class Line {
 
     public void setEndPxY(int endPxY) {
         this.endPxY = endPxY;
+    }
+
+    public int getScrollDirection() {
+        return scrollDirection;
+    }
+
+    public void setScrollDirection(int scrollDirection) {
+        this.scrollDirection = scrollDirection;
     }
 }

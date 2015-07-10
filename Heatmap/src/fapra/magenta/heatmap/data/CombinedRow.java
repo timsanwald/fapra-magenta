@@ -18,7 +18,7 @@ public class CombinedRow {
 
     public void normalize() {
         // Calculate Pointsize
-        if (device == null || points == null) {
+        if (device == null || points == null || device.yDpi < 10) {
             System.out.println(this.toString());
             return;
         }
@@ -45,43 +45,22 @@ public class CombinedRow {
         for (Point p : points) {
             p.setxPx(p.getxPx() - shiftX);
             p.setyPx(p.getyPx() - shiftY);
-            if (p.getxPx() > device.screenXPx) {
-                System.out.println("false1 x=" + p.getxPx());
-            } else if (p.getyPx() > device.screenYPx) {
-                System.out.println("false1 y=" + p.getyPx());
-            }
         }
-        
-        /*
-        int shiftX = line.startPxX % pointSize + line.startGridX * pointSize;
-        int shiftY = line.startPxY % pointSize + line.startGridY * pointSize;
-        
-        for (Point p : points) {
-            p.setxPx(shiftX);
-            p.setyPx(shiftY);
-            if (p.getxPx() > device.screenXPx) {
-                System.out.println("false1 x=" + p.getxPx());
-            } else if (p.getyPx() > device.screenYPx) {
-                System.out.println("false1 y=" + p.getyPx());
-            }
-        }*/
-        
-
-        
         
         // Normalize the screen coordinates
         double normX = ((double) pixelX / (double) device.screenXPx);
         double normY = ((double) pixelY / (double) device.screenYPx);
         
         for (Point p : points) {
-            //TODO maybe remove casts
-            p.setxPx((int) (p.getxPx() * normX));
-            p.setyPx((int) (p.getyPx() * normY));
             if (p.getxPx() > pixelX) {
                 System.out.println("false x=" + p.getxPx());
             } else if (p.getyPx() > pixelY) {
                 System.out.println("false y=" + p.getyPx());
             }
+            //TODO maybe remove casts
+            p.setxPx((int) (((double) p.getxPx() / (double) device.screenXPx) * (double) pixelX));
+            p.setyPx((int) (p.getyPx()));
+
         }
     }
     

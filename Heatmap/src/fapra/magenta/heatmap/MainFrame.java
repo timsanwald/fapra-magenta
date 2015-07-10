@@ -56,14 +56,15 @@ public class MainFrame extends JFrame {
         JButton btnRedraw = new JButton("Redraw");
         btnRedraw.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                float multiplier = 1f;
+                float multiplier = 2.5f;
                 List<Point> points = new ArrayList<Point>();
                 List<CombinedRow> filteredRows = Filter.filterRows(
                         MainFrame.this.rows, 
                         Integer.parseInt(txtGridx.getText()),
                         Integer.parseInt(txtGridy.getText()),
                         Integer.parseInt(txtEndgridx.getText()),
-                        Integer.parseInt(txtEndgridy.getText()));
+                        Integer.parseInt(txtEndgridy.getText()),
+                        Integer.parseInt(txtDir.getText()));
                 List<Point> convertedRows = Filter.convertPoints(filteredRows);
                 System.out.println("Rows=" + convertedRows.size());
                 HeatMap hm = new HeatMap(convertedRows, CombinedRow.pixelX, CombinedRow.pixelY);
@@ -91,6 +92,14 @@ public class MainFrame extends JFrame {
         txtEndgridy.setText("5");
         Configuration.add(txtEndgridy);
         txtEndgridy.setColumns(10);
+        
+        JLabel lblDirection = new JLabel("direction");
+        Configuration.add(lblDirection);
+        
+        txtDir = new JTextField();
+        txtDir.setText("0");
+        Configuration.add(txtDir);
+        txtDir.setColumns(10);
         Configuration.add(btnRedraw);
     }
 
@@ -99,5 +108,6 @@ public class MainFrame extends JFrame {
     private JTextField txtGridy;
     private JTextField txtEndgridx;
     private JTextField txtEndgridy;
+    private JTextField txtDir;
 
 }

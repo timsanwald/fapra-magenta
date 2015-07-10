@@ -18,21 +18,22 @@ public class Filter {
         return convertedPoints;
     }
     
-    public static List<CombinedRow> filterRows(List<CombinedRow> rows, int startGridX, int startGridY, int endGridX, int endGridY) {
+    public static List<CombinedRow> filterRows(List<CombinedRow> rows, int startGridX, int startGridY, int endGridX, int endGridY, int mode) {
         List<CombinedRow> result = new LinkedList<CombinedRow>();
         for (CombinedRow row : rows) {
-            if (isAcceptable(row, startGridX, startGridY, endGridX, endGridY)) {
+            if (isAcceptable(row, startGridX, startGridY, endGridX, endGridY, mode)) {
                 result.add(row);
             }
         }
         return result;
     }
     
-    public static boolean isAcceptable(CombinedRow row, int startGridX, int startGridY, int endGridX, int endGridY) {
+    public static boolean isAcceptable(CombinedRow row, int startGridX, int startGridY, int endGridX, int endGridY, int mode) {
         if (row.line.getStartGridX() == startGridX 
                 && row.line.getStartGridY() == startGridY 
                 && row.line.getEndGridX() == endGridX 
-                && row.line.getEndGridY() == endGridY) {
+                && row.line.getEndGridY() == endGridY
+                && row.line.getScrollDirection() == mode) {
             return true;
         }
         return false;
