@@ -54,6 +54,8 @@ Route::get('api/dbLines/start-{startX}-{startY}/end-{endX}-{endY}', function($st
 			$point->yPx = (int) $point->yPx;
 			$point->timestamp = (int) $point->timestamp;
 		}
+
+		unset($point);
 	}
 
 	unset($line);
