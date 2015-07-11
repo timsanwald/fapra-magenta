@@ -33,3 +33,4 @@ keystore.properties
 
 # junk
 .DS_Store
+/libs/
