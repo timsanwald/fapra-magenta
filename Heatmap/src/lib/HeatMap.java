@@ -64,16 +64,10 @@ public class HeatMap {
     /** half of the size of the circle picture. */
     private static final int          HALFCIRCLEPICSIZE = 32;
     /** path to picture of circle which gets more transparent to the outside. */
-    private static final String       CIRCLEPIC         = System.getProperty("user.dir")
-                                                                + File.separator
-                                                                + "heatmap"
-                                                                + File.separator
-                                                                + "bolilla.png";
-    private static final String       SPECTRUMPIC       = System.getProperty("user.dir")
-                                                                + File.separator
-                                                                + "heatmap"
-                                                                + File.separator
-                                                                + "colors.png";
+    private static final String CIRCLEPIC = System.getProperty("user.dir") + File.separator + "heatmap" + File.separator + "bolilla.png";
+    public static final String GRADIENT_HEAT_COLORS = System.getProperty("user.dir") + File.separator + "heatmap" + File.separator + "colors.png";
+    public static final String GRADIENT_BLACK_WHITE = System.getProperty("user.dir") + File.separator + "heatmap" + File.separator + "black_white.png";
+    
     /** map to collect and sort points. */
     private Map<Integer, List<Point>> map;
     /** maximum occurance of the same coordinates. */
@@ -142,7 +136,7 @@ public class HeatMap {
      *            are too spread out. Pass 1.0f for original.
      * @return 
      */
-    public BufferedImage createHeatMap(final float multiplier) {
+    public BufferedImage createHeatMap(final float multiplier, String gradient) {
 
         final BufferedImage circle = loadImage(CIRCLEPIC);
         BufferedImage heatMap = new BufferedImage(maxXValue, maxYValue, 6);
@@ -178,7 +172,7 @@ public class HeatMap {
 
         // remap black/white with color spectrum from white over red, orange,
         // yellow, green to blue
-        remap(heatMap);
+        remap(heatMap, gradient);
 
         print("done creating heatmap.");
         return heatMap;
@@ -192,8 +186,8 @@ public class HeatMap {
      * @param heatMapBW
      *            black and white heat map
      */
-    private void remap(final BufferedImage heatMapBW) {
-        final BufferedImage colorGradiant = loadImage(SPECTRUMPIC);
+    private void remap(final BufferedImage heatMapBW, String gradient) {
+        final BufferedImage colorGradiant = loadImage(gradient);
         final int width = heatMapBW.getWidth();
         final int height = heatMapBW.getHeight();
         final int gradientHight = colorGradiant.getHeight() - 1;

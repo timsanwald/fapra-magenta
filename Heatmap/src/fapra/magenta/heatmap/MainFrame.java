@@ -1,6 +1,5 @@
 package fapra.magenta.heatmap;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -26,12 +25,9 @@ import lib.HeatMap;
 
 public class MainFrame extends JFrame {
 
-    protected final List<CombinedRow> rows;
-
-    public MainFrame(List<CombinedRow> rows) {
+    public MainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(794, 960);
-        this.rows = rows;
         getContentPane().setLayout(new BorderLayout(0, 0));
         
         final JLabel lblNewLabel = new JLabel("");
@@ -57,19 +53,17 @@ public class MainFrame extends JFrame {
         JButton btnRedraw = new JButton("Redraw");
         btnRedraw.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                float multiplier = 0.5f;
-                List<Point> points = new ArrayList<Point>();
-                List<CombinedRow> filteredRows = Filter.filterRows(
-                        MainFrame.this.rows, 
+                float multiplier = 2.5f;
+                List<CombinedRow> filteredRows = Filter.queryRows(
                         Integer.parseInt(txtGridx.getText()),
                         Integer.parseInt(txtGridy.getText()),
                         Integer.parseInt(txtEndgridx.getText()),
-                        Integer.parseInt(txtEndgridy.getText()),
-                        Integer.parseInt(txtDir.getText()));
+                        Integer.parseInt(txtEndgridy.getText()));
+                Filter.normalizeRows(filteredRows);
                 List<Point> convertedRows = Filter.convertPoints(filteredRows);
                 System.out.println("Rows=" + convertedRows.size());
                 HeatMap hm = new HeatMap(convertedRows, CombinedRow.pixelX, CombinedRow.pixelY);
-                BufferedImage img = hm.createHeatMap(multiplier);
+                BufferedImage img = hm.createHeatMap(multiplier, HeatMap.GRADIENT_HEAT_COLORS);
                 Image dimg = img.getScaledInstance(CombinedRow.pixelX/2, CombinedRow.pixelY/2,
                         Image.SCALE_SMOOTH);
                 ImageIcon icon = new ImageIcon(dimg);

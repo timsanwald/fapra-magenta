@@ -15,6 +15,7 @@ public class CombinedRow {
         this.line = line;
         this.points = points;
     }
+
     static float max = 0;
     
     public static int pixelX = 1080;
@@ -42,15 +43,17 @@ public class CombinedRow {
         
         
         // Normalize the screen coordinates
-//        double normX = ((double) pixelX / (double) device.screenXPx);
-//        double normY = ((double) pixelY / (double) device.screenYPx);
-//        
-//        for (Point p : points) {
-//            //TODO maybe remove casts
-//            p.setxPx((int) (((double) p.getxPx() / (double) device.screenXPx) * (double) pixelX));
-//            p.setyPx((int) (((double) p.getyPx() / (double) device.screenYPx) * (double) pixelY));
-//        }
-        Point start = new Point(-1, -1, line.startPxX + shiftX - 200, line.startPxY + shiftY);
+        double normX = ((double) pixelX / (double) device.screenXPx);
+        double normY = ((double) pixelY / (double) device.screenYPx);
+        
+        for (Point p : points) {
+            //TODO maybe remove casts
+            p.setxPx((int) (((double) p.getxPx() / (double) device.screenXPx) * (double) pixelX));
+            p.setyPx((int) (((double) p.getyPx() / (double) device.screenYPx) * (double) pixelY));
+        }
+        Point start = new Point(-1, -1, line.startPxX + shiftX, line.startPxY + shiftY);
+        start.setxPx((int) (((double) start.getxPx() / (double) device.screenXPx) * (double) pixelX));
+        start.setyPx((int) (((double) start.getyPx() / (double) device.screenYPx) * (double) pixelY));
         
         Point normStart = new Point(-1, -1, refManager.targetToPxX(line.startGridX), refManager.targetToPxY(line.startGridY));
         shiftPoints(start.getxPx() - normStart.getxPx(), start.getyPx() - normStart.getyPx());

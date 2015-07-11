@@ -1,5 +1,7 @@
 package fapra.magenta.heatmap.data;
 
+import com.eclipsesource.json.JsonObject;
+
 public class Device {
     public int id;
     String hash;
@@ -21,6 +23,17 @@ public class Device {
         xDpi = Double.parseDouble(line[6]);
         yDpi = Double.parseDouble(line[7]);
         density = Double.parseDouble(line[8]);
+    }
+    
+    public Device(JsonObject obj) {
+        id = obj.getInt("deviceId", 0);
+        screenXPx = obj.getInt("screenXPx", 0);
+        screenYPx = obj.getInt("screenYPx", 0);
+        gridSizeX = obj.getInt("gridSizeX", 0);
+        gridSizeY = obj.getInt("gridSizeY", 0);
+        xDpi = obj.getDouble("xDpi", 0);
+        yDpi = obj.getDouble("yDpi", 0);
+        density = obj.getDouble("density", 0);
     }
 
     public int getId() {

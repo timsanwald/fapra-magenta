@@ -1,5 +1,7 @@
 package fapra.magenta.heatmap.data;
 
+import com.eclipsesource.json.JsonObject;
+
 public class Point {
 
     private long id;
@@ -21,6 +23,12 @@ public class Point {
         lineID = Integer.parseInt(line[1]);
         xPx = Integer.parseInt(line[2]);
         yPx = Integer.parseInt(line[3]);
+    }
+
+    public Point(JsonObject value) {
+        this.lineID = value.getInt("lineId", -1);
+        this.xPx = value.getInt("xPx", -1);
+        this.yPx = value.getInt("yPx", -1);
     }
 
     public long getId() {

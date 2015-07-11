@@ -1,5 +1,7 @@
 package fapra.magenta.heatmap.data;
 
+import com.eclipsesource.json.JsonObject;
+
 public class Line {
     int id;
     int deviceId;
@@ -13,6 +15,10 @@ public class Line {
     int endPxY;
     int scrollDirection;
     
+    public Line() {
+        
+    }
+    
     public Line(String[] line) {
         id = Integer.parseInt(line[0]);
         deviceId = Integer.parseInt(line[1]);
@@ -25,6 +31,26 @@ public class Line {
         endPxX = Integer.parseInt(line[8]);
         endPxY = Integer.parseInt(line[9]);
         scrollDirection = Integer.parseInt(line[13]);
+    }
+
+    public Line(JsonObject obj) {
+        System.out.println(obj);
+        deviceId = obj.getInt("deviceId", -1);
+        id = obj.getInt("lineId", -1);
+
+        startGridX = obj.getInt("startGridX", -1);
+        startGridY = obj.getInt("startGridY", -1);
+        
+        endGridX = obj.getInt("endGridX", -1);
+        endGridY = obj.getInt("endGridY", -1);
+        
+        startPxX = obj.getInt("startPxX", -1);
+        startPxY = obj.getInt("startPxY", -1);
+        
+        endPxX = obj.getInt("endPxX", -1);
+        endPxY = obj.getInt("endPxY", -1);
+        
+        scrollDirection = obj.getInt("scrollDirection", -1);
     }
 
     public int getId() {
