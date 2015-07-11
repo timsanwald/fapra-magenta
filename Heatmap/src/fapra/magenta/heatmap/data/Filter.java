@@ -11,19 +11,21 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
 import com.eclipsesource.json.JsonArray;
 import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 
 public class Filter {
 
-    public static List<java.awt.Point> convertPoints(List<CombinedRow> rows) {
+    public static List<java.awt.Point> convertPointsInRow(List<CombinedRow> rows) {
         ArrayList<java.awt.Point> convertedPoints = new ArrayList<java.awt.Point>();
 
         for (CombinedRow row : rows) {
             for (Point p : row.points) {
                 convertedPoints.add(new java.awt.Point(p.getxPx(), p.getyPx()));
             }
+            convertedPoints.addAll(convertPoints(row.points));
         }
 
         return convertedPoints;
@@ -107,5 +109,13 @@ public class Filter {
         for (CombinedRow row : filteredRows) {
             row.normalize();
         }
+    }
+
+    public static List<java.awt.Point> convertPoints(List<Point> points) {
+        List<java.awt.Point> results = new ArrayList<java.awt.Point>();
+        for (Point p : points) {
+            results.add(new java.awt.Point(p.getxPx(), p.getyPx()));
+        }
+        return results;
     }
 }
