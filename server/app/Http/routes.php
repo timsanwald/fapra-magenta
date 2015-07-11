@@ -20,7 +20,9 @@ Route::controller('api/line', '\App\Http\Controllers\Api\LineController');
 Route::get('api/dbLines/start-{startX}-{startY}/end-{endX}-{endY}', function($startX, $startY, $endX, $endY) {
 	$lines = \App\Models\Line::with('points', 'device')->where('startGridX', $startX)->where('startGridY', $startY)->where('endGridX', $endX)->where('endGridY', $endY)->get();
 
-	foreach ($lines as &$line) {
+	// do some explicit type casting for better json output
+	foreach ($lines as &$line)
+	{
 		$line->id = (int) $line->id;
 		$line->deviceId = (int) $line->deviceId;
 		$line->startGridX = (int) $line->startGridX;
@@ -36,6 +38,22 @@ Route::get('api/dbLines/start-{startX}-{startY}/end-{endX}-{endY}', function($st
 		$line->isLandscape = (boolean) $line->isLandscape;
 		$line->scrollDirection = (int) $line->scrollDirection;
 		$line->complete = (boolean) $line->complete;
+		$line->device->screenXPx = (int) $line->device->screenXPx;
+		$line->device->screenYPx = (int) $line->device->screenYPx;
+		$line->device->gridSizeX = (int) $line->device->gridSizeX;
+		$line->device->gridSizeY = (int) $line->device->gridSizeY;
+		$line->device->xDpi = (float) $line->device->xDpi;
+		$line->device->yDpi = (float) $line->device->yDpi;
+		$line->device->density = (float) $line->device->density;
+
+		// loop over points for casting
+		foreach ($line->points as &$point)
+		{
+			$point->lineId = (int) $point->lineId;
+			$point->xPx = (int) $point->xPx;
+			$point->yPx = (int) $point->yPx;
+			$point->timestamp = (int) $point->timestamp;
+		}
 	}
 
 	unset($line);
