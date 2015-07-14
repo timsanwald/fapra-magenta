@@ -34,23 +34,22 @@ public class Line {
     }
 
     public Line(JsonObject obj) {
-        System.out.println(obj);
-        deviceId = obj.getInt("deviceId", -1);
-        id = obj.getInt("lineId", -1);
+        deviceId = Integer.parseInt(obj.getString("deviceId", "-1"));
+        id = Integer.parseInt(obj.getString("lineId", "-1"));
 
-        startGridX = obj.getInt("startGridX", -1);
-        startGridY = obj.getInt("startGridY", -1);
+        startGridX = Integer.parseInt(obj.getString("startGridX", "-1"));
+        startGridY = Integer.parseInt(obj.getString("startGridY", "-1"));
         
-        endGridX = obj.getInt("endGridX", -1);
-        endGridY = obj.getInt("endGridY", -1);
+        endGridX = Integer.parseInt(obj.getString("endGridX", "-1"));
+        endGridY = Integer.parseInt(obj.getString("endGridY", "-1"));
         
-        startPxX = obj.getInt("startPxX", -1);
-        startPxY = obj.getInt("startPxY", -1);
+        startPxX = Integer.parseInt(obj.getString("startPxX", "-1"));
+        startPxY = Integer.parseInt(obj.getString("startPxY", "-1"));
         
-        endPxX = obj.getInt("endPxX", -1);
-        endPxY = obj.getInt("endPxY", -1);
+        endPxX = Integer.parseInt(obj.getString("endPxX", "-1"));
+        endPxY = Integer.parseInt(obj.getString("endPxY", "-1"));
         
-        scrollDirection = obj.getInt("scrollDirection", -1);
+        scrollDirection = Integer.parseInt(obj.getString("scrollDirection", "-1"));
     }
 
     public int getId() {

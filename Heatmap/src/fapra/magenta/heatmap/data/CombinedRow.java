@@ -43,9 +43,6 @@ public class CombinedRow {
         
         
         // Normalize the screen coordinates
-        double normX = ((double) pixelX / (double) device.screenXPx);
-        double normY = ((double) pixelY / (double) device.screenYPx);
-        
         for (Point p : points) {
             //TODO maybe remove casts
             p.setxPx((int) (((double) p.getxPx() / (double) device.screenXPx) * (double) pixelX));
@@ -65,7 +62,6 @@ public class CombinedRow {
     }
 
     private void shiftPoints(int x, int y) {
-        System.out.println("Shift=" +x  + ", " + y);
         for (Point p : this.points) {
             p.setxPx(p.getxPx() - x);
             p.setyPx(p.getyPx() - y);

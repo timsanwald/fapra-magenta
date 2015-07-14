@@ -26,9 +26,9 @@ public class Point {
     }
 
     public Point(JsonObject value) {
-        this.lineID = value.getInt("lineId", -1);
-        this.xPx = value.getInt("xPx", -1);
-        this.yPx = value.getInt("yPx", -1);
+        this.lineID = Integer.parseInt(value.getString("lineId", "-1"));
+        this.xPx = Integer.parseInt(value.getString("xPx", "-1"));
+        this.yPx = Integer.parseInt(value.getString("yPx", "-1"));
     }
 
     public long getId() {

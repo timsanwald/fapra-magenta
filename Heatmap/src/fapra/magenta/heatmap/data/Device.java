@@ -27,13 +27,13 @@ public class Device {
     
     public Device(JsonObject obj) {
         id = obj.getInt("deviceId", 0);
-        screenXPx = obj.getInt("screenXPx", 0);
-        screenYPx = obj.getInt("screenYPx", 0);
-        gridSizeX = obj.getInt("gridSizeX", 0);
-        gridSizeY = obj.getInt("gridSizeY", 0);
-        xDpi = obj.getDouble("xDpi", 0);
-        yDpi = obj.getDouble("yDpi", 0);
-        density = obj.getDouble("density", 0);
+        screenXPx = Integer.parseInt(obj.getString("screenXPx", null));
+        screenYPx = Integer.parseInt(obj.getString("screenYPx", null));
+        gridSizeX = Integer.parseInt(obj.getString("gridSizeX", null));
+        gridSizeY = Integer.parseInt(obj.getString("gridSizeY", null));
+        xDpi = Double.parseDouble(obj.getString("xDpi", null));
+        yDpi = Double.parseDouble(obj.getString("yDpi", null));
+        density = Double.parseDouble(obj.getString("density", null));
     }
 
     public int getId() {

@@ -1,9 +1,5 @@
 package fapra.magenta.heatmap.target;
 
-import java.util.Random;
-
-import fapra.magenta.heatmap.Point;
-
 public class GridManager {
 	// screen in cm
 	private double screenXCm;

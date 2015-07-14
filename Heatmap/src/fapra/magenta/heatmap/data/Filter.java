@@ -22,9 +22,6 @@ public class Filter {
         ArrayList<java.awt.Point> convertedPoints = new ArrayList<java.awt.Point>();
 
         for (CombinedRow row : rows) {
-            for (Point p : row.points) {
-                convertedPoints.add(new java.awt.Point(p.getxPx(), p.getyPx()));
-            }
             convertedPoints.addAll(convertPoints(row.points));
         }
 
@@ -50,7 +47,8 @@ public class Filter {
     }
 
     private static final String pattern = "http://fachpraktikum.hci.simtech.uni-stuttgart.de/ss2015/grp3/server/public/index.php/api/dbLines/start-{0}-{1}/end-{2}-{3}/";
-
+    private static final String pattern2 = "http://fachpraktikum.hci.simtech.uni-stuttgart.de/ss2015/grp3/server/public/index.php/api/dbLines/?page={0}";
+    
     public static List<CombinedRow> queryRows(int startGridX, int startGridY, int endGridX, int endGridY){
         String url = MessageFormat.format(pattern, startGridX, startGridY, endGridX, endGridY);
         
@@ -67,6 +65,28 @@ public class Filter {
             e.printStackTrace();
         }
         
+        return null;
+    }
+
+    public static List<CombinedRow> queryRows(int pages){
+        try {
+        List<CombinedRow> rows = new ArrayList<CombinedRow>();
+        for (int i=1; i<=pages; i++) {
+            String url = MessageFormat.format(pattern2, i);
+            InputStream is = new URL(url).openStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            JsonObject array = JsonObject.readFrom(rd);
+            is.close();  
+            rows.addAll(generateRows(array.get("data").asArray()));
+        }
+        
+        if (rows.isEmpty()) {
+            return null;
+        }
+        return rows;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

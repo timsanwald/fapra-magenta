@@ -1,7 +1,6 @@
 package fapra.magenta.heatmap;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -19,9 +18,6 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Shape;
-import java.awt.Stroke;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -76,43 +72,48 @@ public class MainFrame extends JFrame {
         btnRedraw.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 float multiplier = ((float) slider.getValue()) / 10.0f;
-                List<CombinedRow> filteredRows = Filter.queryRows(
-                        Integer.parseInt(txtGridx.getText()),
-                        Integer.parseInt(txtGridy.getText()),
-                        Integer.parseInt(txtEndgridx.getText()),
-                        Integer.parseInt(txtEndgridy.getText()));
+                List<CombinedRow> filteredRows;
+                if (txtGridx.getText().equals("all")) {
+                    filteredRows = Filter.queryRows(64);
+                } else {
+                    filteredRows = Filter.queryRows(
+                            Integer.parseInt(txtGridx.getText()),
+                            Integer.parseInt(txtGridy.getText()),
+                            Integer.parseInt(txtEndgridx.getText()),
+                            Integer.parseInt(txtEndgridy.getText()));
+                }
                 System.out.println("Multiplier=" + multiplier);
+                System.out.println("Rows=" + filteredRows.size());
                 Filter.normalizeRows(filteredRows);
                 List<Point> convertedRows = Filter.convertPointsInRow(filteredRows);
-                System.out.println("Rows=" + convertedRows.size());
+                System.out.println("Points=" + convertedRows.size());
                 HeatMap hm = new HeatMap(convertedRows, CombinedRow.pixelX, CombinedRow.pixelY);
                 BufferedImage img = hm.createHeatMap(multiplier, HeatMap.GRADIENT_HEAT_COLORS);
 
-                
-                List<fapra.magenta.heatmap.data.Point> startEndList = new ArrayList<fapra.magenta.heatmap.data.Point>();
-                fapra.magenta.heatmap.data.Point normStart = new fapra.magenta.heatmap.data.Point(-1, -1, CombinedRow.refManager.targetToPxX(Integer.parseInt(txtGridx.getText())),
-                        CombinedRow.refManager.targetToPxY(Integer.parseInt(txtGridy.getText())));
-                fapra.magenta.heatmap.data.Point normEnd = new fapra.magenta.heatmap.data.Point(-1, -1, CombinedRow.refManager.targetToPxX(Integer.parseInt(txtEndgridx.getText())),
-                        CombinedRow.refManager.targetToPxY(Integer.parseInt(txtEndgridy.getText())));
-                startEndList.add(normStart);
-                startEndList.add(normEnd);
-                List<Point> psStartEnd = Filter.convertPoints(startEndList);
-                
-                // Draw real Line
-                Graphics2D g2d = img.createGraphics();
-                g2d.setColor(Color.black);
-                g2d.setStroke(new BasicStroke(10));
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2d.drawLine(psStartEnd.get(0).x, psStartEnd.get(0).y, psStartEnd.get(1).x, psStartEnd.get(1).y);
-                g2d.dispose();
+                if (!txtGridx.getText().equals("all")) {
+                    List<fapra.magenta.heatmap.data.Point> startEndList = new ArrayList<fapra.magenta.heatmap.data.Point>();
+                    fapra.magenta.heatmap.data.Point normStart = new fapra.magenta.heatmap.data.Point(-1, -1, CombinedRow.refManager.targetToPxX(Integer.parseInt(txtGridx.getText())),
+                            CombinedRow.refManager.targetToPxY(Integer.parseInt(txtGridy.getText())));
+                    fapra.magenta.heatmap.data.Point normEnd = new fapra.magenta.heatmap.data.Point(-1, -1, CombinedRow.refManager.targetToPxX(Integer.parseInt(txtEndgridx.getText())),
+                            CombinedRow.refManager.targetToPxY(Integer.parseInt(txtEndgridy.getText())));
+                    startEndList.add(normStart);
+                    startEndList.add(normEnd);
+                    List<Point> psStartEnd = Filter.convertPoints(startEndList);
+                    
+                    // Draw real Line
+                    Graphics2D g2d = img.createGraphics();
+                    g2d.setColor(Color.white);
+                    g2d.setStroke(new BasicStroke(15));
+                    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                    g2d.drawLine(psStartEnd.get(0).x, psStartEnd.get(0).y, psStartEnd.get(1).x, psStartEnd.get(1).y);
+                    g2d.dispose();
+                }
                 
                 
                 dimg = toBufferedImage(img.getScaledInstance(CombinedRow.pixelX/2, CombinedRow.pixelY/2,
                         Image.SCALE_SMOOTH));
                 ImageIcon icon = new ImageIcon(dimg);
                 lblNewLabel.setIcon(icon);
-                //lblHeatmap.invalidate();
-                
             }
         });
 
