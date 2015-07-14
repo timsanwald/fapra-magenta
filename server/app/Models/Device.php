@@ -39,7 +39,7 @@ class Device extends Model
      *
      * @var array
      */
-    protected $fillable = array('deviceHash', 'screenXPx', 'screenYPx', 'gridSizeX', 'gridSizeY', 'xDpi', 'yDip', 'density');
+    protected $fillable = array('deviceHash', 'screenXPx', 'screenYPx', 'gridSizeX', 'gridSizeY', 'xDpi', 'yDpi', 'density');
 
     /**
      * attributes hidden from auto responses like json
